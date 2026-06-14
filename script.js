@@ -274,26 +274,38 @@
     });
   })();
 
-  /* ---------- Career timeline: continuous auto-scroll loop ---------- */
+  /* ---------- Career timeline: seamless one-way auto-scroll loop ---------- */
   (function timelineScroll() {
     var sc = document.querySelector(".ctl-scroll");
-    if (!sc) return;
+    var track = sc && sc.querySelector(".ctl");
+    if (!sc || !track) return;
 
-    var dir = 1, raf = null, started = false, paused = false, resumeT = null;
+    var raf = null, started = false, paused = false, resumeT = null, duped = false;
+
+    // Clone the items once so scrollLeft can wrap back invisibly (true marquee).
+    function setupDup() {
+      if (duped) return;
+      duped = true;
+      Array.prototype.slice.call(track.children).forEach(function (it) {
+        var c = it.cloneNode(true);
+        c.setAttribute("aria-hidden", "true");
+        c.classList.remove("reveal");          // clones must be visible immediately
+        c.classList.add("is-visible", "ctl__item--clone");
+        track.appendChild(c);
+      });
+    }
 
     function loop() {
       if (!paused) {
-        var max = sc.scrollWidth - sc.clientWidth;
-        if (max > 1) {
-          var speed = Math.max(0.4, max / 780); // ~13s end-to-end, viewport-aware
-          sc.scrollLeft += speed * dir;
-          if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; }      // bounce at end
-          else if (sc.scrollLeft <= 0.5) { sc.scrollLeft = 0; dir = 1; }          // bounce at start
+        var half = track.scrollWidth / 2;       // width of one original set
+        if (half > 1) {
+          sc.scrollLeft += Math.max(0.4, half / 780); // one-directional, viewport-aware
+          if (sc.scrollLeft >= half) sc.scrollLeft -= half; // seamless wrap to start
         }
       }
       raf = requestAnimationFrame(loop);
     }
-    function start() { if (!started && !prefersReduced) { started = true; raf = requestAnimationFrame(loop); } }
+    function start() { if (!started && !prefersReduced) { started = true; setupDup(); raf = requestAnimationFrame(loop); } }
     function pauseFor(ms) { paused = true; if (resumeT) clearTimeout(resumeT); resumeT = setTimeout(function () { paused = false; }, ms || 2500); }
 
     // Start automatically when the timeline first comes into view.
