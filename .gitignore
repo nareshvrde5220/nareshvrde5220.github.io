@@ -1,0 +1,11 @@
+# Machine-local Claude Code config
+.claude/
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+desktop.ini
+*~
+
+# Node (only if tooling is ever added; site itself has no build step)
+node_modules/
