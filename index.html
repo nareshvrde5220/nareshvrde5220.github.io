@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <a class="skip-link" href="#about">Skip to content</a>
@@ -40,6 +40,7 @@
 
       <nav class="nav__links" id="nav-links" aria-label="Primary">
         <a href="#about" class="nav__link">About</a>
+        <a href="#journey" class="nav__link">Journey</a>
         <a href="#experience" class="nav__link">Experience</a>
         <a href="#skills" class="nav__link">Skills</a>
         <a href="#certifications" class="nav__link">Certifications</a>
@@ -72,7 +73,7 @@
           <h1 class="hero__name">Jampala&nbsp;Naresh</h1>
           <p class="hero__headline">
             <span class="grad-text">Agentic AI Solution Architect</span>
-            &amp; AWS Certified Generative AI Developer — Professional
+            &amp; <span class="badge-3x">3xAWS</span> Certified with Generative AI Developer — Professional
           </p>
           <p class="hero__sub">
             9+ years delivering AI, ML, and LLM solutions across
@@ -138,10 +139,86 @@
       </div>
     </section>
 
+    <!-- ===== Career Timeline ===== -->
+    <section id="journey" class="section" aria-labelledby="journey-title">
+      <div class="container">
+        <p class="eyebrow">2015 → 2026</p>
+        <h2 class="section__title" id="journey-title">Career Timeline</h2>
+
+        <div class="ctl-scroll">
+          <ol class="ctl" role="list">
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2015–18</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">DRDO – VRDE</p>
+                <p class="ctl__role">Research Fellow (JRF &amp; SRF)</p>
+                <p class="ctl__loc">Ahmednagar, Maharashtra</p>
+              </div>
+            </li>
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2018–19</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">IITM</p>
+                <p class="ctl__role">Project Scientist B</p>
+                <p class="ctl__loc">Pune, Maharashtra</p>
+              </div>
+            </li>
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2019–21</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">CSIR – NGRI</p>
+                <p class="ctl__role">Project Associate II</p>
+                <p class="ctl__loc">Hyderabad, Telangana</p>
+              </div>
+            </li>
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2022</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">Teamware Solutions (Quantum Leap)</p>
+                <p class="ctl__role">Senior Data Scientist</p>
+                <p class="ctl__loc">Chennai</p>
+              </div>
+            </li>
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2022–24</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">People Tech Enterprises</p>
+                <p class="ctl__role">Principal Data Scientist</p>
+                <p class="ctl__loc">Hyderabad, Telangana</p>
+              </div>
+            </li>
+            <li class="ctl__item reveal" role="listitem">
+              <span class="ctl__year">2024–26</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">Trianz Digital Consulting</p>
+                <p class="ctl__role">Senior Technical Lead</p>
+                <p class="ctl__loc">Hyderabad</p>
+              </div>
+            </li>
+            <li class="ctl__item ctl__item--now reveal" role="listitem">
+              <span class="ctl__year">2026</span>
+              <span class="ctl__dot" aria-hidden="true"></span>
+              <div class="ctl__card">
+                <p class="ctl__org">JPMorganChase</p>
+                <p class="ctl__role">Applied AI ML Associate Senior</p>
+                <p class="ctl__loc">Hyderabad</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== 3. Experience ===== -->
     <section id="experience" class="section section--alt" aria-labelledby="experience-title">
       <div class="container">
-        <p class="eyebrow">9 yrs 7 mos · 8 roles</p>
+        <p class="eyebrow">9+ yrs · 8 roles</p>
         <h2 class="section__title" id="experience-title">Experience</h2>
 
         <ol class="timeline">
@@ -150,9 +227,9 @@
             <div class="tl__node" aria-hidden="true"></div>
             <article class="tl__card">
               <header class="tl__head">
-                <h3 class="tl__role">Applied AI ML Associate Sr</h3>
+                <h3 class="tl__role">Applied AI ML Associate Senior</h3>
                 <p class="tl__org">JPMorganChase</p>
-                <p class="tl__meta"><span class="tl__date">Mar 2026 – Present</span> · Hyderabad · On-site · Full-time</p>
+                <p class="tl__meta"><span class="tl__date" data-since="2026-03-01">Mar 2026 – Present</span> · Hyderabad · On-site · Full-time</p>
               </header>
               <p>Home Lending, Data Management — Data &amp; AI Architecture / Agentic AI Architecture.</p>
               <ul class="tags">
@@ -167,7 +244,7 @@
             <article class="tl__card">
               <header class="tl__head">
                 <h3 class="tl__role">Senior Technical Lead</h3>
-                <p class="tl__org">Trianz</p>
+                <p class="tl__org">Trianz Digital Consulting Pvt Ltd</p>
                 <p class="tl__meta"><span class="tl__date">Jun 2025 – Feb 2026 · 9 mos</span> · Hyderabad · Hybrid · Full-time</p>
               </header>
               <ul class="tl__bullets">
@@ -187,7 +264,7 @@
             <article class="tl__card">
               <header class="tl__head">
                 <h3 class="tl__role">Technical Lead</h3>
-                <p class="tl__org">Trianz</p>
+                <p class="tl__org">Trianz Digital Consulting Pvt Ltd</p>
                 <p class="tl__meta"><span class="tl__date">Feb 2024 – May 2025 · 1 yr 4 mos</span> · Hyderabad · Full-time</p>
               </header>
               <p>Specialized in Generative AI, Agentic AI, AWS cloud solutions, and AI-driven automation — driving efficiency and cost savings across industries.</p>
@@ -211,7 +288,7 @@
             <article class="tl__card">
               <header class="tl__head">
                 <h3 class="tl__role">Principal Data Scientist</h3>
-                <p class="tl__org">People Tech Group</p>
+                <p class="tl__org">People Tech Enterprises Pvt Limited</p>
                 <p class="tl__meta"><span class="tl__date">May 2022 – Feb 2024 · 1 yr 10 mos</span> · Hyderabad · On-site · Full-time</p>
               </header>
               <p>Built ML models for the automotive industry — vehicle monitoring and insurance coverage applications.</p>
@@ -233,8 +310,8 @@
             <article class="tl__card">
               <header class="tl__head">
                 <h3 class="tl__role">Senior Data Scientist</h3>
-                <p class="tl__org">Teamware Solutions (Quantum Leap Consulting)</p>
-                <p class="tl__meta"><span class="tl__date">Feb 2022 – May 2022 · 4 mos</span> · Hyderabad · Full-time</p>
+                <p class="tl__org">Teamware Solutions (Quantum Leap Consulting Pvt. Ltd.)</p>
+                <p class="tl__meta"><span class="tl__date">Feb 2022 – May 2022 · 4 mos</span> · Chennai · Full-time</p>
               </header>
               <p>Data analysis and real-time event detection using machine learning on Azure Cloud.</p>
               <ul class="tl__bullets">
@@ -253,8 +330,8 @@
             <div class="tl__node" aria-hidden="true"></div>
             <article class="tl__card">
               <header class="tl__head">
-                <h3 class="tl__role">Project Assistant II</h3>
-                <p class="tl__org">CSIR – National Geophysical Research Institute</p>
+                <h3 class="tl__role">Project Associate II</h3>
+                <p class="tl__org">CSIR – National Geophysical Research Institute (NGRI)</p>
                 <p class="tl__meta"><span class="tl__date">Aug 2019 – Jan 2021 · 1 yr 6 mos</span> · Hyderabad Area, India</p>
               </header>
               <p>Data analysis, predictive modeling and deep learning for geophysical applications — focused on earthquake detection.</p>
@@ -274,8 +351,8 @@
             <div class="tl__node" aria-hidden="true"></div>
             <article class="tl__card">
               <header class="tl__head">
-                <h3 class="tl__role">Project Scientist</h3>
-                <p class="tl__org">Indian Institute of Tropical Meteorology</p>
+                <h3 class="tl__role">Project Scientist B</h3>
+                <p class="tl__org">Indian Institute of Tropical Meteorology (IITM)</p>
                 <p class="tl__meta"><span class="tl__date">Jan 2018 – Apr 2019 · 1 yr 4 mos</span> · Pune Area, India</p>
               </header>
               <p>Weather monitoring using deep learning, data analysis and image classification for atmospheric research.</p>
@@ -295,8 +372,8 @@
             <div class="tl__node" aria-hidden="true"></div>
             <article class="tl__card">
               <header class="tl__head">
-                <h3 class="tl__role">Research Fellow</h3>
-                <p class="tl__org">Defence Research &amp; Development Laboratory (DRDL) — DRDO</p>
+                <h3 class="tl__role">Research Fellow (JRF &amp; SRF)</h3>
+                <p class="tl__org">DRDO – Vehicles Research &amp; Development Establishment (VRDE)</p>
                 <p class="tl__meta"><span class="tl__date">May 2015 – Jan 2018 · 2 yrs 9 mos</span> · Ahmednagar, Maharashtra, India · On-site · Full-time</p>
               </header>
               <p>High-performance, low-latency data processing systems using modern technology and deep learning networks.</p>
@@ -393,7 +470,7 @@
     <!-- ===== 5. Certifications ===== -->
     <section id="certifications" class="section section--alt" aria-labelledby="certifications-title">
       <div class="container">
-        <p class="eyebrow">15 credentials</p>
+        <p class="eyebrow">15 credentials · <span class="badge-3x">3xAWS</span> Certified</p>
         <h2 class="section__title" id="certifications-title">Certifications</h2>
 
         <div class="cert-grid">
@@ -545,18 +622,6 @@
           </div>
         </article>
 
-        <article class="award award--mini reveal">
-          <div class="award__body">
-            <h3 class="award__title">Trianz Innovation Award — Active Awards 2025</h3>
-            <p class="award__meta">Issued by Trianz · 2025</p>
-            <p>Recognized for innovation contributions across Trianz's GenAI initiatives.</p>
-          </div>
-          <div class="award__media">
-            <a href="assets/img/awards/Trianz_Innovation_Award_Active_Awards_2025.jpg">
-              <img loading="lazy" src="assets/img/awards/Trianz_Innovation_Award_Active_Awards_2025.jpg" alt="Trianz Innovation Award 2025" width="160" height="160" />
-            </a>
-          </div>
-        </article>
       </div>
     </section>
 
@@ -613,6 +678,16 @@
             <span class="pub__links">
               <a class="cert__link" href="https://www.linkedin.com/posts/jampala-naresh_crewai-ollama-multiagent-activity-7425965777876373505-SqA6?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAB3cvJ4BHee537ByuYxXSZrC0NqMFjjKl2g">View LinkedIn post →</a>
               <a class="cert__link" href="https://github.com/nareshvrde5220/Ollama_SDLC_CrewAI_MultiAgent_Orchestration_RTX4090">Ollama_SDLC_CrewAI_MultiAgent_Orchestration_RTX4090 ↗</a>
+            </span>
+          </article>
+
+          <article class="pub reveal">
+            <span class="pub__tag">Recent Work</span>
+            <h3 class="pub__title">Multi-Agent Orchestration: Automating Software Development with 7 AI Agents</h3>
+            <p>An AutoGen-based multi-agent code generator that orchestrates 7 AI agents to automate software development end-to-end — from requirements to working code.</p>
+            <span class="pub__links">
+              <a class="cert__link" href="https://www.linkedin.com/posts/jampala-naresh_ai-autogen-openai-activity-7419829750791188480-Xe98?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAB3cvJ4BHee537ByuYxXSZrC0NqMFjjKl2g">View LinkedIn post →</a>
+              <a class="cert__link" href="https://github.com/nareshvrde5220/AutoGen-Multi-Agent-Code-Generator">AutoGen-Multi-Agent-Code-Generator ↗</a>
             </span>
           </article>
 
@@ -684,6 +759,38 @@
 
   <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top" title="Back to top">↑</button>
 
+  <!-- ===== Floating Recent Activities panel ===== -->
+  <aside class="ra is-collapsed" id="recent-activities" aria-label="Recent activities">
+    <button class="ra__toggle" id="ra-toggle" type="button" aria-expanded="false" aria-controls="ra-panel">
+      <span class="ra__toggle-text">Recent Activities</span>
+    </button>
+    <div class="ra__panel" id="ra-panel">
+      <h2 class="ra__title">Recent Activities</h2>
+      <ul class="ra__list">
+        <li class="ra__item">
+          <p class="ra__name">SDD — Specs-Driven Development write-up</p>
+          <span class="ra__links">
+            <a class="ra__link" href="assets/docs/sdd_2026_June_13.pdf">View document (PDF) →</a>
+          </span>
+        </li>
+        <li class="ra__item">
+          <p class="ra__name">AI-Powered SDLC Automation</p>
+          <span class="ra__links">
+            <a class="ra__link" href="https://www.linkedin.com/posts/jampala-naresh_crewai-ollama-multiagent-activity-7425965777876373505-SqA6?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAB3cvJ4BHee537ByuYxXSZrC0NqMFjjKl2g">View LinkedIn post →</a>
+            <a class="ra__link" href="https://github.com/nareshvrde5220/Ollama_SDLC_CrewAI_MultiAgent_Orchestration_RTX4090">Ollama_SDLC_CrewAI_MultiAgent_Orchestration_RTX4090 ↗</a>
+          </span>
+        </li>
+        <li class="ra__item">
+          <p class="ra__name">Multi-Agent Orchestration: 7 AI Agents</p>
+          <span class="ra__links">
+            <a class="ra__link" href="https://www.linkedin.com/posts/jampala-naresh_ai-autogen-openai-activity-7419829750791188480-Xe98?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAAB3cvJ4BHee537ByuYxXSZrC0NqMFjjKl2g">View LinkedIn post →</a>
+            <a class="ra__link" href="https://github.com/nareshvrde5220/AutoGen-Multi-Agent-Code-Generator">AutoGen-Multi-Agent-Code-Generator ↗</a>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
   <!-- ===== In-page viewer (overlay) ===== -->
   <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
     <div class="viewer__backdrop" data-viewer-close></div>
@@ -701,6 +808,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=3" defer></script>
+  <script src="script.js?v=4" defer></script>
 </body>
 </html>

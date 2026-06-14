@@ -215,6 +215,73 @@
     }
   }
 
+  /* ---------- Live "Present" durations ---------- */
+  (function liveDurations() {
+    var els = document.querySelectorAll("[data-since]");
+    var now = new Date();
+    els.forEach(function (el) {
+      var s = el.getAttribute("data-since");
+      var start = new Date(s + (s.length <= 7 ? "-01" : ""));
+      if (isNaN(start)) return;
+      var months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+      if (now.getDate() < start.getDate()) months -= 1;
+      if (months < 0) months = 0;
+      var yrs = Math.floor(months / 12), mos = months % 12, parts = [];
+      if (yrs) parts.push(yrs + " yr" + (yrs > 1 ? "s" : ""));
+      parts.push((mos || !yrs ? mos : 0) + " mos");
+      el.textContent = el.textContent + " · " + parts.join(" ");
+    });
+  })();
+
+  /* ---------- Certification issuer logos ---------- */
+  (function certLogos() {
+    var map = [
+      { test: /amazon web services|aws/i, type: "img", src: "assets/img/logos/aws.png", alt: "Amazon Web Services" },
+      { test: /skillsoft/i, type: "img", src: "assets/img/logos/skillsoft.png", alt: "Skillsoft" },
+      { test: /nvidia/i, type: "txt", label: "NVIDIA" },
+      { test: /nielit/i, type: "txt", label: "NIELIT" }
+    ];
+    document.querySelectorAll(".cert").forEach(function (card) {
+      var issuer = card.querySelector(".cert__issuer");
+      if (!issuer || card.querySelector(".cert__logo")) return;
+      var m = map.find(function (x) { return x.test.test(issuer.textContent); });
+      if (!m) return;
+      var logo = document.createElement("span");
+      logo.className = "cert__logo" + (m.type === "txt" ? " cert__logo--txt" : "");
+      if (m.type === "img") {
+        var img = document.createElement("img");
+        img.src = m.src; img.alt = m.alt; img.loading = "lazy";
+        logo.appendChild(img);
+      } else {
+        logo.textContent = m.label;
+      }
+      card.insertBefore(logo, card.firstChild);
+    });
+  })();
+
+  /* ---------- Career timeline stagger ---------- */
+  (function ctlStagger() {
+    document.querySelectorAll(".ctl__item").forEach(function (item, i) {
+      item.style.setProperty("--i", i);
+    });
+  })();
+
+  /* ---------- Floating Recent Activities panel ---------- */
+  (function recentActivities() {
+    var ra = document.getElementById("recent-activities");
+    var btn = document.getElementById("ra-toggle");
+    if (!ra || !btn) return;
+    function setOpen(open) {
+      ra.classList.toggle("is-collapsed", !open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    // Expanded by default on wider viewports; collapsed on small screens.
+    setOpen(window.innerWidth >= 980);
+    btn.addEventListener("click", function () {
+      setOpen(ra.classList.contains("is-collapsed"));
+    });
+  })();
+
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
