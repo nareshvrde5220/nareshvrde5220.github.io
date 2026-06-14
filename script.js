@@ -291,13 +291,13 @@
         var max = sc.scrollWidth - sc.clientWidth;
         if (max > 1) {
           if (dir === 1) {
-            // slow scroll left -> right
-            sc.scrollLeft += Math.max(0.4, max / 1200);
-            if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 400; }
+            // slow, clearly-visible scroll left -> right (~8s to the end)
+            sc.scrollLeft += Math.max(0.9, max / 480);
+            if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 500; }
           } else {
-            // very fast rewind right -> start
-            sc.scrollLeft -= Math.max(9, max / 26);
-            if (sc.scrollLeft <= 0.5) { sc.scrollLeft = 0; dir = 1; holdUntil = now + 600; }
+            // very fast rewind right -> start (~0.4s)
+            sc.scrollLeft -= Math.max(12, max / 24);
+            if (sc.scrollLeft <= 0.5) { sc.scrollLeft = 0; dir = 1; holdUntil = now + 700; }
           }
         }
       }
