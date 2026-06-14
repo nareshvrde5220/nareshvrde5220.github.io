@@ -508,7 +508,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 
 /* ---------- Floating Recent Activities panel ---------- */
 .ra {
-  position: fixed; top: 50%; right: 0; z-index: 95;
+  position: fixed; top: 62%; right: 0; z-index: 95;
   display: flex; align-items: flex-start;
   transform: translateY(-50%);
   transition: transform .35s var(--ease);
@@ -560,13 +560,16 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; transform: translateY(-50%); } }
 @media (max-width: 640px) {
-  /* smaller badges + photo on phones; badges flank the centred content */
-  .hero__badge { width: 60px; }
+  /* Phone hero: text first at the top, flanked by the two badges; photo below */
+  .section--hero { min-height: auto; justify-content: flex-start; padding-top: clamp(1.25rem, 6vw, 2rem); }
+  .hero__media { order: 0; margin-top: 1.25rem; }       /* photo after the text */
+  .hero__photo { width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px); }
+  /* badges static, top-aligned with the text block, flanking it left/right */
+  .hero__badge { width: 60px; top: clamp(1.25rem, 6vw, 2rem); transform: none; animation: none; }
   .hero__badge--left { left: .4rem; }
   .hero__badge--right { right: .4rem; }
-  .hero__photo { width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px); }
   /* keep the centred text between the flanking badges (no overlap) */
-  .hero__content { padding-inline: 68px; }
+  .hero__content { padding-inline: 70px; }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
