@@ -63,8 +63,10 @@
   var progress = document.getElementById("nav-progress");
   var backToTop = document.getElementById("back-to-top");
 
-  function onScroll() {
-    var y = window.scrollY || window.pageYOffset;
+  var scrollTicking = false;
+  function updateScroll() {
+    scrollTicking = false;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
     if (nav) nav.classList.toggle("is-scrolled", y > 8);
     if (backToTop) backToTop.classList.toggle("is-visible", y > 600);
     if (progress) {
@@ -72,8 +74,9 @@
       progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
     }
   }
+  function onScroll() { if (!scrollTicking) { scrollTicking = true; requestAnimationFrame(updateScroll); } }
   window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  updateScroll();
 
   if (backToTop) {
     backToTop.addEventListener("click", function () {
@@ -187,7 +190,18 @@
       if (e.target.hasAttribute("data-viewer-close")) closeViewer();
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && !viewer.hidden) closeViewer();
+      if (viewer.hidden) return;
+      if (e.key === "Escape") { closeViewer(); return; }
+      if (e.key === "Tab") {                          // keep focus inside the modal (a11y)
+        var f = Array.prototype.filter.call(
+          viewer.querySelectorAll('a[href],button,iframe,[tabindex]:not([tabindex="-1"])'),
+          function (el) { return !el.hidden && el.offsetParent !== null; }
+        );
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     });
   }
 
@@ -280,12 +294,13 @@
     var track = sc && sc.querySelector(".ctl");
     if (!sc || !track) return;
 
-    var raf = null, started = false, paused = false, resumeT = null;
+    var raf = null, paused = false, resumeT = null, visible = true;
     var dir = 1, holdUntil = 0;
 
-    function start() { if (!started) { started = true; raf = requestAnimationFrame(loop); } }
+    function ensureRunning() { if (!raf) raf = requestAnimationFrame(loop); }
 
     function loop() {
+      if (!visible) { raf = null; return; }   // stop the rAF chain while off-screen (perf)
       var now = (window.performance && performance.now) ? performance.now() : Date.now();
       if (!paused && now >= holdUntil) {
         var max = sc.scrollWidth - sc.clientWidth;
@@ -305,16 +320,16 @@
     }
     function pauseFor(ms) { paused = true; if (resumeT) clearTimeout(resumeT); resumeT = setTimeout(function () { paused = false; }, ms || 2500); }
 
-    // Start automatically when the timeline first comes into view.
+    // Run only while the timeline is in view; pause the rAF when scrolled away.
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) start(); });
-      }, { threshold: 0.15 });
+        entries.forEach(function (en) { visible = en.isIntersecting; if (visible) ensureRunning(); });
+      }, { threshold: 0.05 });
       io.observe(sc);
-    } else { start(); }
+    } else { ensureRunning(); }
 
     // Keep it going when the pointer enters (per request).
-    sc.addEventListener("mouseenter", function () { start(); paused = false; });
+    sc.addEventListener("mouseenter", function () { visible = true; paused = false; ensureRunning(); });
 
     // Manual drag (mouse/pen) temporarily pauses, then the loop resumes.
     var down = false, startX = 0, startLeft = 0;

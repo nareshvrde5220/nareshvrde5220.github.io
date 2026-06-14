@@ -88,6 +88,10 @@ img { max-width: 100%; display: block; }
 }
 .skip-link:focus { left: 0; }
 
+/* Visible keyboard focus (a11y) — only for keyboard, not mouse clicks */
+:focus-visible { outline: 2px solid var(--c-cyan); outline-offset: 3px; border-radius: 6px; }
+a:focus-visible, button:focus-visible, .contact__card:focus-visible { outline-offset: 4px; }
+
 /* ---------- Animated rainbow-glass background ---------- */
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -568,19 +572,9 @@ body.viewer-open { overflow: hidden; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Responsive ---------- */
+/* Nav collapses to a hamburger early (≤980px) so the 9 links never crowd */
 @media (max-width: 980px) {
   .cert-grid, .pub-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 860px) {
-  .hero__grid { grid-template-columns: 1fr; text-align: center; }
-  .hero__media { order: -1; }
-  .hero__cta, .hero__links { justify-content: center; }
-  .hero__sub { margin-inline: auto; }
-  .hero__stats { grid-template-columns: repeat(2, 1fr); }
-  .about__grid, .skills__grid, .edu-grid, .award, .award--mini { grid-template-columns: 1fr; }
-  .award__media { order: -1; }
-  .award--mini .award__media { justify-self: start; }
 
   .nav__hamburger { display: flex; }
   .nav__links {
@@ -595,6 +589,17 @@ body.viewer-open { overflow: hidden; }
   }
   .nav__links.is-open { transform: none; opacity: 1; pointer-events: auto; }
   .nav__link { padding: .85rem .5rem; border-radius: var(--radius-sm); }
+}
+
+@media (max-width: 860px) {
+  .hero__grid { grid-template-columns: 1fr; text-align: center; }
+  .hero__media { order: -1; }
+  .hero__cta, .hero__links { justify-content: center; }
+  .hero__sub { margin-inline: auto; }
+  .hero__stats { grid-template-columns: repeat(2, 1fr); }
+  .about__grid, .skills__grid, .edu-grid, .award, .award--mini { grid-template-columns: 1fr; }
+  .award__media { order: -1; }
+  .award--mini .award__media { justify-self: start; }
 }
 
 @media (max-width: 560px) {
