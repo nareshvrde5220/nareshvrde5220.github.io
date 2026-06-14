@@ -280,32 +280,33 @@
     var track = sc && sc.querySelector(".ctl");
     if (!sc || !track) return;
 
-    var raf = null, started = false, paused = false, resumeT = null, duped = false;
+    var raf = null, started = false, paused = false, resumeT = null, setWidth = 0;
 
-    // Clone the items once so scrollLeft can wrap back invisibly (true marquee).
-    function setupDup() {
-      if (duped) return;
-      duped = true;
-      Array.prototype.slice.call(track.children).forEach(function (it) {
+    // Clone the original items so scrollLeft can wrap back invisibly, and measure
+    // the EXACT width of one set (first clone's offsetLeft) for a seamless seam.
+    function start() {
+      if (started) return;
+      started = true;
+      var items = Array.prototype.slice.call(track.children);
+      items.forEach(function (it) {
         var c = it.cloneNode(true);
         c.setAttribute("aria-hidden", "true");
-        c.classList.remove("reveal");          // clones must be visible immediately
+        c.classList.remove("reveal");           // clones visible immediately
         c.classList.add("is-visible", "ctl__item--clone");
         track.appendChild(c);
       });
+      var firstClone = track.children[items.length];
+      setWidth = firstClone ? firstClone.offsetLeft : track.scrollWidth / 2;
+      raf = requestAnimationFrame(loop);
     }
 
     function loop() {
-      if (!paused) {
-        var half = track.scrollWidth / 2;       // width of one original set
-        if (half > 1) {
-          sc.scrollLeft += Math.max(0.4, half / 780); // one-directional, viewport-aware
-          if (sc.scrollLeft >= half) sc.scrollLeft -= half; // seamless wrap to start
-        }
+      if (!paused && setWidth > 1) {
+        sc.scrollLeft += Math.max(0.4, setWidth / 820); // one-directional, viewport-aware
+        if (sc.scrollLeft >= setWidth) sc.scrollLeft -= setWidth; // seamless wrap
       }
       raf = requestAnimationFrame(loop);
     }
-    function start() { if (!started) { started = true; setupDup(); raf = requestAnimationFrame(loop); } }
     function pauseFor(ms) { paused = true; if (resumeT) clearTimeout(resumeT); resumeT = setTimeout(function () { paused = false; }, ms || 2500); }
 
     // Start automatically when the timeline first comes into view.
