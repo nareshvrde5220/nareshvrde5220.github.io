@@ -159,19 +159,21 @@
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }
 
-    // Intercept eligible anchor clicks anywhere in the page
+    // Intercept clicks on RELATIVE asset links (local PDFs/images) only.
+    // Anything with an explicit scheme (http:, https:, mailto:, tel:) or a
+    // protocol-relative // prefix navigates normally. This is origin-independent
+    // so it works the same on https and on a local file:// preview.
     document.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[href]");
       if (!a) return;
       if (a.closest("#viewer")) return;                 // viewer's own buttons
       var raw = a.getAttribute("href");
-      if (!raw || raw.charAt(0) === "#") return;        // in-page anchors
-      if (/^(mailto:|tel:|javascript:)/i.test(raw)) return;
+      if (!raw) return;
+      if (raw.charAt(0) === "#") return;                // in-page anchors
+      if (raw.indexOf("//") === 0) return;              // protocol-relative -> external
+      if (/^[a-z][a-z0-9+.\-]*:/i.test(raw)) return;    // has a scheme -> navigate (http/mailto/tel/...)
+      e.preventDefault();                                // relative path -> local asset -> overlay
       var url = a.href;                                  // resolved absolute
-      var isLocal = false;
-      try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { return; }
-      if (!isLocal) return;                              // external links navigate directly
-      e.preventDefault();
       var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
       openViewer(url, title);
     });
