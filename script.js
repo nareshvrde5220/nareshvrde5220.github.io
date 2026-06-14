@@ -274,36 +274,32 @@
     });
   })();
 
-  /* ---------- Career timeline: seamless one-way auto-scroll loop ---------- */
+  /* ---------- Career timeline: slow forward, fast rewind, repeat ---------- */
   (function timelineScroll() {
     var sc = document.querySelector(".ctl-scroll");
     var track = sc && sc.querySelector(".ctl");
     if (!sc || !track) return;
 
-    var raf = null, started = false, paused = false, resumeT = null, setWidth = 0;
+    var raf = null, started = false, paused = false, resumeT = null;
+    var dir = 1, holdUntil = 0;
 
-    // Clone the original items so scrollLeft can wrap back invisibly, and measure
-    // the EXACT width of one set (first clone's offsetLeft) for a seamless seam.
-    function start() {
-      if (started) return;
-      started = true;
-      var items = Array.prototype.slice.call(track.children);
-      items.forEach(function (it) {
-        var c = it.cloneNode(true);
-        c.setAttribute("aria-hidden", "true");
-        c.classList.remove("reveal");           // clones visible immediately
-        c.classList.add("is-visible", "ctl__item--clone");
-        track.appendChild(c);
-      });
-      var firstClone = track.children[items.length];
-      setWidth = firstClone ? firstClone.offsetLeft : track.scrollWidth / 2;
-      raf = requestAnimationFrame(loop);
-    }
+    function start() { if (!started) { started = true; raf = requestAnimationFrame(loop); } }
 
     function loop() {
-      if (!paused && setWidth > 1) {
-        sc.scrollLeft += Math.max(0.4, setWidth / 820); // one-directional, viewport-aware
-        if (sc.scrollLeft >= setWidth) sc.scrollLeft -= setWidth; // seamless wrap
+      var now = (window.performance && performance.now) ? performance.now() : Date.now();
+      if (!paused && now >= holdUntil) {
+        var max = sc.scrollWidth - sc.clientWidth;
+        if (max > 1) {
+          if (dir === 1) {
+            // slow scroll left -> right
+            sc.scrollLeft += Math.max(0.4, max / 1200);
+            if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 400; }
+          } else {
+            // very fast rewind right -> start
+            sc.scrollLeft -= Math.max(9, max / 26);
+            if (sc.scrollLeft <= 0.5) { sc.scrollLeft = 0; dir = 1; holdUntil = now + 600; }
+          }
+        }
       }
       raf = requestAnimationFrame(loop);
     }
