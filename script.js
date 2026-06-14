@@ -269,10 +269,45 @@
     });
   })();
 
-  /* ---------- Career timeline: wheel + drag horizontal scroll ---------- */
+  /* ---------- Career timeline: auto-scroll + wheel + drag ---------- */
   (function timelineScroll() {
     var sc = document.querySelector(".ctl-scroll");
     if (!sc) return;
+
+    // Auto-scroll left->right once when the timeline scrolls into view; any
+    // user interaction cancels it so they stay in control.
+    var raf = null, cancelled = false;
+    function cancelAuto() {
+      cancelled = true;
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+    }
+    function startAuto() {
+      if (prefersReduced || cancelled) return;
+      var max = sc.scrollWidth - sc.clientWidth;
+      if (max <= 1) return;
+      var from = sc.scrollLeft, t0 = null, dur = Math.min(7000, 1600 + max * 4);
+      function step(ts) {
+        if (cancelled) return;
+        if (t0 === null) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOut
+        sc.scrollLeft = from + (max - from) * e;
+        if (p < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    ["wheel", "pointerdown", "touchstart", "keydown"].forEach(function (ev) {
+      sc.addEventListener(ev, cancelAuto, { passive: true });
+    });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { io.disconnect(); setTimeout(startAuto, 450); }
+        });
+      }, { threshold: 0.35 });
+      io.observe(sc);
+    }
+
     // Convert vertical wheel into horizontal scroll while the rail still has
     // room in that direction; once it hits the end, the page scrolls on.
     sc.addEventListener("wheel", function (e) {

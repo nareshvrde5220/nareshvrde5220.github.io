@@ -422,7 +422,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 /* ---------- Hero corner badges (Early Adopter) ---------- */
 .hero__badge {
   position: absolute; z-index: 2; top: calc(var(--nav-h) + .5rem);
-  width: clamp(72px, 9vw, 118px); height: auto;
+  width: clamp(92px, 11vw, 152px); height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
@@ -430,21 +430,21 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .hero__badge--right { right: clamp(.5rem, 3vw, 2rem); animation-delay: .8s; }
 @keyframes badge-float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; } }
-@media (max-width: 640px) { .hero__badge { width: 60px; top: calc(var(--nav-h) + .35rem); } }
+@media (max-width: 640px) { .hero__badge { width: 76px; top: calc(var(--nav-h) + .35rem); } }
 
 /* ---------- Cert card watermark backgrounds ---------- */
 .cert--bg { position: relative; overflow: hidden; }
 .cert--bg::after {
   content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background-image: var(--cert-bg);
-  background-repeat: no-repeat; background-position: right -8% top 50%; background-size: 58%;
-  opacity: .12;
+  background-repeat: no-repeat; background-position: right -8% top 50%; background-size: 60%;
+  opacity: .22;
 }
 .cert--bg > * { position: relative; z-index: 1; }
 
 /* AWS logo chip (true colors on a light pill, never inverted) */
-.cert__logo--aws { background: #fff; border-radius: 6px; padding: 3px 5px; height: auto; }
-.cert__logo--aws img { filter: none !important; height: 18px; max-width: 50px; }
+.cert__logo--aws { background: #fff; border-radius: 7px; padding: 4px 6px; height: auto; }
+.cert__logo--aws img { filter: none !important; height: 26px; max-width: 70px; }
 
 /* ---------- Career Timeline scroll affordance ---------- */
 .ctl-scroll { scroll-behavior: smooth; cursor: grab; }
@@ -454,13 +454,6 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .ctl-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 99px; }
 .ctl-scroll::-webkit-scrollbar-thumb { background: var(--grad-brand); border-radius: 99px; }
 .ctl-scroll { scrollbar-color: var(--c-indigo) var(--surface); scrollbar-width: thin; }
-.ctl-hint {
-  display: inline-flex; align-items: center; gap: .4rem; margin-top: .6rem;
-  font-family: var(--font-mono); font-size: .76rem; color: var(--text-dim);
-}
-.ctl-hint__arrow { animation: ctl-hint 1.4s var(--ease) infinite; }
-@keyframes ctl-hint { 0%,100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
-@media (prefers-reduced-motion: reduce) { .ctl-hint__arrow { animation: none; } }
 
 /* ---------- Footer ---------- */
 .footer { border-top: 1px solid var(--border); padding-block: 2rem; }
