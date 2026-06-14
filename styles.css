@@ -88,9 +88,28 @@ img { max-width: 100%; display: block; }
 }
 .skip-link:focus { left: 0; }
 
+/* ---------- Animated rainbow-glass background ---------- */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 50% at 12% 18%, rgba(99,102,241,.30), transparent 60%),
+    radial-gradient(38% 48% at 86% 12%, rgba(34,211,238,.26), transparent 60%),
+    radial-gradient(46% 56% at 80% 88%, rgba(168,85,247,.28), transparent 62%),
+    radial-gradient(42% 52% at 16% 86%, rgba(236,72,153,.22), transparent 60%);
+  background-size: 200% 200%;
+  animation: aurora 24s ease-in-out infinite alternate;
+}
+@keyframes aurora {
+  0%   { background-position:   0% 0%, 100% 0%, 100% 100%,   0% 100%; }
+  50%  { background-position:  28% 22%, 72% 18%,  64% 78%,  26% 70%; }
+  100% { background-position:  10% 42%, 92% 8%,   82% 92%,  12% 60%; }
+}
+[data-theme="light"] body::before { opacity: .65; }
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+
 /* ---------- Sections ---------- */
 .section { padding-block: clamp(3.5rem, 8vw, 6.5rem); position: relative; }
-.section--alt { background: var(--bg-alt); }
+.section--alt { background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
 .section__title {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   margin: 0 0 2rem;
@@ -99,6 +118,20 @@ img { max-width: 100%; display: block; }
 .section__title::after {
   content: ""; display: block; height: 4px; width: 56%;
   margin-top: .5rem; border-radius: 99px; background: var(--grad-brand);
+}
+
+/* ---------- Section header icons ---------- */
+.section__ic {
+  display: inline-grid; place-items: center; vertical-align: middle;
+  width: 40px; height: 40px; margin-right: .7rem; border-radius: 12px;
+  background: var(--grad-brand); color: #fff;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--c-indigo) 40%, transparent);
+  transform: translateY(-2px);
+}
+.section__ic svg { width: 22px; height: 22px; display: block; }
+@media (max-width: 560px) {
+  .section__ic { width: 34px; height: 34px; border-radius: 10px; margin-right: .55rem; }
+  .section__ic svg { width: 19px; height: 19px; }
 }
 
 /* ---------- Navigation ---------- */
@@ -249,6 +282,14 @@ img { max-width: 100%; display: block; }
   transition: transform .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease);
 }
 .tl__card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-cyan) 40%, var(--border)); box-shadow: var(--shadow); }
+/* Flash/pop the experience card currently in view (re-triggers on scroll) */
+.tl__card.is-active {
+  border-color: color-mix(in srgb, var(--c-cyan) 60%, var(--border));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--c-cyan) 45%, transparent), 0 20px 55px rgba(34,211,238,.28);
+  animation: tl-flash .6s var(--ease);
+}
+@keyframes tl-flash { 0% { transform: scale(.99); } 45% { transform: scale(1.025); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .tl__card.is-active { animation: none; } }
 .tl__head { margin-bottom: .75rem; }
 .tl__role { font-size: 1.2rem; margin: 0; }
 .tl__org { font-family: var(--font-display); font-weight: 500; color: var(--c-cyan); margin: .1rem 0; }

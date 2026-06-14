@@ -274,70 +274,64 @@
     });
   })();
 
-  /* ---------- Career timeline: auto-scroll + wheel + drag ---------- */
+  /* ---------- Career timeline: continuous auto-scroll loop ---------- */
   (function timelineScroll() {
     var sc = document.querySelector(".ctl-scroll");
     if (!sc) return;
 
-    // Auto-scroll left->right once when the timeline scrolls into view; any
-    // user interaction cancels it so they stay in control.
-    var raf = null, cancelled = false;
-    function cancelAuto() {
-      cancelled = true;
-      if (raf) { cancelAnimationFrame(raf); raf = null; }
-    }
-    function startAuto() {
-      if (prefersReduced || cancelled) return;
-      var max = sc.scrollWidth - sc.clientWidth;
-      if (max <= 1) return;
-      var from = sc.scrollLeft, t0 = null, dur = Math.min(7000, 1600 + max * 4);
-      function step(ts) {
-        if (cancelled) return;
-        if (t0 === null) t0 = ts;
-        var p = Math.min((ts - t0) / dur, 1);
-        var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOut
-        sc.scrollLeft = from + (max - from) * e;
-        if (p < 1) raf = requestAnimationFrame(step);
+    var dir = 1, raf = null, started = false, paused = false, resumeT = null;
+
+    function loop() {
+      if (!paused) {
+        var max = sc.scrollWidth - sc.clientWidth;
+        if (max > 1) {
+          var speed = Math.max(0.4, max / 780); // ~13s end-to-end, viewport-aware
+          sc.scrollLeft += speed * dir;
+          if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; }      // bounce at end
+          else if (sc.scrollLeft <= 0.5) { sc.scrollLeft = 0; dir = 1; }          // bounce at start
+        }
       }
-      raf = requestAnimationFrame(step);
+      raf = requestAnimationFrame(loop);
     }
-    ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
-      sc.addEventListener(ev, cancelAuto, { passive: true });
-    });
+    function start() { if (!started && !prefersReduced) { started = true; raf = requestAnimationFrame(loop); } }
+    function pauseFor(ms) { paused = true; if (resumeT) clearTimeout(resumeT); resumeT = setTimeout(function () { paused = false; }, ms || 2500); }
+
+    // Start automatically when the timeline first comes into view.
     if ("IntersectionObserver" in window) {
       var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { io.disconnect(); setTimeout(startAuto, 450); }
-        });
-      }, { threshold: 0.35 });
+        entries.forEach(function (en) { if (en.isIntersecting) start(); });
+      }, { threshold: 0.15 });
       io.observe(sc);
-    }
+    } else { start(); }
 
-    // Convert vertical wheel into horizontal scroll while the rail still has
-    // room in that direction; once it hits the end, the page scrolls on.
-    sc.addEventListener("wheel", function (e) {
-      if (!e.deltaY) return;
-      var max = sc.scrollWidth - sc.clientWidth;
-      if (max <= 0) return;
-      var atStart = sc.scrollLeft <= 0, atEnd = sc.scrollLeft >= max - 1;
-      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
-      e.preventDefault();
-      sc.scrollLeft += e.deltaY;
-    }, { passive: false });
+    // Keep it going when the pointer enters (per request).
+    sc.addEventListener("mouseenter", function () { start(); paused = false; });
 
-    // Drag-to-scroll with a mouse/pen (native touch scrolling left intact).
+    // Manual drag (mouse/pen) temporarily pauses, then the loop resumes.
     var down = false, startX = 0, startLeft = 0;
     sc.addEventListener("pointerdown", function (e) {
-      if (e.pointerType === "touch") return;
+      if (e.pointerType === "touch") { pauseFor(4000); return; }
       down = true; startX = e.clientX; startLeft = sc.scrollLeft;
-      sc.classList.add("is-dragging");
+      sc.classList.add("is-dragging"); paused = true;
     });
     window.addEventListener("pointermove", function (e) {
       if (down) sc.scrollLeft = startLeft - (e.clientX - startX);
     });
     window.addEventListener("pointerup", function () {
-      down = false; sc.classList.remove("is-dragging");
+      if (down) { down = false; sc.classList.remove("is-dragging"); pauseFor(2500); }
     });
+  })();
+
+  /* ---------- Experience: flash the card currently in view ---------- */
+  (function experienceFlash() {
+    var cards = document.querySelectorAll("#experience .tl__card");
+    if (!cards.length || !("IntersectionObserver" in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        en.target.classList.toggle("is-active", en.isIntersecting);
+      });
+    }, { rootMargin: "-42% 0px -42% 0px", threshold: 0 });
+    cards.forEach(function (c) { io.observe(c); });
   })();
 
   /* ---------- Floating Recent Activities panel ---------- */

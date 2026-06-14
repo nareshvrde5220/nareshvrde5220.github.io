@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
 </head>
 <body>
   <a class="skip-link" href="#about">Skip to content</a>
@@ -113,7 +113,7 @@
     <section id="about" class="section" aria-labelledby="about-title">
       <div class="container">
         <p class="eyebrow">Who I am</p>
-        <h2 class="section__title" id="about-title">About</h2>
+        <h2 class="section__title" id="about-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span>About</h2>
         <div class="about__grid">
           <div class="about__lead reveal">
             <p>
@@ -144,7 +144,7 @@
     <section id="journey" class="section" aria-labelledby="journey-title">
       <div class="container">
         <p class="eyebrow">2015 → 2026</p>
-        <h2 class="section__title" id="journey-title">Career Timeline</h2>
+        <h2 class="section__title" id="journey-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg></span>Career Timeline</h2>
 
         <div class="ctl-scroll">
           <ol class="ctl" role="list">
@@ -220,7 +220,7 @@
     <section id="experience" class="section section--alt" aria-labelledby="experience-title">
       <div class="container">
         <p class="eyebrow">9+ yrs · 8 roles</p>
-        <h2 class="section__title" id="experience-title">Experience</h2>
+        <h2 class="section__title" id="experience-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 12h18"/></svg></span>Experience</h2>
 
         <ol class="timeline">
           <!-- JPMorganChase -->
@@ -233,8 +233,12 @@
                 <p class="tl__meta"><span class="tl__date" data-since="2026-03-01">Mar 2026 – Present</span> · Hyderabad · On-site · Full-time</p>
               </header>
               <p>Home Lending, Data Management — Data &amp; AI Architecture / Agentic AI Architecture.</p>
+              <ul class="tl__bullets">
+                <li>Built a domain-specific <strong>Agentic RAG</strong> system for intent classification and a domain-based assistant.</li>
+                <li>Designed <strong>agentic auto-processing</strong> for home-loan applications, enabling significantly faster application processing.</li>
+              </ul>
               <ul class="tags">
-                <li>Agentic AI Architecture</li><li>Data &amp; AI Architecture</li><li>AWS</li>
+                <li>Agentic AI Architecture</li><li>Agentic RAG</li><li>Data &amp; AI Architecture</li><li>AWS</li>
               </ul>
             </article>
           </li>
@@ -396,72 +400,138 @@
     <section id="skills" class="section" aria-labelledby="skills-title">
       <div class="container">
         <p class="eyebrow">What I work with</p>
-        <h2 class="section__title" id="skills-title">Skills</h2>
+        <h2 class="section__title" id="skills-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z"/></svg></span>Skills</h2>
 
         <div class="skills__grid">
           <article class="skill-group reveal">
-            <h3 class="skill-group__title">Generative &amp; Agentic AI</h3>
+            <h3 class="skill-group__title">Agentic AI — Architecture &amp; Orchestration</h3>
+            <ul class="chips">
+              <li class="chip chip--feat">Agentic AI</li>
+              <li class="chip chip--feat">AWS AgentCore</li>
+              <li class="chip chip--feat">Model Context Protocol (MCP)</li>
+              <li class="chip">CrewAI</li>
+              <li class="chip">AutoGen</li>
+              <li class="chip">AWS Strands-Agents</li>
+              <li class="chip">LangGraph</li>
+              <li class="chip">LangChain</li>
+              <li class="chip">Vertex AI Agent Builder</li>
+            </ul>
+          </article>
+
+          <article class="skill-group reveal">
+            <h3 class="skill-group__title">Generative AI &amp; LLM Ecosystem</h3>
             <ul class="chips">
               <li class="chip chip--feat">Generative AI</li>
               <li class="chip chip--feat">Large Language Models (LLM)</li>
-              <li class="chip chip--feat">Agentic AI</li>
-              <li class="chip">Model Context Protocol (MCP)</li>
-              <li class="chip">RAG</li>
-              <li class="chip">Prompt Engineering</li>
-              <li class="chip">CrewAI</li>
-              <li class="chip">Strands-Agents</li>
-              <li class="chip">LangChain</li>
-              <li class="chip">LLMOps</li>
-              <li class="chip">Ollama</li>
-            </ul>
-          </article>
-
-          <article class="skill-group reveal">
-            <h3 class="skill-group__title">AWS &amp; Cloud AI</h3>
-            <ul class="chips">
-              <li class="chip chip--feat">Amazon Bedrock</li>
-              <li class="chip chip--feat">AWS AgentCore</li>
+              <li class="chip">Claude</li>
+              <li class="chip">OpenAI</li>
+              <li class="chip">Amazon Bedrock (FM Models)</li>
               <li class="chip">Bedrock Data Automation</li>
-              <li class="chip">AWS SageMaker</li>
-              <li class="chip">AWS Lambda</li>
-              <li class="chip">AWS API Gateway</li>
-              <li class="chip">Amazon EC2</li>
-              <li class="chip">OpenSearch Serverless</li>
-              <li class="chip">Amazon Textract</li>
-              <li class="chip">Vertex AI</li>
-              <li class="chip">Azure AI</li>
-              <li class="chip">Azure Databricks</li>
+              <li class="chip">Ollama</li>
+              <li class="chip">RAG Pipelines</li>
+              <li class="chip">Prompt Engineering</li>
+              <li class="chip">LLMOps</li>
+              <li class="chip">LLM Fine-Tuning</li>
+              <li class="chip">Responsible AI &amp; Governance</li>
+              <li class="chip">Deep Reinforcement Learning</li>
             </ul>
           </article>
 
           <article class="skill-group reveal">
-            <h3 class="skill-group__title">Machine Learning &amp; Data Science</h3>
+            <h3 class="skill-group__title">Machine Learning, Deep Learning &amp; Algorithms</h3>
             <ul class="chips">
               <li class="chip chip--feat">Machine Learning</li>
               <li class="chip chip--feat">Deep Learning</li>
-              <li class="chip">Deep Reinforcement Learning</li>
-              <li class="chip">XGBoost</li>
               <li class="chip">IsolationForest</li>
+              <li class="chip">XGBoost</li>
               <li class="chip">CNN</li>
+              <li class="chip">RNN</li>
               <li class="chip">LSTM</li>
-              <li class="chip">NLP</li>
-              <li class="chip">Anomaly Detection</li>
-              <li class="chip">Predictive Modeling</li>
-              <li class="chip">Data Science</li>
+              <li class="chip">ANN</li>
+              <li class="chip">DNN</li>
+              <li class="chip">Wavelets</li>
+              <li class="chip">Transformer</li>
+              <li class="chip">TensorFlow</li>
+              <li class="chip">Keras</li>
+              <li class="chip">PyTorch</li>
+              <li class="chip">HuggingFace</li>
+              <li class="chip">Scikit-learn</li>
+              <li class="chip">MATLAB</li>
             </ul>
           </article>
 
           <article class="skill-group reveal">
-            <h3 class="skill-group__title">Languages &amp; Tools</h3>
+            <h3 class="skill-group__title">AWS Cloud Services</h3>
             <ul class="chips">
-              <li class="chip">Python</li>
-              <li class="chip">MATLAB &amp; Simulink</li>
-              <li class="chip">Snowflake</li>
-              <li class="chip">Salesforce (SFDC)</li>
+              <li class="chip chip--feat">Amazon Bedrock</li>
+              <li class="chip">SageMaker</li>
+              <li class="chip">Lambda</li>
+              <li class="chip">API Gateway</li>
+              <li class="chip">EC2</li>
+              <li class="chip">S3</li>
+              <li class="chip">DynamoDB</li>
+              <li class="chip">CloudWatch</li>
+              <li class="chip">Cognito</li>
+              <li class="chip">Step Functions</li>
+              <li class="chip">Glue</li>
+              <li class="chip">Athena</li>
+              <li class="chip">Redshift</li>
+              <li class="chip">Textract</li>
+              <li class="chip">EventBridge</li>
+              <li class="chip">SNS</li>
+              <li class="chip">Docker</li>
+            </ul>
+          </article>
+
+          <article class="skill-group reveal">
+            <h3 class="skill-group__title">Azure &amp; Google Cloud AI</h3>
+            <ul class="chips">
               <li class="chip">Azure AI Studio</li>
-              <li class="chip">Stream Analytics</li>
-              <li class="chip">ML Pipelines</li>
-              <li class="chip">Data Analytics</li>
+              <li class="chip">Azure AI Foundry</li>
+              <li class="chip">Azure Databricks</li>
+              <li class="chip">Azure Functions</li>
+              <li class="chip">Blob Storage</li>
+              <li class="chip">Event Grid</li>
+              <li class="chip">Azure Data Explorer</li>
+              <li class="chip chip--feat">Vertex AI</li>
+              <li class="chip">Gemini Models</li>
+              <li class="chip">Vertex AI Vector Search</li>
+              <li class="chip">Vertex AI Model Garden</li>
+            </ul>
+          </article>
+
+          <article class="skill-group reveal">
+            <h3 class="skill-group__title">Python, Web &amp; APIs</h3>
+            <ul class="chips">
+              <li class="chip chip--feat">Python 3.13+</li>
+              <li class="chip chip--feat">FastAPI</li>
+              <li class="chip chip--feat">GraphQL</li>
+              <li class="chip">Django</li>
+              <li class="chip">Flask</li>
+              <li class="chip">Pandas</li>
+              <li class="chip">NumPy</li>
+              <li class="chip">Matplotlib</li>
+              <li class="chip">ETL &amp; CI/CD</li>
+              <li class="chip">Docker</li>
+            </ul>
+          </article>
+
+          <article class="skill-group reveal">
+            <h3 class="skill-group__title">Data, SQL, Integrations &amp; Tools</h3>
+            <ul class="chips">
+              <li class="chip">Advanced SQL</li>
+              <li class="chip">Query Optimization</li>
+              <li class="chip">Window Functions</li>
+              <li class="chip">Stored Procedures</li>
+              <li class="chip">MySQL</li>
+              <li class="chip">PostgreSQL</li>
+              <li class="chip">SQL Server</li>
+              <li class="chip">Snowflake</li>
+              <li class="chip">Salesforce (GenAI / Agentic)</li>
+              <li class="chip">Feature Engineering</li>
+              <li class="chip">Statistics</li>
+              <li class="chip">Git &amp; Code Reviews</li>
+              <li class="chip">Technical Project Leadership</li>
             </ul>
           </article>
         </div>
@@ -472,7 +542,7 @@
     <section id="certifications" class="section section--alt" aria-labelledby="certifications-title">
       <div class="container">
         <p class="eyebrow">15 credentials · <span class="badge-3x">3xAWS</span> Certified</p>
-        <h2 class="section__title" id="certifications-title">Certifications</h2>
+        <h2 class="section__title" id="certifications-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg></span>Certifications</h2>
 
         <div class="cert-grid">
           <!-- With PDF/image/verify -->
@@ -589,7 +659,7 @@
     <section id="awards" class="section" aria-labelledby="awards-title">
       <div class="container">
         <p class="eyebrow">Recognition</p>
-        <h2 class="section__title" id="awards-title">Awards &amp; Honors</h2>
+        <h2 class="section__title" id="awards-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5v1a3 3 0 0 0 3 3"/><path d="M16 6h3v1a3 3 0 0 1-3 3"/><path d="M12 13v4"/><path d="M9 21h6"/><path d="M10 17h4"/></svg></span>Awards &amp; Honors</h2>
 
         <article class="award reveal">
           <div class="award__body">
@@ -623,7 +693,7 @@
     <section id="education" class="section section--alt" aria-labelledby="education-title">
       <div class="container">
         <p class="eyebrow">Academic background</p>
-        <h2 class="section__title" id="education-title">Education</h2>
+        <h2 class="section__title" id="education-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9L12 5 2 9l10 4z"/><path d="M6 11v5c0 1.1 2.7 2.5 6 2.5s6-1.4 6-2.5v-5"/></svg></span>Education</h2>
 
         <div class="edu-grid">
           <article class="edu reveal">
@@ -655,7 +725,7 @@
     <section id="publications" class="section" aria-labelledby="publications-title">
       <div class="container">
         <p class="eyebrow">Writing &amp; research</p>
-        <h2 class="section__title" id="publications-title">Publications &amp; Research</h2>
+        <h2 class="section__title" id="publications-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6C9 4.5 5 4.5 3 6v13c2-1.5 6-1.5 9 0 3-1.5 7-1.5 9 0V6c-2-1.5-6-1.5-9 0z"/><path d="M12 6v13"/></svg></span>Publications &amp; Research</h2>
 
         <div class="pub-grid">
           <article class="pub reveal">
@@ -706,17 +776,17 @@
     <section id="contact" class="section section--alt" aria-labelledby="contact-title">
       <div class="container">
         <p class="eyebrow">Let's connect</p>
-        <h2 class="section__title" id="contact-title">Contact</h2>
+        <h2 class="section__title" id="contact-title"><span class="section__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span>Contact</h2>
 
         <div class="contact__grid">
           <a class="contact__card reveal" href="mailto:nareshvrde@gmail.com">
             <span class="contact__label">Email</span>
             <span class="contact__value">nareshvrde@gmail.com</span>
           </a>
-          <a class="contact__card reveal" href="tel:+919505766895">
+          <div class="contact__card reveal">
             <span class="contact__label">Phone</span>
             <span class="contact__value">+91 95057 66895</span>
-          </a>
+          </div>
           <a class="contact__card reveal" href="https://goo.gl/maps/JdpjcBJYLMQsFt9s7">
             <span class="contact__label">Location</span>
             <span class="contact__value">Hyderabad, Telangana, India</span>
@@ -802,6 +872,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=10" defer></script>
+  <script src="script.js?v=11" defer></script>
 </body>
 </html>
