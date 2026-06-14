@@ -116,6 +116,91 @@
     revealEls.forEach(function (el) { revealObs.observe(el); });
   }
 
+  /* ---------- In-page viewer (overlay) ---------- */
+  var viewer = document.getElementById("viewer");
+  if (viewer) {
+    var vBody = document.getElementById("viewer-body");
+    var vTitle = document.getElementById("viewer-title");
+    var vDownload = document.getElementById("viewer-download");
+    var vOpen = document.getElementById("viewer-open");
+    var vFallback = document.getElementById("viewer-fallback");
+    var lastTrigger = null;
+    var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
+    var pdfExt = /\.pdf(\?|#|$)/i;
+
+    function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
+
+    function openViewer(href, title, isLocal) {
+      lastTrigger = document.activeElement;
+      clearBody();
+      vTitle.textContent = title || "Document";
+      vFallback.hidden = true;
+
+      // Download (local files only) / Open original (external)
+      if (isLocal) {
+        vDownload.hidden = false; vDownload.href = href;
+        vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
+        vOpen.hidden = true;
+      } else {
+        vDownload.hidden = true;
+        vOpen.hidden = false; vOpen.href = href;
+      }
+
+      if (imgExt.test(href)) {
+        var img = document.createElement("img");
+        img.src = href; img.alt = title || "Image";
+        vBody.appendChild(img);
+      } else {
+        var frame = document.createElement("iframe");
+        frame.src = href;
+        frame.title = title || "Embedded content";
+        frame.setAttribute("loading", "eager");
+        vBody.appendChild(frame);
+        // Sites that block framing won't fire load reliably; surface a hint for external links.
+        if (!isLocal) {
+          var hinted = false;
+          var hint = setTimeout(function () { if (!hinted) vFallback.hidden = false; }, 2500);
+          frame.addEventListener("load", function () { hinted = true; clearTimeout(hint); });
+        }
+      }
+
+      viewer.hidden = false;
+      document.body.classList.add("viewer-open");
+      vDownload.hidden ? vOpen.focus() : vDownload.focus();
+    }
+
+    function closeViewer() {
+      viewer.hidden = true;
+      document.body.classList.remove("viewer-open");
+      clearBody();
+      vFallback.hidden = true;
+      if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
+    }
+
+    // Intercept eligible anchor clicks anywhere in the page
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a[href]");
+      if (!a) return;
+      if (a.closest("#viewer")) return;                 // viewer's own buttons
+      var raw = a.getAttribute("href");
+      if (!raw || raw.charAt(0) === "#") return;        // in-page anchors
+      if (/^(mailto:|tel:|javascript:)/i.test(raw)) return;
+      var url = a.href;                                  // resolved absolute
+      var isLocal = false;
+      try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { return; }
+      e.preventDefault();
+      var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
+      openViewer(url, title, isLocal);
+    });
+
+    viewer.addEventListener("click", function (e) {
+      if (e.target.hasAttribute("data-viewer-close")) closeViewer();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !viewer.hidden) closeViewer();
+    });
+  }
+
   /* ---------- Stat count-up ---------- */
   var stats = Array.prototype.slice.call(document.querySelectorAll(".stat__num[data-count]"));
   function runCount(el) {
