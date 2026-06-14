@@ -378,6 +378,22 @@
     });
   })();
 
+  /* ---------- Nav link background icons (flash bigger on hover) ---------- */
+  (function navIcons() {
+    document.querySelectorAll(".nav__link").forEach(function (link) {
+      var href = link.getAttribute("href");
+      if (!href || href.charAt(0) !== "#") return;
+      var sec = document.querySelector(href);
+      var svg = sec && sec.querySelector(".section__ic svg");
+      if (!svg) return;
+      var ic = document.createElement("span");
+      ic.className = "nav__link-ic";
+      ic.setAttribute("aria-hidden", "true");
+      ic.appendChild(svg.cloneNode(true));
+      link.insertBefore(ic, link.firstChild);
+    });
+  })();
+
   /* ---------- Section header background watermark icons ---------- */
   (function sectionWatermarks() {
     document.querySelectorAll(".section__title .section__ic svg").forEach(function (svg) {
