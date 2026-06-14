@@ -113,7 +113,7 @@ body::before {
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 
 /* ---------- Sections ---------- */
-.section { padding-block: clamp(3.5rem, 8vw, 6.5rem); position: relative; }
+.section { padding-block: clamp(1.75rem, 4vw, 3rem); position: relative; }
 .section--alt { background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
 .section__title {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -554,7 +554,13 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .hero__badge--right { right: clamp(.5rem, 3vw, 2rem); animation-delay: .8s; }
 @keyframes badge-float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; } }
-@media (max-width: 640px) { .hero__badge { width: 92px; top: calc(var(--nav-h) + .35rem); } }
+@media (max-width: 640px) {
+  /* shrink badges + photo on phones so the corner badges never overlap the photo */
+  .hero__badge { width: 64px; top: calc(var(--nav-h) + .35rem); }
+  .hero__badge--left { left: .5rem; }
+  .hero__badge--right { right: .5rem; }
+  .hero__photo { width: clamp(150px, 42vw, 200px); height: clamp(150px, 42vw, 200px); }
+}
 
 /* ---------- Cert card watermark backgrounds ---------- */
 .cert--bg { position: relative; overflow: hidden; }
@@ -671,6 +677,7 @@ body.viewer-open { overflow: hidden; }
   .cert-grid, .pub-grid, .contact__grid { grid-template-columns: 1fr; }
   .hero__stats { grid-template-columns: repeat(2, 1fr); }
   .nav__brand-text { display: none; }
+  .section__watermark { width: 88px; height: 88px; top: .6rem; }
 }
 
 /* backdrop-filter fallback */
