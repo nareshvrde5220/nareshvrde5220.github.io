@@ -113,7 +113,10 @@ body::before {
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 
 /* ---------- Sections ---------- */
-.section { padding-block: clamp(1.15rem, 2.6vw, 2rem); position: relative; }
+.section {
+  padding-block: 0.75rem;
+  position: relative;
+}
 .section--alt { background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
 .section__title {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -264,9 +267,14 @@ body::before {
 
 /* ---------- Hero ---------- */
 .section--hero {
-  padding-top: clamp(3rem, 7vw, 5rem); padding-bottom: clamp(2.5rem, 6vw, 4rem);
-  min-height: calc(100svh - var(--nav-h)); display: flex; flex-direction: column; justify-content: center;
-  position: relative; overflow: hidden;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
 }
 .hero__bg {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -309,7 +317,9 @@ body::before {
 .hero__stats {
   position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
   margin-top: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: -30px;
 }
+
 .stat {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   padding: 1.25rem 1rem; text-align: center; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
@@ -546,8 +556,8 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 /* ---------- Hero corner badges (Early Adopter) ---------- */
 /* badges vertically centred so they flank the hero content on the same row */
 .hero__badge {
-  position: absolute; z-index: 2; top: 50%;
-  width: clamp(112px, 13vw, 184px); height: auto;
+  position: absolute; z-index: 2; top: 22%;
+  width: clamp(112px, 13vw, 256px); height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
   transform: translateY(-50%);
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
@@ -638,7 +648,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 .viewer__btn:hover { transform: translateY(-1px); }
 .viewer__close { background: var(--surface-2); color: var(--text); border-color: var(--border); width: 34px; height: 34px; padding: 0; line-height: 1; font-size: 1rem; }
-.viewer__body { flex: 1; min-height: 0; background: #0c0f17; display: flex; align-items: center; justify-content: center; overflow: auto; }
+.viewer__body { flex: 1; min-height: 0; background: #0c0f17; display: flex; align-items: center; justify-content: flex-start; overflow: auto; }
 .viewer__body iframe { width: 100%; height: 100%; border: 0; }
 .viewer__body img { max-width: 100%; max-height: 100%; object-fit: contain; }
 body.viewer-open { overflow: hidden; }
