@@ -122,29 +122,18 @@
     var vBody = document.getElementById("viewer-body");
     var vTitle = document.getElementById("viewer-title");
     var vDownload = document.getElementById("viewer-download");
-    var vOpen = document.getElementById("viewer-open");
-    var vFallback = document.getElementById("viewer-fallback");
     var lastTrigger = null;
     var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
-    var pdfExt = /\.pdf(\?|#|$)/i;
 
     function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
 
-    function openViewer(href, title, isLocal) {
+    // Only local assets (PDFs/images) open here; external links navigate directly.
+    function openViewer(href, title) {
       lastTrigger = document.activeElement;
       clearBody();
       vTitle.textContent = title || "Document";
-      vFallback.hidden = true;
-
-      // Download (local files only) / Open original (external)
-      if (isLocal) {
-        vDownload.hidden = false; vDownload.href = href;
-        vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
-        vOpen.hidden = true;
-      } else {
-        vDownload.hidden = true;
-        vOpen.hidden = false; vOpen.href = href;
-      }
+      vDownload.href = href;
+      vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
 
       if (imgExt.test(href)) {
         var img = document.createElement("img");
@@ -153,27 +142,20 @@
       } else {
         var frame = document.createElement("iframe");
         frame.src = href;
-        frame.title = title || "Embedded content";
+        frame.title = title || "Embedded document";
         frame.setAttribute("loading", "eager");
         vBody.appendChild(frame);
-        // Sites that block framing won't fire load reliably; surface a hint for external links.
-        if (!isLocal) {
-          var hinted = false;
-          var hint = setTimeout(function () { if (!hinted) vFallback.hidden = false; }, 2500);
-          frame.addEventListener("load", function () { hinted = true; clearTimeout(hint); });
-        }
       }
 
       viewer.hidden = false;
       document.body.classList.add("viewer-open");
-      vDownload.hidden ? vOpen.focus() : vDownload.focus();
+      vDownload.focus();
     }
 
     function closeViewer() {
       viewer.hidden = true;
       document.body.classList.remove("viewer-open");
       clearBody();
-      vFallback.hidden = true;
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }
 
@@ -188,9 +170,10 @@
       var url = a.href;                                  // resolved absolute
       var isLocal = false;
       try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { return; }
+      if (!isLocal) return;                              // external links navigate directly
       e.preventDefault();
       var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
-      openViewer(url, title, isLocal);
+      openViewer(url, title);
     });
 
     viewer.addEventListener("click", function (e) {
