@@ -269,7 +269,7 @@ body::before {
 .section--hero {
   padding-top: 1rem;
   padding-bottom: 2rem;
-  min-height: 80vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -317,7 +317,7 @@ body::before {
 .hero__stats {
   position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
   margin-top: clamp(2rem, 5vw, 3.5rem);
-  margin-bottom: -30px;
+  margin-bottom: 0px !important;
 }
 
 .stat {
