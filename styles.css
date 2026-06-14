@@ -570,36 +570,23 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; transform: translateY(-50%); } }
 @media (max-width: 640px) {
-
-  .hero__media {
-    order: -1;                 /* photo first */
-    margin-top: 0;
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: center;
-  }
-
-  .hero__photo {
-    width: 220px;
-    height: 220px;
-  }
-
-  .hero__badge {
-    width: 65px;
-    animation: none;
-  }
-
+  /* Phone hero: text first at the top, flanked by the two badges; photo below */
+  .section--hero { min-height: auto; justify-content: flex-start; padding-top: clamp(1.25rem, 6vw, 2rem); }
+  .hero__media { order: -1; margin-top: 1.25rem; }       /* photo after the text */
+  .hero__photo { width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px); }
+  /* badges static, top-aligned with the text block, flanking it left/right */
+  .hero__badge { width: 60px; top: clamp(1.25rem, 6vw, 2rem); transform: none; animation: none; }
   .hero__badge--left {
-    left: 15px;
-    top: 110px;
-    transform: none;
+    left: 10px;
+    top: 180px;
   }
 
   .hero__badge--right {
-    right: 15px;
-    top: 110px;
-    transform: none;
+    right: 10px;
+    top: 180px;
   }
+  /* keep the centred text between the flanking badges (no overlap) */
+  .hero__content { padding-inline: 70px; }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
