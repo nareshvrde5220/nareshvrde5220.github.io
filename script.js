@@ -237,7 +237,7 @@
   /* ---------- Certification issuer logos ---------- */
   (function certLogos() {
     var map = [
-      { test: /amazon web services|aws/i, type: "img", src: "assets/img/logos/aws.png", alt: "Amazon Web Services" },
+      { test: /amazon web services|aws/i, type: "img", src: "assets/img/logos/aws_logo.png", alt: "Amazon Web Services", cls: "cert__logo--aws" },
       { test: /skillsoft/i, type: "img", src: "assets/img/logos/skillsoft.png", alt: "Skillsoft" },
       { test: /nvidia/i, type: "txt", label: "NVIDIA" },
       { test: /nielit/i, type: "txt", label: "NIELIT" }
@@ -248,7 +248,7 @@
       var m = map.find(function (x) { return x.test.test(issuer.textContent); });
       if (!m) return;
       var logo = document.createElement("span");
-      logo.className = "cert__logo" + (m.type === "txt" ? " cert__logo--txt" : "");
+      logo.className = "cert__logo" + (m.type === "txt" ? " cert__logo--txt" : "") + (m.cls ? " " + m.cls : "");
       if (m.type === "img") {
         var img = document.createElement("img");
         img.src = m.src; img.alt = m.alt; img.loading = "lazy";
@@ -269,6 +269,37 @@
     });
   })();
 
+  /* ---------- Career timeline: wheel + drag horizontal scroll ---------- */
+  (function timelineScroll() {
+    var sc = document.querySelector(".ctl-scroll");
+    if (!sc) return;
+    // Convert vertical wheel into horizontal scroll while the rail still has
+    // room in that direction; once it hits the end, the page scrolls on.
+    sc.addEventListener("wheel", function (e) {
+      if (!e.deltaY) return;
+      var max = sc.scrollWidth - sc.clientWidth;
+      if (max <= 0) return;
+      var atStart = sc.scrollLeft <= 0, atEnd = sc.scrollLeft >= max - 1;
+      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+      e.preventDefault();
+      sc.scrollLeft += e.deltaY;
+    }, { passive: false });
+
+    // Drag-to-scroll with a mouse/pen (native touch scrolling left intact).
+    var down = false, startX = 0, startLeft = 0;
+    sc.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch") return;
+      down = true; startX = e.clientX; startLeft = sc.scrollLeft;
+      sc.classList.add("is-dragging");
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (down) sc.scrollLeft = startLeft - (e.clientX - startX);
+    });
+    window.addEventListener("pointerup", function () {
+      down = false; sc.classList.remove("is-dragging");
+    });
+  })();
+
   /* ---------- Floating Recent Activities panel ---------- */
   (function recentActivities() {
     var ra = document.getElementById("recent-activities");
@@ -278,10 +309,14 @@
       ra.classList.toggle("is-collapsed", !open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }
-    // Expanded by default on wider viewports; collapsed on small screens.
-    setOpen(window.innerWidth >= 980);
+    // Open by default on load (tablet/desktop); collapsed to a tab on phones.
+    setOpen(window.innerWidth >= 768);
     btn.addEventListener("click", function () {
       setOpen(ra.classList.contains("is-collapsed"));
+    });
+    // If collapsed, auto-open (animated) when the pointer enters the panel/tab.
+    ra.addEventListener("mouseenter", function () {
+      if (ra.classList.contains("is-collapsed")) setOpen(true);
     });
   })();
 
