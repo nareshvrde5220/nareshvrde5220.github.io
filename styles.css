@@ -380,7 +380,7 @@ body::before {
 .eyebrow .badge-3x { font-size: .85em; padding: .05em .45em; box-shadow: none; }
 
 /* ---------- Career Timeline (horizontal) ---------- */
-.ctl-scroll { overflow-x: auto; padding-bottom: .75rem; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
+.ctl-scroll { overflow-x: auto; padding-bottom: .75rem; -webkit-overflow-scrolling: touch; }
 .ctl {
   list-style: none; margin: 0; padding: 1.25rem 0 .5rem; position: relative;
   display: grid; grid-auto-flow: column; grid-auto-columns: 210px; gap: 0;
@@ -502,13 +502,11 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .cert__logo--aws img { filter: none !important; height: 32px; max-width: 86px; }
 
 /* ---------- Career Timeline scroll affordance ---------- */
-.ctl-scroll { scroll-behavior: smooth; cursor: grab; }
-.ctl-scroll.is-dragging { cursor: grabbing; scroll-behavior: auto; }
+/* auto (not smooth) so the rAF marquee loop isn't fought; scrollbar hidden */
+.ctl-scroll { scroll-behavior: auto; cursor: grab; scrollbar-width: none; -ms-overflow-style: none; }
+.ctl-scroll.is-dragging { cursor: grabbing; }
 .ctl-scroll.is-dragging .ctl__item { pointer-events: none; }
-.ctl-scroll::-webkit-scrollbar { height: 8px; }
-.ctl-scroll::-webkit-scrollbar-track { background: var(--surface); border-radius: 99px; }
-.ctl-scroll::-webkit-scrollbar-thumb { background: var(--grad-brand); border-radius: 99px; }
-.ctl-scroll { scrollbar-color: var(--c-indigo) var(--surface); scrollbar-width: thin; }
+.ctl-scroll::-webkit-scrollbar { width: 0; height: 0; display: none; }
 
 /* ---------- Footer ---------- */
 .footer { border-top: 1px solid var(--border); padding-block: 2rem; }

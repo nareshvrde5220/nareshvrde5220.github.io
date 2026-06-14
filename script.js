@@ -305,7 +305,7 @@
       }
       raf = requestAnimationFrame(loop);
     }
-    function start() { if (!started && !prefersReduced) { started = true; setupDup(); raf = requestAnimationFrame(loop); } }
+    function start() { if (!started) { started = true; setupDup(); raf = requestAnimationFrame(loop); } }
     function pauseFor(ms) { paused = true; if (resumeT) clearTimeout(resumeT); resumeT = setTimeout(function () { paused = false; }, ms || 2500); }
 
     // Start automatically when the timeline first comes into view.
