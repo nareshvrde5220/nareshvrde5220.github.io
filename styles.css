@@ -127,14 +127,26 @@ body::before {
 /* ---------- Section header background watermark icon ---------- */
 .section > .container { position: relative; z-index: 1; }
 .section__watermark {
-  position: absolute; top: clamp(1rem, 4vw, 2.75rem); right: clamp(.5rem, 4vw, 3rem);
-  width: clamp(96px, 13vw, 168px); height: clamp(96px, 13vw, 168px);
-  color: var(--text); opacity: .05; pointer-events: none; z-index: 0;
+  position: absolute; top: clamp(.75rem, 3.5vw, 2.25rem); right: clamp(.5rem, 4vw, 3rem);
+  width: clamp(120px, 16vw, 220px); height: clamp(120px, 16vw, 220px);
+  color: var(--text-dim); opacity: .12; pointer-events: none; z-index: 0;
+  transition: opacity .4s var(--ease), transform .55s var(--ease), color .4s var(--ease);
 }
-[data-theme="light"] .section__watermark { opacity: .06; }
+[data-theme="light"] .section__watermark { opacity: .14; }
 .section__watermark svg { width: 100%; height: 100%; display: block; }
-@media (prefers-reduced-motion: no-preference) {
-  .section__watermark { transition: opacity var(--dur) var(--ease); }
+/* On hover, the watermark brightens and flashes through the brand colours */
+.section:hover .section__watermark {
+  opacity: .3; transform: scale(1.08) rotate(-4deg);
+  animation: wm-flash 1.4s var(--ease) infinite alternate;
+}
+@keyframes wm-flash {
+  0%   { color: var(--c-indigo); }
+  50%  { color: var(--c-cyan); }
+  100% { color: var(--c-violet); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section__watermark { transition: none; }
+  .section:hover .section__watermark { animation: none; color: var(--c-cyan); }
 }
 
 /* ---------- Section header icons ---------- */
