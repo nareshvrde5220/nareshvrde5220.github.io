@@ -378,6 +378,19 @@
     });
   })();
 
+  /* ---------- Section header background watermark icons ---------- */
+  (function sectionWatermarks() {
+    document.querySelectorAll(".section__title .section__ic svg").forEach(function (svg) {
+      var section = svg.closest("section");
+      if (!section || section.querySelector(".section__watermark")) return;
+      var wm = document.createElement("div");
+      wm.className = "section__watermark";
+      wm.setAttribute("aria-hidden", "true");
+      wm.appendChild(svg.cloneNode(true));
+      section.appendChild(wm);
+    });
+  })();
+
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
