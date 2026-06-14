@@ -545,7 +545,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 
 /* ---------- Hero corner badges (Early Adopter) ---------- */
 .hero__badge {
-  position: absolute; z-index: 2; top: calc(var(--nav-h) + .5rem);
+  position: absolute; z-index: 2; top: clamp(.5rem, 2vw, 1.25rem);
   width: clamp(112px, 13vw, 184px); height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
@@ -556,10 +556,12 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; } }
 @media (max-width: 640px) {
   /* shrink badges + photo on phones so the corner badges never overlap the photo */
-  .hero__badge { width: 64px; top: calc(var(--nav-h) + .35rem); }
+  .hero__badge { width: 62px; top: .5rem; }
   .hero__badge--left { left: .5rem; }
   .hero__badge--right { right: .5rem; }
   .hero__photo { width: clamp(150px, 42vw, 200px); height: clamp(150px, 42vw, 200px); }
+  /* give the hero content room below the corner badges on phones */
+  .section--hero { padding-top: 4.5rem; }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
@@ -634,8 +636,10 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 body.viewer-open { overflow: hidden; }
 
 @media (max-width: 560px) {
-  .viewer__panel { width: 100vw; height: 100vh; border-radius: 0; }
+  .viewer { padding: 0; }
+  .viewer__panel { width: 100vw; height: 100vh; height: 100dvh; max-height: none; border-radius: 0; margin: 0; }
   .viewer__title { font-size: .82rem; }
+  .viewer__body { -webkit-overflow-scrolling: touch; }
 }
 
 /* ---------- Reveal on scroll ---------- */
