@@ -224,7 +224,8 @@
       var start = new Date(s + (s.length <= 7 ? "-01" : ""));
       if (isNaN(start)) return;
       var months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
-      if (now.getDate() < start.getDate()) months -= 1;
+      // Round UP to the next month once any extra days into the current month have elapsed.
+      if (now.getDate() > start.getDate()) months += 1;
       if (months < 0) months = 0;
       var yrs = Math.floor(months / 12), mos = months % 12, parts = [];
       if (yrs) parts.push(yrs + " yr" + (yrs > 1 ? "s" : ""));
@@ -255,7 +256,9 @@
       } else {
         logo.textContent = m.label;
       }
-      card.insertBefore(logo, card.firstChild);
+      // Place the logo at the end of the certificate title.
+      var nameEl = card.querySelector(".cert__name");
+      if (nameEl) nameEl.appendChild(logo); else card.insertBefore(logo, card.firstChild);
     });
   })();
 

@@ -69,8 +69,10 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;
+  overflow-x: clip; /* guard against accidental horizontal scroll on mobile; safe for sticky nav */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%; /* iOS Safari: don't auto-inflate text on rotate */
   transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
@@ -363,15 +365,16 @@ img { max-width: 100%; display: block; }
 .ctl__loc { font-size: .76rem; color: var(--text-dim); margin: 0; }
 .ctl__item.reveal { transition-delay: calc(var(--i, 0) * 90ms); }
 
-/* ---------- Certification logos ---------- */
+/* ---------- Certification logos (at end of title) ---------- */
+.cert__name { display: flex; align-items: center; gap: .6rem; }
 .cert__logo {
-  display: inline-flex; align-items: center; justify-content: center;
-  height: 30px; min-width: 30px; margin-bottom: .25rem;
+  flex: 0 0 auto; margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center; height: 24px;
 }
-.cert__logo img { height: 26px; width: auto; max-width: 96px; object-fit: contain; }
+.cert__logo img { height: 22px; width: auto; max-width: 84px; object-fit: contain; }
 .cert__logo--txt {
-  font-family: var(--font-display); font-weight: 700; font-size: .72rem; letter-spacing: .04em;
-  color: #fff; background: var(--grad-brand); padding: .25rem .6rem; border-radius: 7px;
+  font-family: var(--font-display); font-weight: 700; font-size: .66rem; letter-spacing: .04em;
+  color: #fff; background: var(--grad-brand); padding: .22rem .55rem; border-radius: 6px; height: auto;
 }
 [data-theme="dark"] .cert__logo img { filter: brightness(0) invert(1); }
 
