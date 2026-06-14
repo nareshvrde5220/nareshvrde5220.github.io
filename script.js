@@ -346,10 +346,14 @@
     });
   })();
 
-  /* ---------- Experience: flash the card currently in view ---------- */
-  (function experienceFlash() {
-    var cards = document.querySelectorAll("#experience .tl__card");
-    if (!cards.length || !("IntersectionObserver" in window)) return;
+  /* ---------- Flash/pop section cards as they cross the viewport center ---------- */
+  (function scrollFlash() {
+    if (!("IntersectionObserver" in window)) return;
+    var sel = "#experience .tl__card, #skills .skill-group, #certifications .cert," +
+              " #awards .award, #education .edu, #publications .pub," +
+              " #contact .contact__card, #about .about__lead, #about .about__points";
+    var cards = document.querySelectorAll(sel);
+    if (!cards.length) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         en.target.classList.toggle("is-active", en.isIntersecting);
