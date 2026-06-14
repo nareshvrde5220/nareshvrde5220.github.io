@@ -122,42 +122,35 @@
     var vBody = document.getElementById("viewer-body");
     var vTitle = document.getElementById("viewer-title");
     var vDownload = document.getElementById("viewer-download");
-    var vClose = viewer.querySelector(".viewer__close");
     var lastTrigger = null;
     var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
 
     function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
 
-    // Everything (local PDFs/images AND external links) opens in this overlay —
-    // nothing opens in a new tab. Local files also get a Download action.
-    function openViewer(href, title, isLocal) {
+    // Local PDFs/images open in this overlay with a Download action.
+    function openViewer(href, title) {
       lastTrigger = document.activeElement;
       clearBody();
       vTitle.textContent = title || "Document";
-      if (isLocal) {
-        vDownload.hidden = false;
-        vDownload.href = href;
-        vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
-      } else {
-        vDownload.hidden = true;
-      }
+      vDownload.hidden = false;
+      vDownload.href = href;
+      vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
 
-      if (isLocal && imgExt.test(href)) {
+      if (imgExt.test(href)) {
         var img = document.createElement("img");
         img.src = href; img.alt = title || "Image";
         vBody.appendChild(img);
       } else {
         var frame = document.createElement("iframe");
         frame.src = href;
-        frame.title = title || "Embedded content";
+        frame.title = title || "Embedded document";
         frame.setAttribute("loading", "eager");
-        frame.setAttribute("referrerpolicy", "no-referrer");
         vBody.appendChild(frame);
       }
 
       viewer.hidden = false;
       document.body.classList.add("viewer-open");
-      (isLocal && !vDownload.hidden ? vDownload : vClose).focus();
+      vDownload.focus();
     }
 
     function closeViewer() {
@@ -167,9 +160,10 @@
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }
 
-    // Intercept ALL content links — local assets and external URLs alike — and
-    // open them in the overlay (never a new tab). Only in-page anchors and
-    // mailto:/tel:/javascript: keep their native behavior.
+    // Local assets (PDFs/images) open in the overlay viewer. External links
+    // open in a NEW TAB — third-party sites (LinkedIn, GitHub, Credly, etc.)
+    // block iframe embedding ("refused to connect"), so they can't render in
+    // the overlay. In-page anchors and mailto:/tel:/javascript: stay native.
     document.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[href]");
       if (!a) return;
@@ -177,12 +171,16 @@
       var raw = a.getAttribute("href");
       if (!raw || raw.charAt(0) === "#") return;        // in-page anchors
       if (/^(mailto:|tel:|javascript:)/i.test(raw)) return;
-      e.preventDefault();
       var url = a.href;                                  // resolved absolute
       var isLocal = false;
       try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { isLocal = false; }
-      var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
-      openViewer(url, title, isLocal);
+      e.preventDefault();
+      if (isLocal) {
+        var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
+        openViewer(url, title);
+      } else {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
     });
 
     viewer.addEventListener("click", function (e) {
