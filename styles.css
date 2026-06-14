@@ -576,8 +576,15 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
   .hero__photo { width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px); }
   /* badges static, top-aligned with the text block, flanking it left/right */
   .hero__badge { width: 60px; top: clamp(1.25rem, 6vw, 2rem); transform: none; animation: none; }
-  .hero__badge--left { left: .4rem; }
-  .hero__badge--right { right: .4rem; }
+  .hero__badge--left {
+    left: 10px;
+    top: 180px;
+  }
+
+  .hero__badge--right {
+    right: 10px;
+    top: 180px;
+  }
   /* keep the centred text between the flanking badges (no overlap) */
   .hero__content { padding-inline: 70px; }
 }
