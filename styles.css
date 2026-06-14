@@ -346,13 +346,13 @@ body::before {
 .edu.is-active,
 .pub.is-active,
 .contact__card.is-active,
-.about__lead.is-active,
-.about__points.is-active,
 .ra__item:hover {
   border-color: color-mix(in srgb, var(--c-glow) 60%, var(--border));
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--c-glow) 50%, transparent), 0 20px 55px rgba(91,205,215,.30);
   animation: card-flash .6s var(--ease);
 }
+/* About: keep the pop (scale) but no glow box around the text */
+.about__lead.is-active, .about__points.is-active { animation: card-flash .6s var(--ease); }
 @keyframes card-flash { 0% { transform: scale(.99); } 45% { transform: scale(1.03); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) {
   .tl__card.is-active, .skill-group.is-active, .cert.is-active, .award.is-active,
