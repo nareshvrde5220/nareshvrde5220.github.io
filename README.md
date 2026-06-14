@@ -30,6 +30,37 @@ python -m http.server 8080
 # then visit http://localhost:8080
 ```
 
+## Committing & deploying changes (from local)
+
+Whenever you edit any file (`index.html`, `styles.css`, `script.js`, assets, …), commit and push — GitHub Pages auto-deploys the `main` branch within ~1 minute.
+
+```bash
+# 1. go to the project folder
+cd "C:/Users/pc/Documents/nareshvrde5220.github.io"
+
+# 2. see what changed (optional)
+git status
+
+# 3. stage all changes
+git add .
+
+# 4. commit with a short message
+git commit -m "Describe what you changed"
+
+# 5. push to GitHub (auto-deploys the live site)
+git push origin main
+```
+
+After the push, wait ~1 minute, then hard-refresh the live site (**Ctrl+F5**) to see the update.
+
+> **Tip — cache busting:** `styles.css` and `script.js` are loaded with a version query (e.g. `styles.css?v=28`) so browsers don't serve a stale copy. After editing CSS or JS, bump that number in `index.html` (e.g. `?v=28` → `?v=29` for both the CSS link and the JS script tag) in the **same commit**.
+
+First time on a new machine? Clone it first:
+
+```bash
+git clone https://github.com/nareshvrde5220/nareshvrde5220.github.io.git
+```
+
 ## Development
 
 Built and tracked in milestone commits:
