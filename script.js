@@ -371,15 +371,20 @@
       ra.classList.toggle("is-collapsed", !open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }
-    // Open by default on load (tablet/desktop); collapsed to a tab on phones.
-    setOpen(window.innerWidth >= 768);
+    // Only hover-capable, wide screens get it open by default. Phones/tablets
+    // (and any touch device) start collapsed to a slim tab so it never covers
+    // the page — matching the web side-panel behaviour.
+    var bigHover = window.matchMedia("(min-width: 1024px) and (hover: hover)").matches;
+    setOpen(bigHover);
     btn.addEventListener("click", function () {
       setOpen(ra.classList.contains("is-collapsed"));
     });
-    // If collapsed, auto-open (animated) when the pointer enters the panel/tab.
-    ra.addEventListener("mouseenter", function () {
-      if (ra.classList.contains("is-collapsed")) setOpen(true);
-    });
+    // Auto-open on hover (desktop pointers only) when collapsed.
+    if (window.matchMedia("(hover: hover)").matches) {
+      ra.addEventListener("mouseenter", function () {
+        if (ra.classList.contains("is-collapsed")) setOpen(true);
+      });
+    }
   })();
 
   /* ---------- Nav link background icons (flash bigger on hover) ---------- */

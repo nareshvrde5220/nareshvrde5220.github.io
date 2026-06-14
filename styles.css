@@ -113,7 +113,7 @@ body::before {
 @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
 
 /* ---------- Sections ---------- */
-.section { padding-block: clamp(1.75rem, 4vw, 3rem); position: relative; }
+.section { padding-block: clamp(1.15rem, 2.6vw, 2rem); position: relative; }
 .section--alt { background: color-mix(in srgb, var(--bg-alt) 80%, transparent); }
 .section__title {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -544,24 +544,29 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 
 /* ---------- Hero corner badges (Early Adopter) ---------- */
+/* badges vertically centred so they flank the hero content on the same row */
 .hero__badge {
-  position: absolute; z-index: 2; top: clamp(.5rem, 2vw, 1.25rem);
+  position: absolute; z-index: 2; top: 50%;
   width: clamp(112px, 13vw, 184px); height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
+  transform: translateY(-50%);
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
 .hero__badge--left { left: clamp(.5rem, 3vw, 2rem); animation-delay: 0s; }
 .hero__badge--right { right: clamp(.5rem, 3vw, 2rem); animation-delay: .8s; }
-@keyframes badge-float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
-@media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; } }
+@keyframes badge-float {
+  0%,100% { transform: translateY(-50%) rotate(-2deg); }
+  50%     { transform: translateY(calc(-50% - 8px)) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; transform: translateY(-50%); } }
 @media (max-width: 640px) {
-  /* shrink badges + photo on phones so the corner badges never overlap the photo */
-  .hero__badge { width: 62px; top: .5rem; }
-  .hero__badge--left { left: .5rem; }
-  .hero__badge--right { right: .5rem; }
-  .hero__photo { width: clamp(150px, 42vw, 200px); height: clamp(150px, 42vw, 200px); }
-  /* give the hero content room below the corner badges on phones */
-  .section--hero { padding-top: 4.5rem; }
+  /* smaller badges + photo on phones; badges flank the centred content */
+  .hero__badge { width: 60px; }
+  .hero__badge--left { left: .4rem; }
+  .hero__badge--right { right: .4rem; }
+  .hero__photo { width: clamp(140px, 40vw, 190px); height: clamp(140px, 40vw, 190px); }
+  /* keep the centred text between the flanking badges (no overlap) */
+  .hero__content { padding-inline: 68px; }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
