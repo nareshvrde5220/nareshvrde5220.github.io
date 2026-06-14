@@ -200,6 +200,20 @@ img { max-width: 100%; display: block; }
 .hero__links a::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 0; height: 2px; background: var(--grad-brand); transition: width .25s var(--ease); }
 .hero__links a:hover { color: var(--text); }
 .hero__links a:hover::after { width: 100%; }
+.hero__links { gap: .75rem; }
+.hero__social {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .35rem .95rem .35rem .35rem; border: 1px solid var(--border); border-radius: 99px;
+  background: var(--surface); color: var(--text) !important; font-weight: 600; font-size: .9rem;
+  transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+}
+.hero__social:hover { transform: translateY(-2px); background: var(--surface-2); border-color: var(--c-cyan); }
+.hero__social::after { display: none !important; }
+.hero__social-ic {
+  width: 30px; height: 30px; border-radius: 50%; background: #fff; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.hero__social-ic img { width: 20px; height: 20px; object-fit: contain; }
 
 .hero__media { justify-self: center; }
 .hero__photo-wrap { position: relative; padding: 5px; border-radius: 50%; background: var(--grad-brand); box-shadow: 0 14px 50px rgba(99,102,241,.4); }
@@ -328,7 +342,7 @@ img { max-width: 100%; display: block; }
 .ctl-scroll { overflow-x: auto; padding-bottom: .75rem; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
 .ctl {
   list-style: none; margin: 0; padding: 1.25rem 0 .5rem; position: relative;
-  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(168px, 1fr); gap: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: 210px; gap: 0;
   min-width: max-content;
 }
 .ctl::before {
@@ -369,9 +383,9 @@ img { max-width: 100%; display: block; }
 .cert__name { display: flex; align-items: center; gap: .6rem; }
 .cert__logo {
   flex: 0 0 auto; margin-left: auto;
-  display: inline-flex; align-items: center; justify-content: center; height: 24px;
+  display: inline-flex; align-items: center; justify-content: center; height: 34px;
 }
-.cert__logo img { height: 22px; width: auto; max-width: 84px; object-fit: contain; }
+.cert__logo img { height: 28px; width: auto; max-width: 96px; object-fit: contain; }
 .cert__logo--txt {
   font-family: var(--font-display); font-weight: 700; font-size: .66rem; letter-spacing: .04em;
   color: #fff; background: var(--grad-brand); padding: .22rem .55rem; border-radius: 6px; height: auto;
@@ -422,7 +436,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 /* ---------- Hero corner badges (Early Adopter) ---------- */
 .hero__badge {
   position: absolute; z-index: 2; top: calc(var(--nav-h) + .5rem);
-  width: clamp(92px, 11vw, 152px); height: auto;
+  width: clamp(112px, 13vw, 184px); height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
@@ -430,7 +444,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .hero__badge--right { right: clamp(.5rem, 3vw, 2rem); animation-delay: .8s; }
 @keyframes badge-float { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; } }
-@media (max-width: 640px) { .hero__badge { width: 76px; top: calc(var(--nav-h) + .35rem); } }
+@media (max-width: 640px) { .hero__badge { width: 92px; top: calc(var(--nav-h) + .35rem); } }
 
 /* ---------- Cert card watermark backgrounds ---------- */
 .cert--bg { position: relative; overflow: hidden; }
@@ -443,8 +457,8 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .cert--bg > * { position: relative; z-index: 1; }
 
 /* AWS logo chip (true colors on a light pill, never inverted) */
-.cert__logo--aws { background: #fff; border-radius: 7px; padding: 4px 6px; height: auto; }
-.cert__logo--aws img { filter: none !important; height: 26px; max-width: 70px; }
+.cert__logo--aws { background: #fff; border-radius: 7px; padding: 4px 7px; height: auto; }
+.cert__logo--aws img { filter: none !important; height: 32px; max-width: 86px; }
 
 /* ---------- Career Timeline scroll affordance ---------- */
 .ctl-scroll { scroll-behavior: smooth; cursor: grab; }

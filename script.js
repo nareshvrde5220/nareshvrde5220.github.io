@@ -122,34 +122,42 @@
     var vBody = document.getElementById("viewer-body");
     var vTitle = document.getElementById("viewer-title");
     var vDownload = document.getElementById("viewer-download");
+    var vClose = viewer.querySelector(".viewer__close");
     var lastTrigger = null;
     var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
 
     function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
 
-    // Only local assets (PDFs/images) open here; external links navigate directly.
-    function openViewer(href, title) {
+    // Everything (local PDFs/images AND external links) opens in this overlay —
+    // nothing opens in a new tab. Local files also get a Download action.
+    function openViewer(href, title, isLocal) {
       lastTrigger = document.activeElement;
       clearBody();
       vTitle.textContent = title || "Document";
-      vDownload.href = href;
-      vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
+      if (isLocal) {
+        vDownload.hidden = false;
+        vDownload.href = href;
+        vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
+      } else {
+        vDownload.hidden = true;
+      }
 
-      if (imgExt.test(href)) {
+      if (isLocal && imgExt.test(href)) {
         var img = document.createElement("img");
         img.src = href; img.alt = title || "Image";
         vBody.appendChild(img);
       } else {
         var frame = document.createElement("iframe");
         frame.src = href;
-        frame.title = title || "Embedded document";
+        frame.title = title || "Embedded content";
         frame.setAttribute("loading", "eager");
+        frame.setAttribute("referrerpolicy", "no-referrer");
         vBody.appendChild(frame);
       }
 
       viewer.hidden = false;
       document.body.classList.add("viewer-open");
-      vDownload.focus();
+      (isLocal && !vDownload.hidden ? vDownload : vClose).focus();
     }
 
     function closeViewer() {
@@ -159,23 +167,22 @@
       if (lastTrigger && lastTrigger.focus) lastTrigger.focus();
     }
 
-    // Intercept clicks on RELATIVE asset links (local PDFs/images) only.
-    // Anything with an explicit scheme (http:, https:, mailto:, tel:) or a
-    // protocol-relative // prefix navigates normally. This is origin-independent
-    // so it works the same on https and on a local file:// preview.
+    // Intercept ALL content links — local assets and external URLs alike — and
+    // open them in the overlay (never a new tab). Only in-page anchors and
+    // mailto:/tel:/javascript: keep their native behavior.
     document.addEventListener("click", function (e) {
       var a = e.target.closest && e.target.closest("a[href]");
       if (!a) return;
       if (a.closest("#viewer")) return;                 // viewer's own buttons
       var raw = a.getAttribute("href");
-      if (!raw) return;
-      if (raw.charAt(0) === "#") return;                // in-page anchors
-      if (raw.indexOf("//") === 0) return;              // protocol-relative -> external
-      if (/^[a-z][a-z0-9+.\-]*:/i.test(raw)) return;    // has a scheme -> navigate (http/mailto/tel/...)
-      e.preventDefault();                                // relative path -> local asset -> overlay
+      if (!raw || raw.charAt(0) === "#") return;        // in-page anchors
+      if (/^(mailto:|tel:|javascript:)/i.test(raw)) return;
+      e.preventDefault();
       var url = a.href;                                  // resolved absolute
+      var isLocal = false;
+      try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { isLocal = false; }
       var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
-      openViewer(url, title);
+      openViewer(url, title, isLocal);
     });
 
     viewer.addEventListener("click", function (e) {
@@ -238,7 +245,7 @@
   (function certLogos() {
     var map = [
       { test: /amazon web services|aws/i, type: "img", src: "assets/img/logos/aws_logo.png", alt: "Amazon Web Services", cls: "cert__logo--aws" },
-      { test: /skillsoft/i, type: "img", src: "assets/img/logos/skillsoft.png", alt: "Skillsoft" },
+      { test: /skillsoft/i, type: "img", src: "assets/img/logos/skillsoft_logo.png", alt: "Skillsoft" },
       { test: /nvidia/i, type: "txt", label: "NVIDIA" },
       { test: /nielit/i, type: "txt", label: "NIELIT" }
     ];
@@ -296,7 +303,7 @@
       }
       raf = requestAnimationFrame(step);
     }
-    ["wheel", "pointerdown", "touchstart", "keydown"].forEach(function (ev) {
+    ["pointerdown", "touchstart", "keydown"].forEach(function (ev) {
       sc.addEventListener(ev, cancelAuto, { passive: true });
     });
     if ("IntersectionObserver" in window) {
