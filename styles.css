@@ -131,8 +131,8 @@ body::before {
 /* ---------- Section header background watermark icon ---------- */
 .section > .container { position: relative; z-index: 1; }
 .section__watermark {
-  position: absolute; top: clamp(.5rem, 3vw, 1.75rem); right: clamp(.5rem, 4vw, 2.5rem);
-  width: clamp(160px, 20vw, 300px); height: clamp(160px, 20vw, 300px);
+  position: absolute; top: clamp(.5rem, 2.5vw, 1.4rem); right: clamp(.5rem, 3vw, 1.75rem);
+  width: clamp(92px, 11vw, 160px); height: clamp(92px, 11vw, 160px);
   display: grid; place-items: center; border-radius: 50%;
   /* soft light-green halo behind the icon */
   background: radial-gradient(circle at 50% 50%, rgba(134, 239, 172, .10) 0%, transparent 68%);
@@ -207,7 +207,18 @@ body::before {
   transition: color .2s var(--ease), background .2s var(--ease);
 }
 .nav__link:hover { color: var(--text); }
-.nav__link.is-active { color: var(--text); background: var(--surface-2); }
+/* Active link (its section is in view) flashes continuously */
+.nav__link.is-active {
+  color: var(--text); background: var(--surface-2);
+  animation: navlink-flash 1.2s var(--ease) infinite alternate;
+}
+@keyframes navlink-flash {
+  0%   { color: var(--text); box-shadow: 0 0 0 0 transparent; }
+  100% { color: var(--c-cyan);
+         box-shadow: 0 0 0 1px color-mix(in srgb, var(--c-glow) 55%, transparent),
+                     0 0 14px color-mix(in srgb, var(--c-glow) 45%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .nav__link.is-active { animation: none; } }
 
 /* Background icon behind each nav link — always visible, pops/flashes on hover */
 .nav__link-ic {
@@ -724,22 +735,24 @@ body.viewer-open { overflow: hidden; }
   .cert-grid, .pub-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* Nav collapses to a hamburger (≤1080px) so the 9 links + theme toggle never
-   overflow — full row needs ~1060px (e.g. iPad Pro 1024 was clipping). */
+/* Below 1080px the full link row won't fit, so instead of a hamburger the nav
+   links stay visible as a horizontally-scrollable strip — same links as the web
+   view, swipe sideways to reach them all. */
 @media (max-width: 1080px) {
-  .nav__hamburger { display: flex; }
+  .nav__hamburger { display: none; }
   .nav__links {
-    position: fixed; inset: var(--nav-h) 0 auto 0;
-    flex-direction: column; align-items: stretch; gap: 0;
-    background: color-mix(in srgb, var(--bg) 96%, transparent);
-    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: 1px solid var(--border);
-    padding: .5rem var(--gutter) 1rem;
-    transform: translateY(-12px); opacity: 0; pointer-events: none;
-    transition: transform .25s var(--ease), opacity .25s var(--ease);
+    flex: 1 1 auto; min-width: 0;
+    flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
   }
-  .nav__links.is-open { transform: none; opacity: 1; pointer-events: auto; }
-  .nav__link { padding: .85rem .5rem; border-radius: var(--radius-sm); }
+  .nav__links::-webkit-scrollbar { display: none; }
+  .nav__link { flex: 0 0 auto; white-space: nowrap; padding: .45rem .6rem; font-size: .85rem; }
+}
+@media (max-width: 560px) {
+  .nav__inner { gap: .5rem; padding-inline: .6rem; }
+  .nav__link { padding: .4rem .5rem; font-size: .8rem; }
 }
 
 /* Hero stacks early (≤1080) so the large side badges always have room beside
@@ -762,7 +775,7 @@ body.viewer-open { overflow: hidden; }
   .cert-grid, .pub-grid, .contact__grid { grid-template-columns: 1fr; }
   .hero__stats { grid-template-columns: repeat(2, 1fr); }
   .nav__brand-text { display: none; }
-  .section__watermark { width: 120px; height: 120px; top: .4rem; right: .4rem; }
+  .section__watermark { width: 78px; height: 78px; top: .4rem; right: .4rem; }
 }
 
 /* backdrop-filter fallback */

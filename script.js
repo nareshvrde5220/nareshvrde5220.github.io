@@ -20,11 +20,9 @@
   (function initTheme() {
     var saved;
     try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
-    if (saved) {
-      applyTheme(saved);
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      applyTheme("light");
-    }
+    // Always default to DARK (ignore the OS/browser colour scheme); only honour
+    // an explicit user toggle saved earlier.
+    applyTheme(saved === "light" ? "light" : "dark");
   })();
   if (toggle) {
     toggle.addEventListener("click", function () {
