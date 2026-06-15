@@ -283,7 +283,7 @@ body::before {
     radial-gradient(40% 50% at 90% 20%, rgba(34,211,238,.18), transparent 70%),
     radial-gradient(50% 60% at 70% 100%, rgba(168,85,247,.18), transparent 70%);
 }
-.hero__grid { display: grid; grid-template-columns: 1.35fr .85fr; gap: clamp(1.5rem, 5vw, 3.5rem); align-items: center; position: relative; z-index: 1; }
+.hero__grid { display: grid; grid-template-columns: 1.35fr .85fr; gap: clamp(1.5rem, 5vw, 4.5rem); align-items: center; position: relative; z-index: 1; }
 .hero__eyebrow { font-family: var(--font-mono); font-size: .85rem; letter-spacing: .08em; color: var(--text-dim); margin: 0 0 .75rem; }
 .hero__name { font-size: clamp(2.2rem, 5.4vw, 3.5rem); font-weight: 700; line-height: 1.04; margin: 0 0 .5rem; letter-spacing: -.02em; }
 .hero__headline { font-family: var(--font-display); font-size: clamp(1.1rem, 2.6vw, 1.5rem); font-weight: 500; margin: 0 0 1rem; line-height: 1.3; }
@@ -369,7 +369,15 @@ body::before {
   .edu.is-active, .pub.is-active, .contact__card.is-active,
   .about__lead.is-active, .about__points.is-active, .ra__item:hover { animation: none; }
 }
-.tl__head { margin-bottom: .75rem; }
+.tl__head { display: flex; align-items: flex-start; gap: .85rem; margin-bottom: .75rem; }
+.tl__headtext { min-width: 0; }
+/* LinkedIn-style org logo on a white rounded tile, left of the role */
+.tl__logo {
+  flex: 0 0 auto; width: 50px; height: 50px; border-radius: 11px;
+  object-fit: contain; background: #fff; padding: 6px;
+  border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+@media (max-width: 560px) { .tl__logo { width: 42px; height: 42px; border-radius: 9px; padding: 5px; } }
 .tl__role { font-size: 1.2rem; margin: 0; }
 .tl__org { font-family: var(--font-display); font-weight: 500; color: var(--c-cyan); margin: .1rem 0; }
 .tl__meta { font-family: var(--font-mono); font-size: .8rem; color: var(--text-dim); margin: 0; }
@@ -575,7 +583,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
      ALWAYS the same proportion of the photo on every monitor/resolution — the
      photo already scales with the screen via clamp/vw, so the badge follows it
      and stays visually consistent. min/max are just safety bounds. */
-  width: clamp(60px, 75%, 230px); height: auto;
+  width: clamp(60px, 50%, 200px); height: auto;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.5));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
