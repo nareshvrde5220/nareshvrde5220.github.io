@@ -571,7 +571,11 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
    centred photo has room on both sides. */
 .hero__badge {
   position: absolute; z-index: 3; top: 50%;
-  width: clamp(60px, 6.5vw, 108px); height: auto;
+  /* Sized as a % of the profile photo (its containing block), so the badge is
+     ALWAYS the same proportion of the photo on every monitor/resolution — the
+     photo already scales with the screen via clamp/vw, so the badge follows it
+     and stays visually consistent. min/max are just safety bounds. */
+  width: clamp(60px, 44%, 104px); height: auto;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.5));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
@@ -678,10 +682,13 @@ body.viewer-open { overflow: hidden; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Responsive ---------- */
-/* Nav collapses to a hamburger early (≤980px) so the 9 links never crowd */
 @media (max-width: 980px) {
   .cert-grid, .pub-grid { grid-template-columns: repeat(2, 1fr); }
+}
 
+/* Nav collapses to a hamburger (≤1080px) so the 9 links + theme toggle never
+   overflow — full row needs ~1060px (e.g. iPad Pro 1024 was clipping). */
+@media (max-width: 1080px) {
   .nav__hamburger { display: flex; }
   .nav__links {
     position: fixed; inset: var(--nav-h) 0 auto 0;
