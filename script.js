@@ -125,12 +125,17 @@
     var vBody = document.getElementById("viewer-body");
     var vTitle = document.getElementById("viewer-title");
     var vDownload = document.getElementById("viewer-download");
+    var vOpen = document.getElementById("viewer-open");
     var lastTrigger = null;
     var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
+    // Mobile browsers (iOS Safari, Android Chrome) won't render a PDF inside an
+    // <iframe> — they show a blank frame. On touch devices we route PDFs through
+    // Google's inline viewer so they display in the overlay like on desktop.
+    var isTouch = window.matchMedia("(pointer: coarse)").matches;
 
     function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
 
-    // Local PDFs/images open in this overlay with a Download action.
+    // Local PDFs/images open in this overlay with Open-in-new-tab + Download actions.
     function openViewer(href, title) {
       lastTrigger = document.activeElement;
       clearBody();
@@ -138,6 +143,7 @@
       vDownload.hidden = false;
       vDownload.href = href;
       vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
+      vOpen.href = href;                                 // native full-screen fallback
 
       if (imgExt.test(href)) {
         var img = document.createElement("img");
@@ -145,7 +151,9 @@
         vBody.appendChild(img);
       } else {
         var frame = document.createElement("iframe");
-        frame.src = href;
+        frame.src = isTouch
+          ? "https://docs.google.com/gview?embedded=true&url=" + encodeURIComponent(href)
+          : href;
         frame.title = title || "Embedded document";
         frame.setAttribute("loading", "eager");
         vBody.appendChild(frame);
