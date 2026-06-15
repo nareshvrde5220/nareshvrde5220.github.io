@@ -575,7 +575,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
      ALWAYS the same proportion of the photo on every monitor/resolution — the
      photo already scales with the screen via clamp/vw, so the badge follows it
      and stays visually consistent. min/max are just safety bounds. */
-  width: clamp(60px, 44%, 200px); height: auto;
+  width: clamp(60px, 75%, 230px); height: auto;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.5));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
