@@ -131,26 +131,36 @@ body::before {
 /* ---------- Section header background watermark icon ---------- */
 .section > .container { position: relative; z-index: 1; }
 .section__watermark {
-  position: absolute; top: clamp(.75rem, 3.5vw, 2.25rem); right: clamp(.5rem, 4vw, 3rem);
-  width: clamp(120px, 16vw, 220px); height: clamp(120px, 16vw, 220px);
-  color: var(--text-dim); opacity: .12; pointer-events: none; z-index: 0;
-  transition: opacity .4s var(--ease), transform .55s var(--ease), color .4s var(--ease);
+  position: absolute; top: clamp(.5rem, 3vw, 1.75rem); right: clamp(.5rem, 4vw, 2.5rem);
+  width: clamp(160px, 20vw, 300px); height: clamp(160px, 20vw, 300px);
+  display: grid; place-items: center; border-radius: 50%;
+  /* soft light-green halo behind the icon */
+  background: radial-gradient(circle at 50% 50%, rgba(134, 239, 172, .10) 0%, transparent 68%);
+  color: color-mix(in srgb, var(--text-dim) 22%, transparent);
+  pointer-events: none; z-index: 0;
+  transition: background .4s var(--ease), transform .55s var(--ease), color .4s var(--ease);
 }
-[data-theme="light"] .section__watermark { opacity: .14; }
-.section__watermark svg { width: 100%; height: 100%; display: block; }
-/* On hover, the watermark brightens and flashes through the brand colours */
-.section:hover .section__watermark {
-  opacity: .3; transform: scale(1.08) rotate(-4deg);
-  animation: wm-flash 1.4s var(--ease) infinite alternate;
+[data-theme="light"] .section__watermark {
+  background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, .12) 0%, transparent 68%);
+  color: color-mix(in srgb, var(--text-dim) 30%, transparent);
+}
+.section__watermark svg { width: 66%; height: 66%; display: block; }
+/* In view (mobile/scroll) OR on hover: grow, glow light-green, flash colours */
+.section:hover .section__watermark,
+.section.is-inview .section__watermark {
+  transform: scale(1.12) rotate(-4deg);
+  background: radial-gradient(circle at 50% 50%, rgba(134, 239, 172, .34) 0%, rgba(134, 239, 172, .12) 48%, transparent 72%);
+  animation: wm-flash 1.2s var(--ease) infinite alternate;
 }
 @keyframes wm-flash {
   0%   { color: var(--c-indigo); }
-  50%  { color: var(--c-cyan); }
+  50%  { color: #34d399; }            /* green flash */
   100% { color: var(--c-violet); }
 }
 @media (prefers-reduced-motion: reduce) {
   .section__watermark { transition: none; }
-  .section:hover .section__watermark { animation: none; color: var(--c-cyan); }
+  .section:hover .section__watermark,
+  .section.is-inview .section__watermark { animation: none; color: #34d399; }
 }
 
 /* ---------- Section header icons ---------- */
@@ -752,7 +762,7 @@ body.viewer-open { overflow: hidden; }
   .cert-grid, .pub-grid, .contact__grid { grid-template-columns: 1fr; }
   .hero__stats { grid-template-columns: repeat(2, 1fr); }
   .nav__brand-text { display: none; }
-  .section__watermark { width: 88px; height: 88px; top: .6rem; }
+  .section__watermark { width: 120px; height: 120px; top: .4rem; right: .4rem; }
 }
 
 /* backdrop-filter fallback */

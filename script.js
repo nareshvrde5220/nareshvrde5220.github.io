@@ -424,6 +424,18 @@
       wm.appendChild(svg.cloneNode(true));
       section.appendChild(wm);
     });
+
+    // Flash the header watermark when its section is centred in the viewport.
+    // This drives the effect on touch devices (no hover) and as you scroll.
+    var wmSections = document.querySelectorAll(".section");
+    if (wmSections.length && "IntersectionObserver" in window) {
+      var wmIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          e.target.classList.toggle("is-inview", e.isIntersecting);
+        });
+      }, { rootMargin: "-35% 0px -35% 0px", threshold: 0 });
+      wmSections.forEach(function (s) { wmIO.observe(s); });
+    }
   })();
 
   /* ---------- Footer year ---------- */
