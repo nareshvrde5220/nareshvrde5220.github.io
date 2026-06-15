@@ -554,30 +554,51 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 
 /* ---------- Hero corner badges (Early Adopter) ---------- */
-/* badges vertically centred so they flank the hero content on the same row */
+/* The hero content lives in a centred 1120px column. The badges are anchored to
+   the *edge of that column* (not the screen edge) and sized to the free side
+   margin, so on any width they sit in the empty gutter and never overlap text or
+   photo. When the margin gets too small (laptops) they hide; the stacked layout
+   shows small badges flanking the photo. --badge-gap = breathing room. */
 .hero__badge {
   position: absolute; z-index: 2; top: 22%;
-  width: clamp(112px, 13vw, 256px); height: auto;
+  --badge-gap: .75rem;
+  /* free space between the screen edge and the content column, minus the gap */
+  --badge-room: calc(50% - var(--maxw) / 2 - var(--badge-gap) - .5rem);
+  width: min(12vw, 240px, var(--badge-room));
+  height: auto;
   filter: drop-shadow(0 8px 22px rgba(0,0,0,.45));
   transform: translateY(-50%);
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
-.hero__badge--left { left: clamp(.5rem, 3vw, 2rem); animation-delay: 0s; }
-.hero__badge--right { right: clamp(.5rem, 3vw, 2rem); animation-delay: .8s; }
+/* right edge of left badge / left edge of right badge pinned to the column edge */
+.hero__badge--left  { right: calc(50% + var(--maxw) / 2 + var(--badge-gap)); left: auto; animation-delay: 0s; }
+.hero__badge--right { left:  calc(50% + var(--maxw) / 2 + var(--badge-gap)); right: auto; animation-delay: .8s; }
 @keyframes badge-float {
   0%,100% { transform: translateY(-50%) rotate(-2deg); }
   50%     { transform: translateY(calc(-50% - 8px)) rotate(2deg); }
 }
 @media (prefers-reduced-motion: reduce) { .hero__badge { animation: none; transform: translateY(-50%); } }
+
+/* Cramped range: the 1120px column leaves too little margin for a usable badge
+   (it would be tiny or overlap), so hide the floating badges entirely. */
+@media (max-width: 1339px) { .hero__badge { display: none; } }
+
+/* Stacked hero: re-show small badges flanking the centred photo, top corners. */
+@media (max-width: 860px) {
+  .hero__badge {
+    display: block; width: clamp(52px, 8vw, 76px);
+    top: clamp(1.25rem, 6vw, 2rem); right: auto; left: auto;
+    transform: none; animation: none;
+  }
+  .hero__badge--left  { left:  clamp(.4rem, 2vw, 1rem); }
+  .hero__badge--right { right: clamp(.4rem, 2vw, 1rem); }
+}
+
 @media (max-width: 640px) {
   .section--hero { min-height: auto; justify-content: flex-start; padding-top: clamp(1.25rem, 6vw, 2rem); }
   /* Photo first on mobile — same as tablet, avoids text-squeeze hack and photo being off-screen */
   .hero__media { order: -1; margin-top: 0; margin-bottom: 1rem; }
   .hero__photo { width: clamp(150px, 42vw, 200px); height: clamp(150px, 42vw, 200px); }
-  /* Badges: float at outer edges beside the profile photo, clear of centered content */
-  .hero__badge { width: 54px; top: clamp(1.25rem, 6vw, 2rem); transform: none; animation: none; }
-  .hero__badge--left { left: 6px; top: clamp(1.25rem, 6vw, 2rem); }
-  .hero__badge--right { right: 6px; top: clamp(1.25rem, 6vw, 2rem); }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
