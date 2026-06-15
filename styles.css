@@ -557,21 +557,19 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
   .ra__toggle { font-size: .74rem; }
 }
 
-/* ---------- Hero corner badges (Early Adopter) ---------- */
-/* Badges are pinned to the corners of the profile photo and sized as a % of the
-   photo wrapper. Because the photo itself scales with the viewport (clamp/vw),
-   the badges scale with it on every screen and zoom level — no fixed breakpoints,
-   never overlapping the text, always clearly visible. The circular photo leaves
-   its bounding-box corners empty, so the badges tuck in cleanly. */
+/* ---------- Hero side badges (Early Adopter) ---------- */
+/* Badges sit just OUTSIDE the profile photo — one to its left, one to its
+   right, vertically centred — so they never overlap the photo. Kept compact on
+   desktop so the left badge clears the hero text; larger on mobile where the
+   centred photo has room on both sides. */
 .hero__badge {
-  position: absolute; z-index: 3;
-  width: clamp(60px, 42%, 132px); height: auto;
+  position: absolute; z-index: 3; top: 50%;
+  width: clamp(36px, 4vw, 72px); height: auto;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.5));
   animation: badge-float 5s var(--ease) infinite; pointer-events: none;
 }
-/* vertically centred on the left / right edge of the photo */
-.hero__badge--left  { top: 50%; left:  -16%; animation-delay: 0s; }
-.hero__badge--right { top: 50%; right: -16%; animation-delay: .8s; }
+.hero__badge--left  { right: 100%; margin-right: 10px; left: auto;  animation-delay: 0s; }
+.hero__badge--right { left:  100%; margin-left:  10px; right: auto; animation-delay: .8s; }
 @keyframes badge-float {
   0%,100% { transform: translateY(-50%) rotate(-3deg); }
   50%     { transform: translateY(calc(-50% - 7px)) rotate(3deg); }
@@ -583,8 +581,10 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
   /* Photo first on mobile — same as tablet, avoids text-squeeze hack and photo being off-screen */
   .hero__media { order: -1; margin-top: 0; margin-bottom: 1rem; }
   .hero__photo { width: clamp(150px, 42vw, 200px); height: clamp(150px, 42vw, 200px); }
-  /* Slightly larger badges on phones so they stay clearly legible next to the photo */
-  .hero__badge { width: clamp(64px, 46%, 110px); }
+  /* Larger badges on phones — the centred photo has room on both sides */
+  .hero__badge { width: clamp(56px, 22vw, 96px); }
+  .hero__badge--left  { margin-right: 8px; }
+  .hero__badge--right { margin-left:  8px; }
 }
 
 /* ---------- Cert card watermark backgrounds ---------- */
@@ -656,10 +656,10 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .viewer__close { background: var(--surface-2); color: var(--text); border-color: var(--border); width: 34px; height: 34px; padding: 0; line-height: 1; font-size: 1rem; }
 .viewer__body { flex: 1; min-height: 0; background: #0c0f17; display: flex; align-items: center; justify-content: center; overflow: auto; }
 .viewer__body iframe { width: 100%; height: 100%; border: 0; }
-.viewer__body img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.viewer__body img { max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; }
 body.viewer-open { overflow: hidden; }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .viewer { padding: 0; }
   .viewer__panel { width: 100vw; height: 100vh; height: 100dvh; max-height: none; border-radius: 0; margin: 0; }
   .viewer__title { font-size: .82rem; }

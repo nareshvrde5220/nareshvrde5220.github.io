@@ -379,18 +379,20 @@
       ra.classList.toggle("is-collapsed", !open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }
-    // Only hover-capable, wide screens get it open by default. Phones/tablets
-    // (and any touch device) start collapsed to a slim tab so it never covers
-    // the page — matching the web side-panel behaviour.
-    var bigHover = window.matchMedia("(min-width: 1024px) and (hover: hover)").matches;
-    setOpen(bigHover);
+    // Always start collapsed to a slim tab — never auto-open on page load.
+    setOpen(false);
+    // Click toggles it (works for touch / keyboard).
     btn.addEventListener("click", function () {
       setOpen(ra.classList.contains("is-collapsed"));
     });
-    // Auto-open on hover (desktop pointers only) when collapsed.
+    // Desktop pointers: slide open on hover, slide back closed when the mouse
+    // leaves (unless the user is actively selecting text inside the panel).
     if (window.matchMedia("(hover: hover)").matches) {
-      ra.addEventListener("mouseenter", function () {
-        if (ra.classList.contains("is-collapsed")) setOpen(true);
+      ra.addEventListener("mouseenter", function () { setOpen(true); });
+      ra.addEventListener("mouseleave", function () {
+        var sel = window.getSelection && window.getSelection();
+        var selectingInside = sel && !sel.isCollapsed && ra.contains(sel.anchorNode);
+        if (!selectingInside) setOpen(false);
       });
     }
   })();
