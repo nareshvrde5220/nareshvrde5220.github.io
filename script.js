@@ -345,18 +345,24 @@
     sc.addEventListener("mouseenter", function () { visible = true; paused = false; ensureRunning(); });
 
     // Manual drag (mouse/pen) temporarily pauses, then the loop resumes.
-    var down = false, startX = 0, startLeft = 0;
+    var down = false, startX = 0, startLeft = 0, moved = false;
     sc.addEventListener("pointerdown", function (e) {
       if (e.pointerType === "touch") { pauseFor(4000); return; }
-      down = true; startX = e.clientX; startLeft = sc.scrollLeft;
-      sc.classList.add("is-dragging"); paused = true;
+      down = true; moved = false; startX = e.clientX; startLeft = sc.scrollLeft;
+      paused = true;
     });
     window.addEventListener("pointermove", function (e) {
-      if (down) sc.scrollLeft = startLeft - (e.clientX - startX);
+      if (!down) return;
+      if (Math.abs(e.clientX - startX) > 5) { moved = true; sc.classList.add("is-dragging"); }
+      sc.scrollLeft = startLeft - (e.clientX - startX);
     });
     window.addEventListener("pointerup", function () {
       if (down) { down = false; sc.classList.remove("is-dragging"); pauseFor(2500); }
     });
+    // A drag shouldn't trigger the card's link; a real click (no drag) should.
+    sc.addEventListener("click", function (e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+    }, true);
   })();
 
   /* ---------- Flash/pop section cards as they cross the viewport center ---------- */
