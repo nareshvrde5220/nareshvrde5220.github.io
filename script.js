@@ -8,6 +8,10 @@
 
   var docEl = document.documentElement;
   var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // While jumping from a Career Timeline card, suppress the generic scroll-flash
+  // on Experience cards so only the targeted card pops (not the one mid-scroll).
+  var jumpFlashUntil = 0;
+  var now = function () { return (window.performance && performance.now) ? performance.now() : Date.now(); };
 
   /* ---------- Theme (persisted) ---------- */
   var THEME_KEY = "jn-theme";
@@ -373,6 +377,10 @@
       var navH = parseFloat(getComputedStyle(docEl).getPropertyValue("--nav-h")) || 64;
       var y = target.getBoundingClientRect().top + (window.pageYOffset || 0) - (navH + 34);
       window.scrollTo({ top: Math.max(0, y), behavior: prefersReduced ? "auto" : "smooth" });
+      // suppress the generic scroll-flash on Experience during the jump, and
+      // clear any card it already lit, so only the target card pops
+      jumpFlashUntil = now() + 1800;
+      document.querySelectorAll("#experience .tl__card.is-active").forEach(function (c) { c.classList.remove("is-active"); });
       document.querySelectorAll(".tl.is-flash").forEach(function (el) { el.classList.remove("is-flash"); });
       target.classList.add("is-flash");
       if (flashT) clearTimeout(flashT);
@@ -390,6 +398,9 @@
     if (!cards.length) return;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
+        // during a Career Timeline jump, don't flash the Experience card that
+        // happens to be crossing the centre — only the targeted card should pop
+        if (now() < jumpFlashUntil && en.target.closest("#experience")) return;
         en.target.classList.toggle("is-active", en.isIntersecting);
       });
     }, { rootMargin: "-42% 0px -42% 0px", threshold: 0 });
