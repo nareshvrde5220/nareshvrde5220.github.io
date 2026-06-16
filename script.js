@@ -359,9 +359,23 @@
     window.addEventListener("pointerup", function () {
       if (down) { down = false; sc.classList.remove("is-dragging"); pauseFor(2500); }
     });
-    // A drag shouldn't trigger the card's link; a real click (no drag) should.
+    // Click a timeline card -> jump to that role in Experience (precise offset
+    // for the fixed nav) and flash it. A drag must NOT trigger navigation.
+    var flashT = null;
     sc.addEventListener("click", function (e) {
-      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; }
+      var link = e.target.closest && e.target.closest('a.ctl__card[href^="#"]');
+      if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+      if (!link) return;
+      e.preventDefault();
+      var target = document.getElementById(link.getAttribute("href").slice(1));
+      if (!target) return;
+      var navH = parseFloat(getComputedStyle(docEl).getPropertyValue("--nav-h")) || 64;
+      var y = target.getBoundingClientRect().top + (window.pageYOffset || 0) - (navH + 34);
+      window.scrollTo({ top: Math.max(0, y), behavior: prefersReduced ? "auto" : "smooth" });
+      document.querySelectorAll(".tl.is-flash").forEach(function (el) { el.classList.remove("is-flash"); });
+      target.classList.add("is-flash");
+      if (flashT) clearTimeout(flashT);
+      flashT = setTimeout(function () { target.classList.remove("is-flash"); }, 2200);
     }, true);
   })();
 

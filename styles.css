@@ -375,13 +375,12 @@ body { padding-top: var(--nav-h); }
 }
 .tl__card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-cyan) 40%, var(--border)); box-shadow: var(--shadow); }
 /* Highlight the Experience card jumped-to from a Career Timeline card click */
-.tl:target { scroll-margin-top: calc(var(--nav-h) + 20px); }
-.tl:target .tl__card {
+.tl.is-flash .tl__card {
   border-color: color-mix(in srgb, var(--c-glow) 65%, var(--border));
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--c-glow) 55%, transparent), 0 18px 50px rgba(91,205,215,.32);
   animation: card-flash .7s var(--ease);
 }
-@media (prefers-reduced-motion: reduce) { .tl:target .tl__card { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .tl.is-flash .tl__card { animation: none; } }
 /* Flash/pop the card currently in view (re-triggers on scroll) — used across
    Experience, About, Skills, Certifications, Awards, Education, Research,
    Contact, and (on hover) Recent Activities. Cyan glow = --c-glow #5BCDD7. */
