@@ -376,7 +376,7 @@
       document.querySelectorAll(".tl.is-flash").forEach(function (el) { el.classList.remove("is-flash"); });
       target.classList.add("is-flash");
       if (flashT) clearTimeout(flashT);
-      flashT = setTimeout(function () { target.classList.remove("is-flash"); }, 2200);
+      flashT = setTimeout(function () { target.classList.remove("is-flash"); }, 2600);
     }, true);
   })();
 
