@@ -18,11 +18,9 @@
     try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
   }
   (function initTheme() {
-    var saved;
-    try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
-    // Always default to DARK (ignore the OS/browser colour scheme); only honour
-    // an explicit user toggle saved earlier.
-    applyTheme(saved === "light" ? "light" : "dark");
+    // Always load in DARK, every refresh, on web & mobile. The toggle still
+    // switches the theme for the current session, but a reload returns to dark.
+    applyTheme("dark");
   })();
   if (toggle) {
     toggle.addEventListener("click", function () {
@@ -93,9 +91,18 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var id = entry.target.id;
+        var active = null;
         links.forEach(function (l) {
-          l.classList.toggle("is-active", l.getAttribute("href") === "#" + id);
+          var on = l.getAttribute("href") === "#" + id;
+          l.classList.toggle("is-active", on);
+          if (on) active = l;
         });
+        // On the mobile strip, slide the bar so the active header stays visible.
+        if (active && navLinks && navLinks.scrollWidth > navLinks.clientWidth + 2) {
+          var lr = active.getBoundingClientRect(), cr = navLinks.getBoundingClientRect();
+          var target = navLinks.scrollLeft + (lr.left - cr.left) - (cr.width - lr.width) / 2;
+          navLinks.scrollTo({ left: target, behavior: prefersReduced ? "auto" : "smooth" });
+        }
       });
     }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
     sections.forEach(function (s) { spy.observe(s); });
@@ -312,8 +319,8 @@
         var max = sc.scrollWidth - sc.clientWidth;
         if (max > 1) {
           if (dir === 1) {
-            // slow, clearly-visible scroll left -> right (~8s to the end)
-            sc.scrollLeft += Math.max(0.9, max / 480);
+            // forward scroll left -> right, a bit quicker (~5.5s to the end)
+            sc.scrollLeft += Math.max(1.3, max / 330);
             if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 500; }
           } else {
             // very fast rewind right -> start (~0.4s)
