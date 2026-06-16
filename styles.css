@@ -178,14 +178,18 @@ body::before {
 }
 
 /* ---------- Navigation ---------- */
+/* Fixed (not sticky) so it ALWAYS stays pinned on every device/scroll — sticky
+   can be flaky when an ancestor uses overflow:clip (as body does here). */
 .nav {
-  position: sticky; top: 0; z-index: 100;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   height: var(--nav-h);
   background: color-mix(in srgb, var(--bg) 78%, transparent);
   backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
   border-bottom: 1px solid transparent;
   transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
+/* Offset page content so it isn't hidden behind the fixed nav. */
+body { padding-top: var(--nav-h); }
 .nav.is-scrolled { border-bottom-color: var(--border); }
 .nav__inner {
   max-width: var(--maxw); margin-inline: auto; height: 100%;
