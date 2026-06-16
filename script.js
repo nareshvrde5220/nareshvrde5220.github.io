@@ -319,9 +319,10 @@
         var max = sc.scrollWidth - sc.clientWidth;
         if (max > 1) {
           if (dir === 1) {
-            // forward scroll left -> right, a bit quicker (~5.5s to the end)
-            sc.scrollLeft += Math.max(1.3, max / 330);
-            if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 500; }
+            // gentle forward scroll; per-frame step capped so it never feels
+            // fast on long (mobile) timelines — same calm pace on web & mobile
+            sc.scrollLeft += Math.min(1.4, Math.max(0.5, max / 700));
+            if (sc.scrollLeft >= max - 0.5) { sc.scrollLeft = max; dir = -1; holdUntil = now + 600; }
           } else {
             // very fast rewind right -> start (~0.4s)
             sc.scrollLeft -= Math.max(12, max / 24);
