@@ -58,7 +58,7 @@
 
 /* ---------- Reset / base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
+html { overflow-x: clip; scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 16px); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
@@ -582,6 +582,8 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
   transition: transform .35s var(--ease);
   max-width: calc(100vw - 12px);
 }
+.ra[hidden] { display: none; }
+.ra.is-collapsed .ra__panel { visibility: hidden; }
 .ra.is-collapsed { transform: translateY(-50%) translateX(calc(100% - 38px)); }
 .ra__toggle {
   flex: 0 0 38px; align-self: stretch; cursor: pointer;
@@ -713,7 +715,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 }
 @keyframes viewer-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
 .viewer__bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); background: var(--surface); }
-.viewer__title { font-family: var(--font-display); font-weight: 600; font-size: .95rem; margin: 0; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.viewer__title { min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: .95rem; margin: 0; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .viewer__actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
 .viewer__btn {
   font-family: var(--font-display); font-weight: 600; font-size: .82rem; cursor: pointer;
@@ -723,6 +725,7 @@ a.contact__card:hover .contact__value { text-decoration-thickness: 2px; }
 .viewer__btn:hover { transform: translateY(-1px); }
 .viewer__btn--ghost { background: var(--surface-2); color: var(--text); border-color: var(--border); }
 .viewer__close { background: var(--surface-2); color: var(--text); border-color: var(--border); width: 34px; height: 34px; padding: 0; line-height: 1; font-size: 1rem; }
+.viewer__hint { margin: 0; padding: .4rem 1rem; font-size: .8rem; color: var(--text-dim); }
 .viewer__body { flex: 1; min-height: 0; background: #0c0f17; display: flex; align-items: center; justify-content: center; overflow: auto; }
 .viewer__body iframe { width: 100%; height: 100%; border: 0; }
 .viewer__body img { max-width: 100%; max-height: 100%; object-fit: contain; margin: auto; }
@@ -736,7 +739,8 @@ body.viewer-open { overflow: hidden; }
 }
 
 /* ---------- Reveal on scroll ---------- */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal { opacity: 1; transform: none; transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.is-pending { opacity: 0; transform: translateY(24px); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ---------- Large monitors (27"/32"/43"/55" etc.) ----------

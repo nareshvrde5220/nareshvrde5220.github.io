@@ -390,3 +390,34 @@ All changes re-passed the AC9 privacy grep (zero family-data matches) and the as
 ---
 
 *End of specification. Implementation should follow this document section-by-section; any deviation that affects scope (§3), privacy (§3.1), or acceptance (§11) must be raised with the owner first.*
+
+## Maintenance acceptance criteria — 2026-09-08
+
+These criteria refine FR2, FR5, FR7, FR9, NFR2, NFR4 and NFR6. They supersede
+earlier conflicting viewer descriptions for these cases; ordinary external
+HTTP(S) links continue to open in a new tab as finalized in round 7.
+
+- [x] AC11 — With JavaScript disabled or its file blocked, all professional
+  content remains visible. Reveal hiding begins only after its observer is
+  initialized. The optional activities overlay stays hidden without JavaScript;
+  its links remain available in Publications & Research.
+- [x] AC12 — The document viewer intercepts only ordinary, unmodified clicks on
+  local PDF/image links. Ctrl/Cmd/Shift/Alt clicks, non-primary clicks, explicit
+  downloads, non-media local navigation and non-HTTP/file protocols keep native
+  browser behavior. In-page anchors keep native behavior.
+- [x] AC13 — PDF previews use the original document URL, including on touch
+  devices and local previews. No third-party service is needed to retrieve a
+  document. Open and Download remain available with a visible fallback hint
+  when the browser lacks inline PDF support. Actual rendering depends on the
+  browser's PDF capabilities and requires separate device verification.
+- [x] AC14 — Collapsed activities links cannot receive keyboard focus or appear
+  in the accessibility tree. Enter on the toggle opens the panel; Escape closes
+  it and restores focus to the toggle. Pointer exit does not hide a panel whose
+  links currently have keyboard focus.
+- [x] AC15 — The page and document overlay stay within widths of 320, 375, 768,
+  1024, 1440 and 1920 pixels. Local assets and fragment targets resolve, with no
+  duplicate IDs or JavaScript page errors in the automated checks.
+
+Automated checks: `node --test tests/site.test.cjs`. Results and exclusions are
+recorded in `TEST_VERIFICATION_REPORT.md`. These checks do not establish AC8
+(Lighthouse) or physical Android/iOS PDF rendering.

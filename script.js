@@ -125,7 +125,11 @@
         }
       });
     }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
-    revealEls.forEach(function (el) { revealObs.observe(el); });
+    // Hide only after the enhancement is ready; failed/disabled JS leaves content readable.
+    revealEls.forEach(function (el) {
+      el.classList.add("is-pending");
+      revealObs.observe(el);
+    });
   }
 
   /* ---------- In-page viewer (overlay) ---------- */
@@ -135,12 +139,10 @@
     var vTitle = document.getElementById("viewer-title");
     var vDownload = document.getElementById("viewer-download");
     var vOpen = document.getElementById("viewer-open");
+    var vHint = document.getElementById("viewer-hint");
     var lastTrigger = null;
     var imgExt = /\.(jpe?g|png|gif|webp|svg|avif)(\?|#|$)/i;
-    // Mobile browsers (iOS Safari, Android Chrome) won't render a PDF inside an
-    // <iframe> — they show a blank frame. On touch devices we route PDFs through
-    // Google's inline viewer so they display in the overlay like on desktop.
-    var isTouch = window.matchMedia("(pointer: coarse)").matches;
+    var mediaExt = /\.(pdf|jpe?g|png|gif|webp|svg|avif)$/i;
 
     function clearBody() { while (vBody.firstChild) vBody.removeChild(vBody.firstChild); }
 
@@ -154,15 +156,16 @@
       vDownload.setAttribute("download", href.split("/").pop().split(/[?#]/)[0]);
       vOpen.href = href;                                 // native full-screen fallback
 
+      if (vHint) vHint.hidden = imgExt.test(href);
       if (imgExt.test(href)) {
         var img = document.createElement("img");
         img.src = href; img.alt = title || "Image";
         vBody.appendChild(img);
       } else {
         var frame = document.createElement("iframe");
-        frame.src = isTouch
-          ? "https://docs.google.com/gview?embedded=true&url=" + encodeURIComponent(href)
-          : href;
+        // A remote viewer cannot retrieve localhost or file:// documents.
+        // Use the original URL; Open/Download also work without inline PDF support.
+        frame.src = href;
         frame.title = title || "Embedded document";
         frame.setAttribute("loading", "eager");
         vBody.appendChild(frame);
@@ -183,17 +186,20 @@
     // Local assets (PDFs/images) open in the overlay viewer. External links
     // open in a NEW TAB — third-party sites (LinkedIn, GitHub, Credly, etc.)
     // block iframe embedding ("refused to connect"), so they can't render in
-    // the overlay. In-page anchors and mailto:/tel:/javascript: stay native.
+    // the overlay. Modified clicks, explicit downloads and other protocols stay native.
     document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
       var a = e.target.closest && e.target.closest("a[href]");
-      if (!a) return;
+      if (!a || a.hasAttribute("download")) return;
       if (a.closest("#viewer")) return;                 // viewer's own buttons
       var raw = a.getAttribute("href");
       if (!raw || raw.charAt(0) === "#") return;        // in-page anchors
-      if (/^(mailto:|tel:|javascript:)/i.test(raw)) return;
       var url = a.href;                                  // resolved absolute
-      var isLocal = false;
-      try { isLocal = new URL(url).origin === window.location.origin; } catch (err) { isLocal = false; }
+      var parsed;
+      try { parsed = new URL(url); } catch (err) { return; }
+      if (!/^(https?:|file:)$/.test(parsed.protocol)) return;
+      var isLocal = parsed.origin === window.location.origin;
+      if (isLocal && !mediaExt.test(parsed.pathname)) return;
       e.preventDefault();
       if (isLocal) {
         var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";
@@ -411,13 +417,24 @@
   (function recentActivities() {
     var ra = document.getElementById("recent-activities");
     var btn = document.getElementById("ra-toggle");
-    if (!ra || !btn) return;
+    var panel = document.getElementById("ra-panel");
+    if (!ra || !btn || !panel) return;
     function setOpen(open) {
+      if (!open && panel.contains(document.activeElement)) btn.focus();
+      panel.inert = !open;
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
       ra.classList.toggle("is-collapsed", !open);
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }
     // Always start collapsed to a slim tab — never auto-open on page load.
     setOpen(false);
+    ra.hidden = false;
+    ra.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && (!viewer || viewer.hidden)) {
+        e.preventDefault();
+        setOpen(false);
+      }
+    });
     // Click toggles it (works for touch / keyboard).
     btn.addEventListener("click", function () {
       setOpen(ra.classList.contains("is-collapsed"));
@@ -429,7 +446,7 @@
       ra.addEventListener("mouseleave", function () {
         var sel = window.getSelection && window.getSelection();
         var selectingInside = sel && !sel.isCollapsed && ra.contains(sel.anchorNode);
-        if (!selectingInside) setOpen(false);
+        if (!selectingInside && !panel.contains(document.activeElement)) setOpen(false);
       });
     }
   })();

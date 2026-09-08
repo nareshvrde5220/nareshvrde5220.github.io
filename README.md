@@ -75,3 +75,21 @@ Built and tracked in milestone commits:
 ---
 
 © Jampala Naresh
+
+## Regression checks
+
+The site still has no build step or runtime dependencies. Browser tests require
+Node.js, Playwright and an installed Microsoft Edge browser:
+
+```powershell
+npm install --no-save --package-lock=false playwright
+node --check script.js
+node --test tests/site.test.cjs
+```
+
+Tests start and stop their own loopback HTTP server on an available port. They
+block external requests for repeatable offline checks. To use installed Chrome,
+set `$env:BROWSER_CHANNEL = "chrome"` before running the tests.
+
+See `TEST_VERIFICATION_REPORT.md` for the latest actual results and limitations,
+and `documentation/MAINTENANCE_PLAN.md` for review status.
