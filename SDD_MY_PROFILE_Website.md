@@ -1,5 +1,3 @@
----
-
 # Specs-Driven Development (SDD) — Jampala Naresh Profile Website
 
 **Document type:** Specification (build-ready)
