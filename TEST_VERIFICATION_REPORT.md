@@ -1,41 +1,55 @@
-# Test verification report — 2026-09-08
+# Test verification report — 2026-10-25
 
-Reviewed baseline: `d4e7ed3` on `main`.
-Site: static HTML/CSS/JavaScript; no application build required.
+## Revision reviewed
 
-## Reproduced failures and fixes
+Application revision: `d7bbcc1` — Calculate total experience from employment intervals.
+The repository is a buildless static site. The verification covered the current
+`index.html`, `styles.css?v=60`, `script.js?v=60`, local assets, and the
+Playwright suite in `tests/site.test.cjs`.
 
-| Failure on baseline | Fix | Verification |
-|---|---|---|
-| 59 reveal blocks invisible when JavaScript was disabled or blocked | Default visible CSS; observer explicitly opts elements into reveal hiding | Both no-JS browser cases pass |
-| Link interceptor swallowed modifier clicks, downloads, other protocols and local HTML navigation | Only intercept eligible ordinary clicks and local PDF/image paths | All eight native-navigation cases pass |
-| Touch preview asked Google to fetch a loopback URL it cannot access | Use original PDF URL with Open/Download fallback hint | Touch-emulated URL/actions check passes |
-| Tab reached off-screen collapsed activities links | Inert/hidden collapsed panel, Escape and focus restoration | Keyboard open/tab/close sequence passes |
-| Document scroll width reached 420px at a 320px viewport | Clip overflow at the root as well as body; constrain viewer title | Page and viewer bounds pass at six widths |
+## Checks run
 
-## Actual checks
-
-- Baseline browser suite: **2 passed, 6 failed** (before fixes).
-- Final `node --test tests/site.test.cjs`: **8 passed, 0 failed** in headless
-  Microsoft Edge using Playwright and a temporary loopback HTTP server.
+- `node --test tests/site.test.cjs`: **9 passed, 0 failed, 0 skipped**. The suite
+  launched a headless Playwright browser and served the repository through a
+  temporary loopback HTTP server.
 - `node --check script.js`: **passed**.
 - `git diff --check`: **passed**.
-- Responsive browser checks: **320, 375, 768, 1024, 1440, 1920px**.
-- Local HTML/JS asset sources, inline/CSS image URLs and linked local files:
-  **HTTP 200**; fragments resolve; no duplicate IDs or JavaScript page errors.
-- Image viewer open/close, focus restoration and theme toggle: **passed**.
-- Visual inspection: **375px and 1440px page previews**, plus **320px PDF viewer
-  controls**. Screenshot font requests were blocked, exercising local fallback
-  fonts. Hero text bounds were also checked and fit their content column.
+- Employment-date arithmetic: manually cross-checked the eight supplied role
+  intervals against the 25 Oct 2026 reference date. The separate work intervals
+  total **10 years, 0 months, 3 days**, matching the supplied table.
+
+## Coverage
+
+1. Static HTML, CSS, local assets, fragment targets, required portfolio content,
+   six skill groups, and the two valid PDF files.
+2. Readable core content with JavaScript disabled and with `script.js` blocked.
+3. Viewer interception preserves modified clicks, downloads, non-media links,
+   other protocols, and native navigation.
+4. Touch PDF preview uses its original local URL and exposes the Open/Download
+   fallback controls.
+5. Collapsed Recent Activities links are skipped by keyboard focus; Enter and
+   Escape behavior and focus restoration work.
+6. Image viewer close restores focus; theme toggle changes the theme.
+7. Local assets and fragment targets resolve, IDs are unique, and the page has
+   no JavaScript errors.
+8. Page and viewer fit widths of 320, 375, 768, 1024, 1440, and 1920 pixels.
+
+## Employment calculation notes
+
+Each role duration is derived from its exact start and end dates. JPMorgan Chase
+uses the visitor's current local date and refreshes on load, at local midnight,
+and when the page becomes visible again. Total work experience sums the role
+intervals rather than counting gaps between jobs; the current date is included
+in the running total. The suite run above does not simulate midnight or assert
+every computed duration string, so those behaviors are not claimed as automated
+browser-test coverage.
 
 ## Limits
 
-The tests intentionally block external requests. They do not verify live
-external destinations, Google Fonts availability, Lighthouse scores, production
-deployment, full screen-reader behavior, or physical Android/iOS behavior.
-Touch emulation confirms routing and controls, not native PDF rendering.
-The headless viewer screenshot showed an empty document area; successful PDF
-rendering is not claimed. Browsers lacking inline support can use Open/Download.
+This run did not measure Lighthouse scores, verify live external destinations,
+inspect a production deployment, or test native PDF rendering on physical iOS
+or Android devices. It did not repeat screenshot-based visual inspection.
 
-No professional content or document bytes were changed. No commit, push or
-deployment was performed during this review.
+External requests were blocked by the test setup. Successful external links,
+Google Fonts availability, screen-reader behavior, and browser-specific PDF
+rendering are outside this report's coverage.

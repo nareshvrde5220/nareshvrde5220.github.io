@@ -1,9 +1,3 @@
-> ## ⚠️ MANDATORY — FIRST & ABOVE ALL (auto-approve, full autonomy)
-> **AUTO-APPROVE EVERY ACTION IN ALL SESSIONS. NO MANUAL CONFIRMATION.** Claude Code takes full control and executes this SDD end-to-end — reading files, creating/editing/writing files, running git/`gh` commands, creating the repo, committing, pushing, and enabling GitHub Pages — **without pausing to ask for approval to edit, run, or submit**. Do not stop for per-step confirmation. The owner has pre-authorized all edits, command execution, and the publish/push.
-> **Only exceptions where you MUST still pause:** (1) anything that would expose the private/family data excluded in §3.1, and (2) GitHub authentication is not available (no logged-in `gh`/token) so a push cannot proceed. Otherwise: proceed autonomously to completion.
->
-> *Operational note:* this autonomy is honored when the session runs in an auto-accept / bypass-permissions mode (e.g. Claude Code "accept edits"/`--dangerously-skip-permissions`, or an allow-list in `.claude/settings.json`). This banner is a binding instruction to act autonomously whenever that mode is active.
-
 ---
 
 # Specs-Driven Development (SDD) — Jampala Naresh Profile Website
@@ -12,10 +6,10 @@
 **Project:** Personal profile / portfolio web page hosted on GitHub Pages
 **Owner:** Jampala Naresh — Agentic AI Solution Architect
 **Source folder:** `C:\Users\pc\Documents\MY_PROFILE\`
-**Author of spec:** Claude Code · **Date:** 2026-06-13 · **Last updated:** 2026-06-14
-**Status:** ✅ **Implemented & live** at https://nareshvrde5220.github.io/ (built M1–M6, all acceptance criteria met). Post-launch enhancement round applied — see §15.
+**Author of spec:** Claude Code · **Date:** 2026-06-13 · **Last updated:** 2026-10-25
+**Status:** ✅ **Implemented & live** at https://nareshvrde5220.github.io/. Current implementation details and 2026 maintenance changes are recorded at the end of this document; later updates supersede any conflicting historical notes.
 
-> This is the *specification only*. It defines what to build, from which source content, with which design and hosting plan, and the acceptance criteria. Implementation (writing the site and pushing to GitHub) is a separate, downstream step that follows this spec exactly.
+> This document began as a build specification and now also records the maintained, deployed implementation. For current behavior, use the latest dated maintenance update at the end; older implementation-log entries remain as historical context.
 
 ---
 
@@ -64,7 +58,7 @@ All content is **already in this folder** — the site is a presentation layer o
 |---|---|
 | `LinkedIn_Profile/Jampala_Naresh_LinkedIn_Profile.md` | Master text for About, Experience bullets, Awards, Education, Certs, Skills, Publications, Activity |
 | `Naresh_Resume_HighRes.pdf` | Contact block, headline/title, profile summary, core competencies; linked as a download |
-| `LinkedIn_Profile/Experience detaills.xlsx` (cols A–E only) | Precise experience dates & durations; total experience **9 yrs 7 mos** |
+| `LinkedIn_Profile/Experience detaills.xlsx` (professional columns only) | Exact role start/end dates; current total is calculated from the separate employment intervals |
 | `Jampala Naresh Cover Letter.pdf` | Linked as a download; tone reference for the intro |
 | `LinkedIn_Profile/images/**` | Profile photo, banner, certificate images, award images, post images, employer logos |
 | `LinkedIn_Profile/files/**` | Certificate & white-paper PDFs (linked as "View PDF") |
@@ -77,8 +71,8 @@ All content is **already in this folder** — the site is a presentation layer o
 - **Name:** Jampala Naresh
 - **Headline:** Agentic AI & GenAI Lead | Multi-Agent Systems on AWS & 3x AWS Certified with Generative AI Developer – Professional · 10+ years across Banking & Financial Services, Insurance, Automotive, Defense (DRDO), Weather (IMD) & Geoscience (CSIR)
 - **Location:** Hyderabad, Telangana, India
-- **Total experience:** 10+ years (as of 2026)
-- **Current role:** Applied AI ML Associate Senior, JPMorgan Chase (Mar 2026 – present)
+- **Total experience:** Dynamically summed from the eight non-overlapping role intervals; 10 years, 0 months, 3 days on 25 Oct 2026, shown as 10+ years.
+- **Current role:** Applied AI ML Associate Senior, JPMorgan Chase (2 Mar 2026 – present)
 
 ### 4.2 Canonical skills (full taxonomy rendered in the Skills section)
 
@@ -95,12 +89,12 @@ All content is **already in this folder** — the site is a presentation layer o
 
 Single-page (`index.html`) with anchored sections; the sticky nav links to each. Order top → bottom:
 
-1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (10+ yrs, 15 certifications, 8 roles, award).
+1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (dynamically summed 10+ years, 15 certifications, 8 roles, award).
 2. **About** — the "About" narrative + profile summary + core competencies bullets.
-3. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates/duration, location, achievement bullets, and per-role skill tags. Quantified wins surfaced (e.g. 45 days to 7 days home-loan processing, 60% faster claims, 96% RAG accuracy, 94% detection).
+3. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates and a calendar duration in years/months/days. The current role ends at the visitor's current local date. A total-work-experience line sums the separate role intervals and excludes employment gaps.
 4. **Skills** — 6 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI & Orchestration, GenAI & LLM, ML / DL, AWS Cloud, Azure & Google Cloud, and Engineering, Data & Governance.
 5. **Certifications** — card grid of 15 certs with issuer + date + credential ID; cards link to the certificate PDF/image where one exists; AWS verify links where present.
-6. **Awards & Honors** — AWS Nova Challenge 2025 — First Runner-Up (Trianz) & Team Excellence Award (Anytime Awards 2025) with ceremony photo + certificate image + State Rank 47 in TSPGECET-2020.
+6. **Awards & Honors** — AWS Nova Challenge 2025 — First Runner-Up (Trianz) & Team Excellence Award (Anytime Awards 2025) with ceremony photo + certificate image + State Rank 47 in TSPGECET-2020. Award names, solution/AI technology terms, and key metrics use the theme cyan highlight.
 7. **Education** — 4 entries (M.Tech. SSP 2022–May 2027 expected, B.Tech. ECE 2013, Intermediate, SSC) with the M.Tech. detail.
 8. **Publications & Research** — "AI-driven Intelligent Email Automation" white paper (PDF link) + the `Recent_Research_works` PDF + featured posts.
 9. **Contact** — email, phone, location, and all social/profile links; footer.
@@ -111,7 +105,7 @@ Single-page (`index.html`) with anchored sections; the sticky nav links to each.
 - Smooth scrolling (`scroll-behavior: smooth`) with offset for the sticky header.
 - Mobile (<768px): collapses to a hamburger menu; tap closes the menu and scrolls.
 - "Back to top" button appears after first scroll.
-- Theme toggle (dark/light) in the navbar, persisted in `localStorage`.
+- Theme toggle (dark/light) in the navbar; the current script starts in dark mode on each page load and stores the selected value in `localStorage`.
 
 ---
 
@@ -119,12 +113,13 @@ Single-page (`index.html`) with anchored sections; the sticky nav links to each.
 
 ### 6.1 Functional
 - FR1 — Render all sections in §5 from the real source data in §4.
-- FR2 — Every PDF/image referenced is reachable from the page (download or view in new tab).
+- FR2 — Every referenced local PDF/image is reachable through the in-page viewer and its Open/Download controls; external references remain normally navigable.
 - FR3 — Sticky nav with working anchors, scrollspy, smooth scroll, mobile menu, back-to-top.
-- FR4 — Dark/light theme toggle, persisted across visits.
+- FR4 — Dark/light theme toggle for the current page session; the page starts in dark mode on each load.
 - FR5 — Reveal-on-scroll animation for cards/timeline (respecting `prefers-reduced-motion`).
 - FR6 — Contact actions: `mailto:` and `tel:` open natively.
-- FR7 — **In-page viewer (overlay):** local PDFs and images open in a full-screen overlay *within the same window* (no new tab/window), embedded via `<iframe>`/`<img>` with a **Download** action; closed via ✕, backdrop click, or `Esc`. **External links navigate directly in the same window** (no new tab) — they are intentionally not framed because third-party sites (LinkedIn, GitHub, AWS, Credly, Google Maps) send `X-Frame-Options`/CSP headers that block iframe embedding. Without JS, all links degrade to same-tab navigation. *(Supersedes the earlier `target="_blank"` behavior in FR6.)*
+- FR7 — **In-page viewer (overlay):** local PDFs and images open in a full-screen overlay with Open/Download actions and close via ✕, backdrop click, or `Esc`. Ordinary external HTTP(S) links open in a new tab; modified clicks, downloads, other protocols, in-page anchors, and non-media local navigation retain native behavior. Without JS, all links remain usable through normal browser navigation.
+- FR8 — **Exact employment durations and total:** calculate each role's years/months/days from its supplied dates; use today's local date for the JPMorgan role; sum all role intervals (not the full 2015-to-present calendar span) to calculate total experience. Refresh on page load, local midnight, and when a hidden tab becomes visible.
 
 ### 6.2 Non-functional
 - NFR1 — **No build step.** Plain HTML/CSS/JS that runs when opened as static files (GitHub Pages friendly).
@@ -194,22 +189,11 @@ nareshvrde5220.github.io/
 
 ---
 
-## 10. GitHub hosting plan (deployment)
+## 10. GitHub hosting and deployment
 
 Target: `https://github.com/nareshvrde5220` → repo `nareshvrde5220.github.io` → live at `https://nareshvrde5220.github.io`.
 
-**Prerequisites the owner must confirm/provide at implementation time:**
-- GitHub auth available to the CLI (e.g. `gh auth status` is logged in, or a PAT). The local git user is `nareshvrde5220`.
-- Confirmation to push to a *public* repo (Pages on free accounts requires public).
-
-**Steps (executed during implementation, not now):**
-1. Build the site files (§8–9) in a working directory.
-2. Create the repo: `gh repo create nareshvrde5220/nareshvrde5220.github.io --public --source . --remote origin` (or create empty on GitHub, then add remote).
-3. Add `.nojekyll`, commit on `main`.
-4. `git push -u origin main`.
-5. Enable Pages: for a `*.github.io` user repo, Pages auto-serves `main` at the root; verify under **Settings → Pages** (Source = Deploy from branch, `main` / root). Via API: `gh api -X POST repos/nareshvrde5220/nareshvrde5220.github.io/pages -f source[branch]=main -f source[path]=/`.
-6. Wait for the Pages build, then verify `https://nareshvrde5220.github.io` returns HTTP 200 and renders.
-7. (Optional) custom domain via `CNAME` + DNS — out of scope unless requested.
+The public user-site repository is `nareshvrde5220/nareshvrde5220.github.io`; GitHub Pages serves the repository root at `https://nareshvrde5220.github.io/`. The root portfolio is static HTML/CSS/JavaScript and deploys from `main` without a build step. Pushing a commit to `main` triggers Pages deployment. The current public site is the root `index.html`; the separate `src/` React/Vite studio source does not power the deployed root portfolio.
 
 **Rollback:** Pages serves the last successful commit; reverting a bad commit and pushing re-deploys.
 
@@ -220,15 +204,15 @@ Target: `https://github.com/nareshvrde5220` → repo `nareshvrde5220.github.io` 
 The build is complete when **all** are true:
 
 - [x] AC1 — `index.html` renders all 9 sections (§5) with real data; no placeholder text.
-- [x] AC2 — Experience timeline shows all 8 roles with exact dates/durations matching the resume; total "10+ yrs" stat shown.
+- [x] AC2 — Experience timeline shows all 8 roles with the supplied exact dates and computed calendar durations; total work experience sums role intervals, excludes gaps, and displays 10 years, 0 months, 3 days (10+ years) on 25 Oct 2026.
 - [x] AC3 — All 15 certifications listed; those with a PDF/image link open it; verify links work where present. *(Enhancement: the 8 certs without local assets now link to verifiable references — Credly for Skillsoft, NVIDIA DLI for the NVIDIA cert; see §15.)*
 - [x] AC4 — Awards section shows the Team Excellence Award with ceremony photo + certificate image and the external article/video links.
 - [x] AC5 — Resume, cover letter, white paper, cert PDFs, and the research PDF are all reachable from the page (now via the in-page viewer with a Download action, FR7).
-- [x] AC6 — Sticky nav + scrollspy + smooth scroll + mobile menu + back-to-top all work; theme toggle persists.
-- [x] AC7 — Responsive with no horizontal scroll at 320/375/768/1024/1440px; `prefers-reduced-motion` respected.
+- [x] AC6 — Sticky nav + scrollspy + smooth scroll + mobile menu + back-to-top work; theme toggle works and the page starts in dark mode on each load.
+- [x] AC7 — Responsive with no horizontal scroll at 320/375/768/1024/1440/1920px; `prefers-reduced-motion` respected.
 - [ ] AC8 — Lighthouse (mobile): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95. *(Built to target; needs a manual Lighthouse run to record the score.)*
 - [x] AC9 — **Privacy check passes:** a grep of the entire published repo for the excluded family names, DOBs, and anniversary returns **zero** matches.
-- [x] AC10 — Repo `nareshvrde5220.github.io` exists, is pushed, Pages enabled, and the live URL returns 200 and renders correctly on desktop + mobile.
+- [x] AC10 — Repo `nareshvrde5220.github.io` exists, is pushed, and GitHub Pages serves the root portfolio. The current local regression report does not recheck the production URL.
 
 ---
 
@@ -420,3 +404,49 @@ HTTP(S) links continue to open in a new tab as finalized in round 7.
 Automated checks: `node --test tests/site.test.cjs`. Results and exclusions are
 recorded in `TEST_VERIFICATION_REPORT.md`. These checks do not establish AC8
 (Lighthouse) or physical Android/iOS PDF rendering.
+
+## Current implementation and maintenance update — 2026-10-25
+
+This section is the authoritative description of the deployed application as of
+25 October 2026. It supersedes older implementation-log statements where they
+conflict, especially the old month-rounding rule and early viewer behavior.
+
+### Employment dates and experience calculations
+
+The Experience timeline stores the exact dates below in `data-role-start` and
+`data-role-end` attributes. Closed-role durations use calendar years, months,
+and days between the supplied dates. The active JPMorgan Chase role ends at the
+visitor's current local date. It is recalculated on page load, at local
+midnight, and when a hidden page becomes visible again.
+
+| Company / role | From | To | Duration on 25 Oct 2026 |
+|---|---:|---:|---:|
+| JPMorgan Chase — Applied AI ML Associate Senior | 2 Mar 2026 | Present | 0 years, 7 months, 23 days |
+| Trianz — Senior Technical Lead | 1 Jun 2025 | 27 Feb 2026 | 0 years, 8 months, 26 days |
+| Trianz — Technical Lead | 21 Feb 2024 | 31 May 2025 | 1 year, 3 months, 10 days |
+| People Tech — Principal Data Scientist | 27 May 2022 | 20 Feb 2024 | 1 year, 8 months, 24 days |
+| Teamware — Senior Data Scientist | 14 Feb 2022 | 23 May 2022 | 0 years, 3 months, 9 days |
+| CSIR-NGRI — Project Associate II | 27 Aug 2019 | 25 Jan 2021 | 1 year, 4 months, 29 days |
+| IITM — Project Scientist B | 15 Jan 2018 | 30 Apr 2019 | 1 year, 3 months, 15 days |
+| DRDO-VRDE — Research Fellow (JRF & SRF) | 25 May 2015 | 12 Jan 2018 | 2 years, 7 months, 18 days |
+
+Total Work Experience is calculated from the sum of these separate employment
+intervals, excluding the gaps between roles. To match the supplied total, the
+ongoing role contributes the current date to the total; the role's displayed
+duration itself remains the elapsed calendar difference. On 25 Oct 2026 the
+total is **10 years, 0 months, 3 days**, and the site shows **10+ years** in the
+hero, About, Experience eyebrow, and experience counter. These values update
+with the same live calculation as the current role.
+
+### Other current behavior
+
+- The Awards & Honors card highlights award names, solution names, AI terms,
+  and the supplied metrics in theme cyan.
+- Local PDF and image links open in the in-page viewer. Ordinary external web
+  links open in a new tab; modifier clicks, downloads, in-page links, other
+  protocols, and non-media local links retain browser behavior.
+- The site remains a buildless static application: `index.html`, `styles.css`,
+  `script.js`, and local assets. CSS and JS cache-busting query values are `60`.
+- The verification suite is `node --test tests/site.test.cjs`. The current
+  result and the limits of that suite are recorded in
+  [TEST_VERIFICATION_REPORT.md](TEST_VERIFICATION_REPORT.md).
