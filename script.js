@@ -230,7 +230,7 @@
 
   /* ---------- Stat count-up ---------- */
   (function careerYears() {
-    var start = new Date("2015-01-01T00:00:00");
+    var start = new Date("2015-05-25T00:00:00");
     var today = new Date();
     var years = today.getFullYear() - start.getFullYear();
     if (today.getMonth() < start.getMonth() ||
@@ -277,21 +277,39 @@
     }
   }
 
-  /* ---------- Live "Present" durations ---------- */
-  (function liveDurations() {
-    var els = document.querySelectorAll("[data-since]");
-    var now = new Date();
-    els.forEach(function (el) {
-      var s = el.getAttribute("data-since");
-      var start = new Date(s + (s.length <= 7 ? "-01" : ""));
-      if (isNaN(start)) return;
-      // Count the start month and the current partial month inclusively.
-      var months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth()) + 2;
-      if (months < 0) months = 0;
-      var yrs = Math.floor(months / 12), mos = months % 12, parts = [];
-      if (yrs) parts.push(yrs + " yr" + (yrs > 1 ? "s" : ""));
-      parts.push((mos || !yrs ? mos : 0) + " mos");
-      el.textContent = el.textContent + " · " + parts.join(" ");
+  /* ---------- Exact role durations ---------- */
+  (function roleDurations() {
+    function parseDate(value) {
+      var parts = value.split("-");
+      return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    }
+    function daysInMonth(year, month) {
+      return new Date(year, month + 1, 0).getDate();
+    }
+    function durationBetween(start, end) {
+      var years = end.getFullYear() - start.getFullYear();
+      var months = end.getMonth() - start.getMonth();
+      var days = end.getDate() - start.getDate();
+      if (days < 0) {
+        months -= 1;
+        var priorMonth = end.getMonth() - 1;
+        var priorYear = end.getFullYear();
+        if (priorMonth < 0) { priorMonth = 11; priorYear -= 1; }
+        days += daysInMonth(priorYear, priorMonth);
+      }
+      if (months < 0) { years -= 1; months += 12; }
+      return [years, months, days];
+    }
+    function plural(value, unit) { return value + " " + unit + (value === 1 ? "" : "s"); }
+
+    document.querySelectorAll("[data-role-start]").forEach(function (el) {
+      var start = parseDate(el.getAttribute("data-role-start"));
+      var endValue = el.getAttribute("data-role-end");
+      var end = endValue === "today" ? new Date() : parseDate(endValue);
+      if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) return;
+      var parts = durationBetween(start, end);
+      var duration = [plural(parts[0], "year"), plural(parts[1], "month"), plural(parts[2], "day")].join(", ");
+      el.textContent += " · " + duration;
     });
   })();
 
