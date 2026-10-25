@@ -34,10 +34,13 @@ jobs:
 
       - name: Install Playwright & Chromium for headless browser verification
         run: |
+          mkdir -p "$RUNNER_TEMP/portfolio-playwright"
+          cd "$RUNNER_TEMP/portfolio-playwright"
           npm install --no-save --package-lock=false playwright
-          npx playwright install --with-deps chromium
+          ./node_modules/.bin/playwright install --with-deps chromium
 
       - name: Run static JPMC resume alignment & offline Playwright regression suite
         env:
           CI: "true"
+          NODE_PATH: ${{ runner.temp }}/portfolio-playwright/node_modules
         run: node --test tests/site.test.cjs
