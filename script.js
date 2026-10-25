@@ -200,6 +200,13 @@
       if (!/^(https?:|file:)$/.test(parsed.protocol)) return;
       var isLocal = parsed.origin === window.location.origin;
       if (isLocal && !mediaExt.test(parsed.pathname)) return;
+      var touchDevice = navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches;
+      if (isLocal && /\.pdf$/i.test(parsed.pathname) && touchDevice) {
+        // Mobile browsers preview a directly opened PDF more reliably than a PDF embedded in an iframe.
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+        return;
+      }
       e.preventDefault();
       if (isLocal) {
         var title = (a.textContent || "").replace(/[→↗]/g, "").trim() || a.title || "Document";

@@ -116,7 +116,7 @@ Single-page (`index.html`) with anchored sections; the sticky nav links to each.
 - FR4 — Dark/light theme toggle for the current page session; the page starts in dark mode on each load.
 - FR5 — Reveal-on-scroll animation for cards/timeline (respecting `prefers-reduced-motion`).
 - FR6 — Contact actions: `mailto:` and `tel:` open natively.
-- FR7 — **In-page viewer (overlay):** local PDFs and images open in a full-screen overlay with Open/Download actions and close via ✕, backdrop click, or `Esc`. Ordinary external HTTP(S) links open in a new tab; modified clicks, downloads, other protocols, in-page anchors, and non-media local navigation retain native behavior. Without JS, all links remain usable through normal browser navigation.
+- FR7 — **Document viewing:** local PDFs and images open in the in-page viewer on desktop, with Open/Download actions and close via ✕, backdrop click, or `Esc`. On touch devices, local PDFs open directly in a new tab so the browser's native PDF preview can render them. Ordinary external HTTP(S) links open in a new tab; modified clicks, downloads, other protocols, in-page anchors, and non-media local navigation retain native behavior. Without JS, links use normal browser navigation.
 - FR8 — **Exact employment durations and total:** calculate each role's years/months/days from its supplied dates; use today's local date for the JPMorgan role; sum all role intervals (not the full 2015-to-present calendar span) to calculate total experience. Refresh on page load, local midnight, and when a hidden tab becomes visible.
 
 ### 6.2 Non-functional
@@ -440,11 +440,12 @@ with the same live calculation as the current role.
 
 - The Awards & Honors card highlights award names, solution names, AI terms,
   and the supplied metrics in theme cyan.
-- Local PDF and image links open in the in-page viewer. Ordinary external web
+- Local PDFs open in the in-page viewer on desktop and directly in a new tab on
+  touch devices; local images open in the in-page viewer. Ordinary external web
   links open in a new tab; modifier clicks, downloads, in-page links, other
   protocols, and non-media local links retain browser behavior.
 - The site remains a buildless static application: `index.html`, `styles.css`,
-  `script.js`, and local assets. CSS and JS cache-busting query values are `60`.
+  `script.js`, and local assets. CSS and JS cache-busting query values are `61`.
 - The verification suite is `node --test tests/site.test.cjs`. The current
   result and the limits of that suite are recorded in
   [TEST_VERIFICATION_REPORT.md](TEST_VERIFICATION_REPORT.md).

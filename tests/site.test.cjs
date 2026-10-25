@@ -67,9 +67,9 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const css = await fs.readFile(path.join(root, 'styles.css'), 'utf8');
 
-  // Verify cache-busting v=60
-  assert.match(html, /href="styles\.css\?v=60"/);
-  assert.match(html, /src="script\.js\?v=60"/);
+  // Verify cache-busting v=61
+  assert.match(html, /href="styles\.css\?v=61"/);
+  assert.match(html, /src="script\.js\?v=61"/);
 
   // Verify 2026 JPMC AI Lead Resume alignment
   assert.match(html, /<title>Jampala Naresh — Agentic AI &amp; GenAI Lead \| Multi-Agent Systems on AWS<\/title>/);
@@ -158,14 +158,14 @@ test('viewer preserves modified clicks, downloads, other protocols and non-media
   assert.equal(await page.locator('#viewer').isVisible(), false);
 });
 
-test('touch PDF preview uses the original local URL and exposes a fallback', async t => {
+test('touch PDF preview opens the original local PDF directly', async t => {
   if (!browser) return;
   const page = await pageFor(t, { hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
-  await page.locator('.contact__docs a').first().dispatchEvent('click');
-  assert.equal(await page.locator('#viewer').isVisible(), true);
-  assert.equal(await page.locator('#viewer iframe').getAttribute('src'), base + '/assets/docs/Naresh_Resume_HighRes.pdf');
-  assert.equal(await page.locator('#viewer-open').getAttribute('href'), base + '/assets/docs/Naresh_Resume_HighRes.pdf');
-  assert.equal(await page.locator('#viewer-hint').isVisible(), true);
+  const popupPromise = page.waitForEvent('popup');
+  await page.locator('.contact__docs a').first().click();
+  const pdfPage = await popupPromise;
+  assert.equal(pdfPage.url(), base + '/assets/docs/Naresh_Resume_HighRes.pdf');
+  assert.equal(await page.locator('#viewer').isVisible(), false);
 });
 
 test('collapsed activities cannot receive focus and Escape restores the toggle', async t => {

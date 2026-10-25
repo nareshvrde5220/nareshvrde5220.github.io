@@ -2,9 +2,8 @@
 
 ## Revision reviewed
 
-Application revision: `d7bbcc1` — Calculate total experience from employment intervals.
 The repository is a buildless static site. The verification covered the current
-`index.html`, `styles.css?v=60`, `script.js?v=60`, local assets, and the
+`index.html`, `styles.css?v=61`, `script.js?v=61`, local assets, and the
 Playwright suite in `tests/site.test.cjs`.
 
 ## Checks run
@@ -25,7 +24,8 @@ Playwright suite in `tests/site.test.cjs`.
 2. Readable core content with JavaScript disabled and with `script.js` blocked.
 3. Viewer interception preserves modified clicks, downloads, non-media links,
    other protocols, and native navigation.
-4. Touch PDF preview uses its original local URL and exposes the Open/Download
+4. Touch-device PDF links open the original local PDF URL in a new browser tab
+   for native mobile preview; the desktop viewer retains its Open/Download
    fallback controls.
 5. Collapsed Recent Activities links are skipped by keyboard focus; Enter and
    Escape behavior and focus restoration work.
