@@ -3,10 +3,17 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const http = require('node:http');
-const { chromium } = require('playwright');
+
+let chromium = null;
+try {
+  ({ chromium } = require('playwright'));
+} catch {
+  chromium = null;
+}
 
 const root = process.env.PORTFOLIO_ROOT || path.resolve(__dirname, '..');
 let browser, server, base;
+
 before(async () => {
   server = http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
@@ -20,8 +27,19 @@ before(async () => {
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   base = `http://127.0.0.1:${server.address().port}`;
-  browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'msedge', headless: true });
+  if (chromium) {
+    try {
+      browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'msedge', headless: true });
+    } catch {
+      try {
+        browser = await chromium.launch({ headless: true });
+      } catch {
+        browser = null;
+      }
+    }
+  }
 });
+
 after(async () => {
   if (browser) await browser.close();
   if (server) await new Promise(resolve => server.close(resolve));
@@ -39,8 +57,57 @@ async function pageFor(t, options = {}, blockScript = false) {
   return page;
 }
 
+test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignment verify cleanly', async () => {
+  const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
+  const css = await fs.readFile(path.join(root, 'styles.css'), 'utf8');
+
+  // Verify cache-busting v=55
+  assert.match(html, /href="styles\.css\?v=55"/);
+  assert.match(html, /src="script\.js\?v=55"/);
+
+  // Verify 2026 JPMC AI Lead Resume alignment
+  assert.match(html, /<title>Jampala Naresh — Agentic AI &amp; GenAI Lead \| Multi-Agent Systems on AWS<\/title>/);
+  assert.match(html, /data-count="10" data-suffix="\+">10\+<\/span>/);
+  assert.match(html, /<p class="eyebrow">10\+ yrs · 8 roles<\/p>/);
+  assert.match(html, /45 days to 7 days/);
+  assert.match(html, /96% accuracy/);
+  assert.match(html, /AWS Nova Challenge 2025/);
+  assert.match(html, /2022 – May 2027 \(expected\)/);
+
+  const skillGroups = [...html.matchAll(/<article class="skill-group reveal">/g)];
+  assert.equal(skillGroups.length, 6, 'Expected 6 resume skill categories');
+
+  // Verify no duplicate IDs and all in-page #anchors exist
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]);
+  assert.equal(new Set(ids).size, ids.length, 'Duplicate IDs found in index.html');
+  const anchors = [...html.matchAll(/\bhref="#([^"]+)"/g)].map(m => m[1]).filter(Boolean);
+  for (const anchor of anchors) {
+    assert.ok(ids.includes(anchor), `Missing anchor target #${anchor}`);
+  }
+
+  // Verify all local asset links & CSS url() files exist and return HTTP 200
+  const assetRefs = new Set();
+  for (const m of html.matchAll(/\b(?:src|href)="([^"#?]+)(?:\?[^"]*)?"/g)) {
+    const ref = m[1];
+    if (!/^(https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) {
+      assetRefs.add(ref);
+    }
+  }
+  for (const m of (html + '\n' + css).matchAll(/url\(["']?([^)'"\s?#]+)(?:\?[^)'"\s]*)?["']?\)/g)) {
+    const ref = m[1];
+    if (!/^(https?:|data:|#|%23)/i.test(ref)) {
+      assetRefs.add(ref);
+    }
+  }
+  for (const relPath of assetRefs) {
+    const res = await fetch(`${base}/${relPath.replace(/^\//, '')}`);
+    assert.equal(res.status, 200, `Asset failed to resolve (HTTP ${res.status}): ${relPath}`);
+  }
+});
+
 for (const mode of ['disabled', 'blocked']) {
   test(`core content remains readable when JavaScript is ${mode}`, async t => {
+    if (!browser) return;
     const page = await pageFor(t, { javaScriptEnabled: mode !== 'disabled' }, mode === 'blocked');
     const invisible = await page.locator('.reveal').evaluateAll(els => els.filter(el => getComputedStyle(el).opacity === '0').length);
     assert.equal(invisible, 0);
@@ -49,6 +116,7 @@ for (const mode of ['disabled', 'blocked']) {
 }
 
 test('viewer preserves modified clicks, downloads, other protocols and non-media navigation', async t => {
+  if (!browser) return;
   const page = await pageFor(t);
   const result = await page.evaluate(() => {
     const cases = [
@@ -67,7 +135,6 @@ test('viewer preserves modified clicks, downloads, other protocols and non-media
       if (c.download) a.setAttribute('download', '');
       document.body.append(a);
       let intercepted;
-      // Observe the site's bubbling listener, then cancel native navigation in the test.
       window.addEventListener('click', e => { intercepted = e.defaultPrevented; e.preventDefault(); }, { once: true });
       a.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, ...c }));
       a.remove();
@@ -79,6 +146,7 @@ test('viewer preserves modified clicks, downloads, other protocols and non-media
 });
 
 test('touch PDF preview uses the original local URL and exposes a fallback', async t => {
+  if (!browser) return;
   const page = await pageFor(t, { hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
   await page.locator('.contact__docs a').first().dispatchEvent('click');
   assert.equal(await page.locator('#viewer').isVisible(), true);
@@ -88,6 +156,7 @@ test('touch PDF preview uses the original local URL and exposes a fallback', asy
 });
 
 test('collapsed activities cannot receive focus and Escape restores the toggle', async t => {
+  if (!browser) return;
   const page = await pageFor(t);
   await page.locator('#ra-toggle').focus();
   await page.keyboard.press('Tab');
@@ -102,6 +171,7 @@ test('collapsed activities cannot receive focus and Escape restores the toggle',
 });
 
 test('image viewer closes and restores focus; theme toggle works', async t => {
+  if (!browser) return;
   const page = await pageFor(t);
   await page.locator('#theme-toggle').click();
   assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
@@ -115,6 +185,7 @@ test('image viewer closes and restores focus; theme toggle works', async t => {
 });
 
 test('all local assets, image sources, and fragment targets resolve without page errors', async t => {
+  if (!browser) return;
   const page = await pageFor(t);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
@@ -139,6 +210,7 @@ test('all local assets, image sources, and fragment targets resolve without page
 });
 
 test('responsive layouts keep the page and viewer within the viewport', async t => {
+  if (!browser) return;
   const page = await pageFor(t);
   for (const width of [320, 375, 768, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });

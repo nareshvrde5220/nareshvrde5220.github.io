@@ -75,20 +75,19 @@ All content is **already in this folder** — the site is a presentation layer o
 ### 4.1 Canonical professional facts (single source of truth for the build)
 
 - **Name:** Jampala Naresh
-- **Headline:** Agentic AI Solution Architect & AWS Certified Generative AI Developer – Professional · 9+ years across Insurance, Finance, Automotive & Defence (AWS & Azure)
+- **Headline:** Agentic AI & GenAI Lead | Multi-Agent Systems on AWS & 3x AWS Certified with Generative AI Developer – Professional · 10+ years across Banking & Financial Services, Insurance, Automotive, Defense (DRDO), Weather (IMD) & Geoscience (CSIR)
 - **Location:** Hyderabad, Telangana, India
-- **Total experience:** 9 years 7 months (per spreadsheet, as of 2026-06-13)
-- **Current role:** Applied AI ML Associate Senior, JPMorganChase (Mar 2026 – present)
+- **Total experience:** 10+ years (as of 2026)
+- **Current role:** Applied AI ML Associate Senior, JPMorgan Chase (Mar 2026 – present)
 
 ### 4.2 Canonical skills (full taxonomy rendered in the Skills section)
 
-- **Agentic AI — Architecture & Orchestration:** Agentic AI, AWS AgentCore, Model Context Protocol (MCP), CrewAI, AutoGen, AWS Strands-Agents, LangGraph, LangChain, Vertex AI Agent Builder.
-- **Generative AI & LLM Ecosystem:** Generative AI, Large Language Models (LLM), Claude, OpenAI, Amazon Bedrock (FM Models), Bedrock Data Automation, Ollama, RAG Pipelines, Prompt Engineering, LLMOps, LLM Fine-Tuning, Responsible AI & Governance, Deep Reinforcement Learning.
-- **Machine Learning, Deep Learning & Algorithms:** Machine Learning, Deep Learning, IsolationForest, XGBoost, CNN, RNN, LSTM, ANN, DNN, Wavelets, Transformer, TensorFlow, Keras, PyTorch, HuggingFace, Scikit-learn, MATLAB.
-- **AWS Cloud Services:** Amazon Bedrock, SageMaker, Lambda, API Gateway, EC2, S3, DynamoDB, CloudWatch, Cognito, Step Functions, Glue, Athena, Redshift, Textract, EventBridge, SNS, Docker.
-- **Azure & Google Cloud AI:** Azure AI Studio, Azure AI Foundry, Azure Databricks, Azure Functions, Blob Storage, Event Grid, Azure Data Explorer, Vertex AI, Gemini Models, Vertex AI Vector Search, Vertex AI Model Garden.
-- **Python, Web & APIs:** Python 3.13+, FastAPI, GraphQL, Django, Flask, Pandas, NumPy, Matplotlib, ETL & CI/CD, Docker.
-- **Data, SQL, Integrations & Tools:** Advanced SQL, Query Optimization, Window Functions, Stored Procedures, MySQL, PostgreSQL, SQL Server, Snowflake, Salesforce (GenAI / Agentic), Feature Engineering, Statistics, Git & Code Reviews, Technical Project Leadership.
+- **Agentic AI & Orchestration:** LangGraph, LangChain, CrewAI, AutoGen, AWS Strands Agents, Model Context Protocol (MCP), AWS AgentCore, Vertex AI Agent Builder.
+- **GenAI & LLM:** Claude, OpenAI GPT-4o, Llama, Gemini, AWS Bedrock (FM, AgentCore, Data Automation), RAG Pipelines, Prompt Engineering, LLMOps, LLM Fine-Tuning, Ollama.
+- **ML / DL:** XGBoost, IsolationForest, CNN, RNN, LSTM, VGG19, TensorFlow, Keras, PyTorch, Hugging Face, Scikit-learn, MATLAB, Feature Engineering, Model Evaluation.
+- **AWS Cloud:** Bedrock, AgentCore, SageMaker, Lambda, API Gateway, ECS, ECR, EC2, S3, DynamoDB, Aurora, OpenSearch, MSK (Kafka), EventBridge, Step Functions, Textract, Rekognition, Transcribe, Polly, Glue, Athena, Redshift, Cognito, CloudWatch, SNS.
+- **Azure & Google Cloud:** Azure AI Foundry, Databricks, Functions, Event Grid, Stream Analytics, Vertex AI, Gemini, Vector Search.
+- **Engineering, Data & Governance:** Python 3.13+, FastAPI, SQLAlchemy, Pydantic, Django, Flask, Kafka Event-Driven Architecture, SQL (MySQL, PostgreSQL, SQL Server, Aurora), Snowflake, Salesforce Integration, Git, Spec-Driven Development, Responsible AI, AI Security & Governance.
 
 ---
 
@@ -96,13 +95,13 @@ All content is **already in this folder** — the site is a presentation layer o
 
 Single-page (`index.html`) with anchored sections; the sticky nav links to each. Order top → bottom:
 
-1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (9+ yrs, 15 certifications, 8 roles, award).
-2. **About** — the "About" narrative + profile summary + core competencies chips.
-3. **Experience** — vertical timeline, 8 roles (JPMorganChase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IITM → DRDO), each with exact dates/duration from the spreadsheet, location, achievement bullets, and per-role skill tags. Quantified wins surfaced (e.g. 60% faster claims, 90% accuracy, 94% detection).
-4. **Skills** — 7 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI orchestration, Generative AI & LLM ecosystem, ML/DL & algorithms, AWS cloud services, Azure & Google Cloud AI, Python/Web/APIs, and Data/SQL/integrations.
+1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (10+ yrs, 15 certifications, 8 roles, award).
+2. **About** — the "About" narrative + profile summary + core competencies bullets.
+3. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates/duration, location, achievement bullets, and per-role skill tags. Quantified wins surfaced (e.g. 45 days to 7 days home-loan processing, 60% faster claims, 96% RAG accuracy, 94% detection).
+4. **Skills** — 6 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI & Orchestration, GenAI & LLM, ML / DL, AWS Cloud, Azure & Google Cloud, and Engineering, Data & Governance.
 5. **Certifications** — card grid of 15 certs with issuer + date + credential ID; cards link to the certificate PDF/image where one exists; AWS verify links where present.
-6. **Awards & Honors** — Team Excellence Award (Amazon Nova global runner-up) with ceremony photo + certificate image; Innovation Award; external article/video links.
-7. **Education** — 4 entries (MTech SSP, BTech ECE, Intermediate, SSC) with the MTech detail.
+6. **Awards & Honors** — AWS Nova Challenge 2025 — First Runner-Up (Trianz) & Team Excellence Award (Anytime Awards 2025) with ceremony photo + certificate image + State Rank 47 in TSPGECET-2020.
+7. **Education** — 4 entries (M.Tech. SSP 2022–May 2027 expected, B.Tech. ECE 2013, Intermediate, SSC) with the M.Tech. detail.
 8. **Publications & Research** — "AI-driven Intelligent Email Automation" white paper (PDF link) + the `Recent_Research_works` PDF + featured posts.
 9. **Contact** — email, phone, location, and all social/profile links; footer.
 
@@ -221,7 +220,7 @@ Target: `https://github.com/nareshvrde5220` → repo `nareshvrde5220.github.io` 
 The build is complete when **all** are true:
 
 - [x] AC1 — `index.html` renders all 9 sections (§5) with real data; no placeholder text.
-- [x] AC2 — Experience timeline shows all 8 roles with exact dates/durations matching the spreadsheet; total "9+ yrs" stat shown.
+- [x] AC2 — Experience timeline shows all 8 roles with exact dates/durations matching the resume; total "10+ yrs" stat shown.
 - [x] AC3 — All 15 certifications listed; those with a PDF/image link open it; verify links work where present. *(Enhancement: the 8 certs without local assets now link to verifiable references — Credly for Skillsoft, NVIDIA DLI for the NVIDIA cert; see §15.)*
 - [x] AC4 — Awards section shows the Team Excellence Award with ceremony photo + certificate image and the external article/video links.
 - [x] AC5 — Resume, cover letter, white paper, cert PDFs, and the research PDF are all reachable from the page (now via the in-page viewer with a Download action, FR7).

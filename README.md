@@ -1,6 +1,6 @@
 # nareshvrde5220.github.io
 
-Personal portfolio website for **Jampala Naresh** — Agentic AI Solution Architect & AWS Certified Generative AI Developer (Professional).
+Personal portfolio website for **Jampala Naresh** — Agentic AI & GenAI Lead | Multi-Agent Systems on AWS & 3x AWS Certified (Generative AI Developer – Professional).
 
 🔗 **Live:** https://nareshvrde5220.github.io/
 
