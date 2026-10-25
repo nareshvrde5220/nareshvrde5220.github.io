@@ -467,6 +467,7 @@ body { padding-top: var(--nav-h); }
 .award { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(1.25rem, 4vw, 2.5rem); align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.4rem, 4vw, 2.25rem); margin-bottom: 1.5rem; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
 .award--mini { grid-template-columns: 1.6fr auto; }
 .award__title { font-size: clamp(1.15rem, 2.4vw, 1.5rem); margin: 0 0 .4rem; }
+.award__highlight { color: var(--c-cyan); }
 .award__meta { font-family: var(--font-mono); font-size: .8rem; color: var(--c-cyan); margin: 0 0 .75rem; }
 .award__body p { color: var(--text-dim); margin: 0 0 1rem; }
 .award__links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 1.25rem; }

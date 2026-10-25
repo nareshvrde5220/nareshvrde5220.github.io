@@ -229,9 +229,29 @@
   }
 
   /* ---------- Stat count-up ---------- */
+  (function careerYears() {
+    var start = new Date("2015-01-01T00:00:00");
+    var today = new Date();
+    var years = today.getFullYear() - start.getFullYear();
+    if (today.getMonth() < start.getMonth() ||
+        (today.getMonth() === start.getMonth() && today.getDate() < start.getDate())) years -= 1;
+    document.querySelectorAll("[data-career-years]").forEach(function (el) {
+      el.textContent = Math.max(0, years) + "+";
+    });
+  })();
+
   var stats = Array.prototype.slice.call(document.querySelectorAll(".stat__num[data-count]"));
   function runCount(el) {
+    var startDate = el.getAttribute("data-career-start");
     var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+    if (startDate) {
+      var careerStart = new Date(startDate + "T00:00:00");
+      var today = new Date();
+      target = today.getFullYear() - careerStart.getFullYear();
+      if (today.getMonth() < careerStart.getMonth() ||
+          (today.getMonth() === careerStart.getMonth() && today.getDate() < careerStart.getDate())) target -= 1;
+      target = Math.max(0, target);
+    }
     var suffix = el.getAttribute("data-suffix") || "";
     if (prefersReduced) { el.textContent = target + suffix; return; }
     var start = null, dur = 1100;
@@ -265,9 +285,8 @@
       var s = el.getAttribute("data-since");
       var start = new Date(s + (s.length <= 7 ? "-01" : ""));
       if (isNaN(start)) return;
-      var months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
-      // Round UP to the next month once any extra days into the current month have elapsed.
-      if (now.getDate() > start.getDate()) months += 1;
+      // Count the start month and the current partial month inclusively.
+      var months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth()) + 2;
       if (months < 0) months = 0;
       var yrs = Math.floor(months / 12), mos = months % 12, parts = [];
       if (yrs) parts.push(yrs + " yr" + (yrs > 1 ? "s" : ""));
