@@ -366,6 +366,8 @@ body { padding-top: var(--nav-h); }
 /* ---------- Experience timeline ---------- */
 .timeline { list-style: none; margin: 0; padding: 0; position: relative; }
 .timeline::before { content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--grad-brand); opacity: .5; }
+.experience-total { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin: 0 0 0 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+.experience-total strong { color: var(--c-cyan); font-family: var(--font-display); }
 .tl { position: relative; padding-left: 2.5rem; margin-bottom: 1.5rem; }
 .tl__node { position: absolute; left: 0; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid var(--c-indigo); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c-indigo) 25%, transparent); }
 .tl__card {

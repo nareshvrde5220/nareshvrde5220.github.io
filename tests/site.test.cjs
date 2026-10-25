@@ -67,13 +67,13 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const css = await fs.readFile(path.join(root, 'styles.css'), 'utf8');
 
-  // Verify cache-busting v=59
-  assert.match(html, /href="styles\.css\?v=59"/);
-  assert.match(html, /src="script\.js\?v=59"/);
+  // Verify cache-busting v=60
+  assert.match(html, /href="styles\.css\?v=60"/);
+  assert.match(html, /src="script\.js\?v=60"/);
 
   // Verify 2026 JPMC AI Lead Resume alignment
   assert.match(html, /<title>Jampala Naresh — Agentic AI &amp; GenAI Lead \| Multi-Agent Systems on AWS<\/title>/);
-  assert.match(html, /data-count="10" data-suffix="\+" data-career-start="2015-05-25">10\+<\/span>/);
+  assert.match(html, /data-count="10" data-suffix="\+" data-career-total>10\+<\/span>/);
   assert.match(html, /<p class="eyebrow"><span data-career-years>10\+<\/span> yrs · 8 roles<\/p>/);
   assert.match(html, /45 days to 7 days/);
   assert.match(html, /96% accuracy/);

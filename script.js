@@ -229,28 +229,17 @@
   }
 
   /* ---------- Stat count-up ---------- */
-  function completedYearsSince(value) {
-    var parts = value.split("-");
-    var start = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    var today = new Date();
-    var years = today.getFullYear() - start.getFullYear();
-    if (today.getMonth() < start.getMonth() ||
-        (today.getMonth() === start.getMonth() && today.getDate() < start.getDate())) years -= 1;
-    return Math.max(0, years);
-  }
+  var totalExperienceYears = 10;
   function updateCareerYears() {
-    var startDate = "2015-05-25";
-    var value = completedYearsSince(startDate) + "+";
+    var value = totalExperienceYears + "+";
     document.querySelectorAll("[data-career-years]").forEach(function (el) { el.textContent = value; });
-    document.querySelectorAll("[data-career-start]").forEach(function (el) { el.textContent = value; });
+    document.querySelectorAll("[data-career-total]").forEach(function (el) { el.textContent = value; });
   }
-  updateCareerYears();
 
   var stats = Array.prototype.slice.call(document.querySelectorAll(".stat__num[data-count]"));
   function runCount(el) {
     var target = parseInt(el.getAttribute("data-count"), 10) || 0;
-    var careerStart = el.getAttribute("data-career-start");
-    if (careerStart) target = completedYearsSince(careerStart);
+    if (el.hasAttribute("data-career-total")) target = totalExperienceYears;
     var suffix = el.getAttribute("data-suffix") || "";
     if (prefersReduced) { el.textContent = target + suffix; return; }
     var start = null, dur = 1100;
@@ -299,11 +288,16 @@
       if (months < 0) { years -= 1; months += 12; }
       return [years, months, days];
     }
+    function daysBetween(start, end) {
+      var startUtc = Date.UTC(start.getFullYear(), start.getMonth(), start.getDate());
+      var endUtc = Date.UTC(end.getFullYear(), end.getMonth(), end.getDate());
+      return Math.round((endUtc - startUtc) / 86400000);
+    }
     function plural(value, unit) { return value + " " + unit + (value === 1 ? "" : "s"); }
 
     var liveTimer;
     function update() {
-      updateCareerYears();
+      var totalWorkDays = 0;
       document.querySelectorAll("[data-role-start]").forEach(function (el) {
         var start = parseDate(el.getAttribute("data-role-start"));
         var endValue = el.getAttribute("data-role-end");
@@ -311,6 +305,8 @@
         if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) return;
         var parts = durationBetween(start, end);
         var duration = [plural(parts[0], "year"), plural(parts[1], "month"), plural(parts[2], "day")].join(", ");
+        totalWorkDays += daysBetween(start, end);
+        if (endValue === "today") totalWorkDays += 1;
         var label = el.getAttribute("data-role-label");
         if (!label) {
           label = el.textContent;
@@ -318,6 +314,18 @@
         }
         el.textContent = label + " · " + duration;
       });
+
+      var careerStart = parseDate("2015-05-25");
+      var totalEnd = new Date(careerStart.getFullYear(), careerStart.getMonth(), careerStart.getDate());
+      totalEnd.setDate(totalEnd.getDate() + totalWorkDays);
+      var total = durationBetween(careerStart, totalEnd);
+      totalExperienceYears = total[0];
+      updateCareerYears();
+
+      var totalEl = document.querySelector("[data-total-experience]");
+      if (totalEl) {
+        totalEl.textContent = [plural(total[0], "Year"), plural(total[1], "Month"), plural(total[2], "Day")].join(" ");
+      }
     }
     function scheduleMidnightUpdate() {
       clearTimeout(liveTimer);
