@@ -32,8 +32,10 @@ Additional checks:
 - Responsive widths: 320, 375, 768, 1024, 1440, and 1920 pixels; page and
   desktop overlay viewer bounds remain within the viewport.
 - Touch PDF links for both résumé and cover letter open their original local
-  PDF URLs in a new browser tab; the desktop viewer remains available for
-  images and PDFs.
+  PDF URLs, with cache tokens matching each file's SHA-256 digest, in a new
+  browser tab; the desktop viewer remains available for images and PDFs.
+- Static checks verify each linked PDF has a valid header, expected size, and a
+  cache token matching its current bytes.
 - With JavaScript disabled or blocked, core professional content stays
   readable.
 - Modified clicks, downloads, other protocols, non-media navigation, viewer

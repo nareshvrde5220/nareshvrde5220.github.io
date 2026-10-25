@@ -1,5 +1,6 @@
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
+const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const http = require('node:http');
@@ -115,6 +116,8 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
     const buf = await fs.readFile(path.join(root, pdfRel));
     assert.equal(buf.subarray(0, 5).toString('ascii'), '%PDF-', `${pdfRel} must have valid %PDF- header`);
     assert.ok(buf.length > 50000, `${pdfRel} appears truncated (${buf.length} bytes)`);
+    const version = crypto.createHash('sha256').update(buf).digest('hex').slice(0, 12);
+    assert.ok(html.includes(`href="${pdfRel}?v=${version}"`), `${pdfRel} cache token must match current PDF bytes`);
   }
 });
 
@@ -162,8 +165,8 @@ test('touch PDF preview opens the original local PDF directly', async t => {
   if (!browser) return;
   const page = await pageFor(t, { hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
   const expected = [
-    base + '/assets/docs/Naresh_Resume_HighRes.pdf',
-    base + '/assets/docs/Jampala_Naresh_Cover_Letter.pdf'
+    base + '/assets/docs/Naresh_Resume_HighRes.pdf?v=88b41fa24781',
+    base + '/assets/docs/Jampala_Naresh_Cover_Letter.pdf?v=a6a7c7b1ab2c'
   ];
   for (let i = 0; i < expected.length; i += 1) {
     const popupPromise = page.waitForEvent('popup');
