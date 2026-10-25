@@ -1,55 +1,53 @@
 # Test verification report — 2026-10-25
 
-## Revision reviewed
+## Scope
 
-The repository is a buildless static site. The verification covered the current
-`index.html`, `styles.css?v=61`, `script.js?v=61`, local assets, and the
-Playwright suite in `tests/site.test.cjs`.
+The deployed portfolio is a buildless static site. This verification covered
+`index.html`, `styles.css?v=61`, `script.js?v=61`, local assets, and the expanded
+Playwright suite in `tests/site.test.cjs`. Browser checks used a temporary local
+HTTP server and desktop/mobile Playwright contexts.
 
-## Checks run
+## Repeated results
 
-- `node --test tests/site.test.cjs`: **9 passed, 0 failed, 0 skipped**. The suite
-  launched a headless Playwright browser and served the repository through a
-  temporary loopback HTTP server.
-- `node --check script.js`: **passed**.
-- `git diff --check`: **passed**.
-- Employment-date arithmetic: manually cross-checked the eight supplied role
-  intervals against the 25 Oct 2026 reference date. The separate work intervals
-  total **10 years, 0 months, 3 days**, matching the supplied table.
+The full suite was run **three consecutive times**. Each run completed with
+**11 passed, 0 failed, 0 skipped**: **33 passing test executions** total.
 
-## Coverage
+Additional checks:
 
-1. Static HTML, CSS, local assets, fragment targets, required portfolio content,
-   six skill groups, and the two valid PDF files.
-2. Readable core content with JavaScript disabled and with `script.js` blocked.
-3. Viewer interception preserves modified clicks, downloads, non-media links,
-   other protocols, and native navigation.
-4. Touch-device PDF links open the original local PDF URL in a new browser tab
-   for native mobile preview; the desktop viewer retains its Open/Download
-   fallback controls.
-5. Collapsed Recent Activities links are skipped by keyboard focus; Enter and
-   Escape behavior and focus restoration work.
-6. Image viewer close restores focus; theme toggle changes the theme.
-7. Local assets and fragment targets resolve, IDs are unique, and the page has
-   no JavaScript errors.
-8. Page and viewer fit widths of 320, 375, 768, 1024, 1440, and 1920 pixels.
+- `node --check script.js`: passed.
+- `git diff --check`: passed.
+- The employment test fixes the browser date to 25 Oct 2026, verifies all eight
+  role-duration strings and **10 Years 0 Months 3 Days**, then changes the
+  clock to 25 Nov 2026 and verifies JPMorgan at **0 years, 8 months, 23 days**
+  and the total at **10 Years 1 Month 3 Days**.
 
-## Employment calculation notes
+## Desktop and mobile coverage
 
-Each role duration is derived from its exact start and end dates. JPMorgan Chase
-uses the visitor's current local date and refreshes on load, at local midnight,
-and when the page becomes visible again. Total work experience sums the role
-intervals rather than counting gaps between jobs; the current date is included
-in the running total. The suite run above does not simulate midnight or assert
-every computed duration string, so those behaviors are not claimed as automated
-browser-test coverage.
+- Desktop at 1440 × 900 and mobile emulation at 375 × 812: all 10 primary
+  sections exist and are visible; all 8 experience roles, 15 certifications,
+  6 skill groups, both contact document links, and the total-work-experience
+  display are present.
+- Mobile navigation strip is present, contains all 9 section links, and can
+  scroll horizontally.
+- Responsive widths: 320, 375, 768, 1024, 1440, and 1920 pixels; page and
+  desktop overlay viewer bounds remain within the viewport.
+- Touch PDF links for both résumé and cover letter open their original local
+  PDF URLs in a new browser tab; the desktop viewer remains available for
+  images and PDFs.
+- With JavaScript disabled or blocked, core professional content stays
+  readable.
+- Modified clicks, downloads, other protocols, non-media navigation, viewer
+  focus behavior, Recent Activities keyboard behavior, theme switching, asset
+  resolution, unique IDs, fragment targets, and JavaScript page errors pass.
 
 ## Limits
 
-This run did not measure Lighthouse scores, verify live external destinations,
-inspect a production deployment, or test native PDF rendering on physical iOS
-or Android devices. It did not repeat screenshot-based visual inspection.
+Mobile PDF checks verify that both links reach the correct PDF URL in a new
+browser tab; they do not verify how the PDF renders on physical iOS or Android
+devices. Mobile coverage uses browser emulation, not physical phones or tablets.
+The midnight timer is not advanced in the automated clock test; the test does
+verify updates after the page becomes visible with a changed date. This run did
+not repeat screenshot-based visual review or measure Lighthouse scores.
 
-External requests were blocked by the test setup. Successful external links,
-Google Fonts availability, screen-reader behavior, and browser-specific PDF
-rendering are outside this report's coverage.
+External destinations, Google Fonts availability, screen-reader behavior, and
+production deployment were not checked by this local suite.

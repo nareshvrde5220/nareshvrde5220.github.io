@@ -25,7 +25,7 @@ Build and publicly host a single, modern, responsive **personal profile website*
 |---|---|---|
 | G1 | Faithfully present all professional content from this folder | Every professional section in §5 renders with real data; no Lorem Ipsum, no invented facts |
 | G2 | Modern 2026 visual design | Dark-first theme, gradient/glass accents, large type, motion-on-scroll (see §7) |
-| G3 | Smooth section navigation | Sticky top nav + scrollspy highlights current section; in-page links scroll smoothly; mobile hamburger menu |
+| G3 | Smooth section navigation | Sticky top nav + scrollspy highlights current section; in-page links scroll smoothly; narrow screens use a horizontally swipeable nav strip |
 | G4 | Hostable on GitHub Pages with zero build | Static `index.html` + assets, no Node/build step; works when served as plain files |
 | G5 | Published live | Repo `nareshvrde5220.github.io` created, pushed, Pages enabled, URL returns HTTP 200 |
 | G6 | Fast & accessible | Lighthouse Performance ≥ 90, Accessibility ≥ 95 on mobile; works without JS for core content |
@@ -89,19 +89,20 @@ Single-page (`index.html`) with anchored sections; the sticky nav links to each.
 
 1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (dynamically summed 10+ years, 15 certifications, 8 roles, award).
 2. **About** — the "About" narrative + profile summary + core competencies bullets.
-3. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates and a calendar duration in years/months/days. The current role ends at the visitor's current local date. A total-work-experience line sums the separate role intervals and excludes employment gaps.
-4. **Skills** — 6 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI & Orchestration, GenAI & LLM, ML / DL, AWS Cloud, Azure & Google Cloud, and Engineering, Data & Governance.
-5. **Certifications** — card grid of 15 certs with issuer + date + credential ID; cards link to the certificate PDF/image where one exists; AWS verify links where present.
-6. **Awards & Honors** — AWS Nova Challenge 2025 — First Runner-Up (Trianz) & Team Excellence Award (Anytime Awards 2025) with ceremony photo + certificate image + State Rank 47 in TSPGECET-2020. Award names, solution/AI technology terms, and key metrics use the theme cyan highlight.
-7. **Education** — 4 entries (M.Tech. SSP 2022–May 2027 expected, B.Tech. ECE 2013, Intermediate, SSC) with the M.Tech. detail.
-8. **Publications & Research** — "AI-driven Intelligent Email Automation" white paper (PDF link) + the `Recent_Research_works` PDF + featured posts.
-9. **Contact** — email, phone, location, and all social/profile links; footer.
+3. **Career Timeline** — horizontal career journey rail linking to the corresponding Experience cards.
+4. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates and a calendar duration in years/months/days. The current role ends at the visitor's current local date. A total-work-experience line sums the separate role intervals and excludes employment gaps.
+5. **Skills** — 6 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI & Orchestration, GenAI & LLM, ML / DL, AWS Cloud, Azure & Google Cloud, and Engineering, Data & Governance.
+6. **Certifications** — card grid of 15 certs with issuer + date + credential ID; cards link to the certificate PDF/image where one exists; AWS verify links where present.
+7. **Awards & Honors** — AWS Nova Challenge 2025 — First Runner-Up (Trianz) & Team Excellence Award (Anytime Awards 2025) with ceremony photo + certificate image + State Rank 47 in TSPGECET-2020. Award names, solution/AI technology terms, and key metrics use the theme cyan highlight.
+8. **Education** — 4 entries (M.Tech. SSP 2022–May 2027 expected, B.Tech. ECE 2013, Intermediate, SSC) with the M.Tech. detail.
+9. **Publications & Research** — "AI-driven Intelligent Email Automation" white paper (PDF link) + the `Recent_Research_works` PDF + featured posts.
+10. **Contact** — email, phone, location, and all social/profile links; footer.
 
 ### Navigation behaviour (G3)
-- Sticky top navbar with anchor links to sections 2–9, blurred/translucent background on scroll.
+- Sticky top navbar with anchor links to the page sections, blurred/translucent background on scroll.
 - **Scrollspy:** the nav item for the section currently in view is highlighted.
 - Smooth scrolling (`scroll-behavior: smooth`) with offset for the sticky header.
-- Mobile (<768px): collapses to a hamburger menu; tap closes the menu and scrolls.
+- At widths ≤1080px, the navigation links form a horizontally swipeable strip; the hamburger is hidden at these widths.
 - "Back to top" button appears after first scroll.
 - Theme toggle (dark/light) in the navbar; the current script starts in dark mode on each page load and stores the selected value in `localStorage`.
 
@@ -112,7 +113,7 @@ Single-page (`index.html`) with anchored sections; the sticky nav links to each.
 ### 6.1 Functional
 - FR1 — Render all sections in §5 from the real source data in §4.
 - FR2 — Every referenced local PDF/image is reachable through the in-page viewer and its Open/Download controls; external references remain normally navigable.
-- FR3 — Sticky nav with working anchors, scrollspy, smooth scroll, mobile menu, back-to-top.
+- FR3 — Sticky nav with working anchors, scrollspy, smooth scroll, swipeable narrow-screen nav strip, and back-to-top.
 - FR4 — Dark/light theme toggle for the current page session; the page starts in dark mode on each load.
 - FR5 — Reveal-on-scroll animation for cards/timeline (respecting `prefers-reduced-motion`).
 - FR6 — Contact actions: `mailto:` and `tel:` open natively.
@@ -201,12 +202,12 @@ The public user-site repository is `nareshvrde5220/nareshvrde5220.github.io`; Gi
 
 The build is complete when **all** are true:
 
-- [x] AC1 — `index.html` renders all 9 sections (§5) with real data; no placeholder text.
+- [x] AC1 — `index.html` renders all 10 major page sections (§5) with real data; no placeholder text.
 - [x] AC2 — Experience timeline shows all 8 roles with the supplied exact dates and computed calendar durations; total work experience sums role intervals, excludes gaps, and displays 10 years, 0 months, 3 days (10+ years) on 25 Oct 2026.
 - [x] AC3 — All 15 certifications listed; those with a PDF/image link open it; verify links work where present. *(Enhancement: the 8 certs without local assets now link to verifiable references — Credly for Skillsoft, NVIDIA DLI for the NVIDIA cert; see §15.)*
 - [x] AC4 — Awards section shows the Team Excellence Award with ceremony photo + certificate image and the external article/video links.
 - [x] AC5 — Resume, cover letter, white paper, cert PDFs, and the research PDF are all reachable from the page (now via the in-page viewer with a Download action, FR7).
-- [x] AC6 — Sticky nav + scrollspy + smooth scroll + mobile menu + back-to-top work; theme toggle works and the page starts in dark mode on each load.
+- [x] AC6 — Sticky nav + scrollspy + smooth scroll + narrow-screen swipeable nav strip + back-to-top work; theme toggle works and the page starts in dark mode on each load.
 - [x] AC7 — Responsive with no horizontal scroll at 320/375/768/1024/1440/1920px; `prefers-reduced-motion` respected.
 - [ ] AC8 — Lighthouse (mobile): Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 95. *(Built to target; needs a manual Lighthouse run to record the score.)*
 - [x] AC9 — **Privacy check passes:** a grep of the entire published repo for the excluded family names, DOBs, and anniversary returns **zero** matches.
@@ -221,7 +222,7 @@ The build is complete when **all** are true:
 | M1 — Scaffold | Repo layout (§9), `index.html` skeleton with all section landmarks + nav, `.nojekyll` |
 | M2 — Content | All §5 sections populated from §4 sources; assets copied into `assets/` (dedup-safe) |
 | M3 — Design | `styles.css` implementing the §7 design system, responsive, dark/light |
-| M4 — Interactivity | `script.js`: scrollspy, smooth scroll, mobile menu, reveals, theme toggle, back-to-top |
+| M4 — Interactivity | `script.js`: scrollspy, smooth scroll, responsive nav strip, reveals, theme toggle, back-to-top |
 | M5 — QA | Run AC1–AC9 locally; fix; privacy grep; Lighthouse pass |
 | M6 — Deploy | §10 steps; verify AC10 live |
 
@@ -449,3 +450,6 @@ with the same live calculation as the current role.
 - The verification suite is `node --test tests/site.test.cjs`. The current
   result and the limits of that suite are recorded in
   [TEST_VERIFICATION_REPORT.md](TEST_VERIFICATION_REPORT.md).
+- Current verification ran all 11 browser subtests three consecutive times
+  (33 passing executions, no failures or skips), with desktop and mobile
+  emulation. Physical-device PDF rendering remains a separate check.

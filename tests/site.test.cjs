@@ -161,11 +161,69 @@ test('viewer preserves modified clicks, downloads, other protocols and non-media
 test('touch PDF preview opens the original local PDF directly', async t => {
   if (!browser) return;
   const page = await pageFor(t, { hasTouch: true, isMobile: true, viewport: { width: 375, height: 812 } });
-  const popupPromise = page.waitForEvent('popup');
-  await page.locator('.contact__docs a').first().click();
-  const pdfPage = await popupPromise;
-  assert.equal(pdfPage.url(), base + '/assets/docs/Naresh_Resume_HighRes.pdf');
+  const expected = [
+    base + '/assets/docs/Naresh_Resume_HighRes.pdf',
+    base + '/assets/docs/Jampala_Naresh_Cover_Letter.pdf'
+  ];
+  for (let i = 0; i < expected.length; i += 1) {
+    const popupPromise = page.waitForEvent('popup');
+    await page.locator('.contact__docs a').nth(i).click();
+    const pdfPage = await popupPromise;
+    assert.equal(pdfPage.url(), expected[i]);
+    await pdfPage.close();
+  }
   assert.equal(await page.locator('#viewer').isVisible(), false);
+});
+
+test('employment durations and total work experience match exact dates and advance with today', async t => {
+  if (!browser) return;
+  const page = await pageFor(t);
+  await page.clock.install({ time: new Date('2026-10-25T12:00:00') });
+  await page.reload();
+
+  const durations = await page.locator('.tl__date').allTextContents();
+  assert.deepEqual(durations, [
+    '2 Mar 2026 – Present · 0 years, 7 months, 23 days',
+    '1 Jun 2025 – 27 Feb 2026 · 0 years, 8 months, 26 days',
+    '21 Feb 2024 – 31 May 2025 · 1 year, 3 months, 10 days',
+    '27 May 2022 – 20 Feb 2024 · 1 year, 8 months, 24 days',
+    '14 Feb 2022 – 23 May 2022 · 0 years, 3 months, 9 days',
+    '27 Aug 2019 – 25 Jan 2021 · 1 year, 4 months, 29 days',
+    '15 Jan 2018 – 30 Apr 2019 · 1 year, 3 months, 15 days',
+    '25 May 2015 – 12 Jan 2018 · 2 years, 7 months, 18 days'
+  ]);
+  assert.equal(await page.locator('[data-total-experience]').textContent(), '10 Years 0 Months 3 Days');
+  assert.equal(await page.locator('[data-career-years]').first().textContent(), '10+');
+
+  await page.clock.setSystemTime(new Date('2026-11-25T12:00:00'));
+  await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
+  assert.match(await page.locator('.tl__date').first().textContent(), /0 years, 8 months, 23 days/);
+  assert.equal(await page.locator('[data-total-experience]').textContent(), '10 Years 1 Month 3 Days');
+});
+
+test('all portfolio sections and core content are present on desktop and mobile layouts', async t => {
+  if (!browser) return;
+  const layouts = [
+    { name: 'desktop', options: { viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile', options: { viewport: { width: 375, height: 812 }, isMobile: true, hasTouch: true } }
+  ];
+  for (const layout of layouts) {
+    const page = await pageFor(t, layout.options);
+    for (const id of ['hero', 'about', 'journey', 'experience', 'skills', 'certifications', 'awards', 'education', 'publications', 'contact']) {
+      assert.equal(await page.locator('#' + id).count(), 1, `${layout.name}: missing #${id}`);
+      assert.equal(await page.locator('#' + id).isVisible(), true, `${layout.name}: hidden #${id}`);
+    }
+    assert.equal(await page.locator('.tl').count(), 8, `${layout.name}: expected all eight roles`);
+    assert.equal(await page.locator('.cert').count(), 15, `${layout.name}: expected all certifications`);
+    assert.equal(await page.locator('.skill-group').count(), 6, `${layout.name}: expected all skill groups`);
+    assert.equal(await page.locator('.contact__docs a').count(), 2, `${layout.name}: missing document links`);
+    assert.equal(await page.locator('[data-total-experience]').count(), 1, `${layout.name}: missing total experience`);
+    if (layout.name === 'mobile') {
+      assert.equal(await page.locator('#nav-links').isVisible(), true, 'mobile: nav strip should be available');
+      assert.equal(await page.locator('.nav__link').count(), 9, 'mobile: all section links should be present');
+      assert.equal(await page.locator('#nav-links').evaluate(el => el.scrollWidth > el.clientWidth), true, 'mobile: nav strip should allow horizontal swiping');
+    }
+  }
 });
 
 test('collapsed activities cannot receive focus and Escape restores the toggle', async t => {
