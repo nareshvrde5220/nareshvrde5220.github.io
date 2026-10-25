@@ -229,29 +229,9 @@
   }
 
   /* ---------- Stat count-up ---------- */
-  (function careerYears() {
-    var start = new Date("2015-05-25T00:00:00");
-    var today = new Date();
-    var years = today.getFullYear() - start.getFullYear();
-    if (today.getMonth() < start.getMonth() ||
-        (today.getMonth() === start.getMonth() && today.getDate() < start.getDate())) years -= 1;
-    document.querySelectorAll("[data-career-years]").forEach(function (el) {
-      el.textContent = Math.max(0, years) + "+";
-    });
-  })();
-
   var stats = Array.prototype.slice.call(document.querySelectorAll(".stat__num[data-count]"));
   function runCount(el) {
-    var startDate = el.getAttribute("data-career-start");
     var target = parseInt(el.getAttribute("data-count"), 10) || 0;
-    if (startDate) {
-      var careerStart = new Date(startDate + "T00:00:00");
-      var today = new Date();
-      target = today.getFullYear() - careerStart.getFullYear();
-      if (today.getMonth() < careerStart.getMonth() ||
-          (today.getMonth() === careerStart.getMonth() && today.getDate() < careerStart.getDate())) target -= 1;
-      target = Math.max(0, target);
-    }
     var suffix = el.getAttribute("data-suffix") || "";
     if (prefersReduced) { el.textContent = target + suffix; return; }
     var start = null, dur = 1100;
@@ -302,14 +282,39 @@
     }
     function plural(value, unit) { return value + " " + unit + (value === 1 ? "" : "s"); }
 
-    document.querySelectorAll("[data-role-start]").forEach(function (el) {
-      var start = parseDate(el.getAttribute("data-role-start"));
-      var endValue = el.getAttribute("data-role-end");
-      var end = endValue === "today" ? new Date() : parseDate(endValue);
-      if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) return;
-      var parts = durationBetween(start, end);
-      var duration = [plural(parts[0], "year"), plural(parts[1], "month"), plural(parts[2], "day")].join(", ");
-      el.textContent += " · " + duration;
+    var liveTimer;
+    function update() {
+      document.querySelectorAll("[data-role-start]").forEach(function (el) {
+        var start = parseDate(el.getAttribute("data-role-start"));
+        var endValue = el.getAttribute("data-role-end");
+        var end = endValue === "today" ? new Date() : parseDate(endValue);
+        if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) return;
+        var parts = durationBetween(start, end);
+        var duration = [plural(parts[0], "year"), plural(parts[1], "month"), plural(parts[2], "day")].join(", ");
+        var label = el.getAttribute("data-role-label");
+        if (!label) {
+          label = el.textContent;
+          el.setAttribute("data-role-label", label);
+        }
+        el.textContent = label + " · " + duration;
+      });
+    }
+    function scheduleMidnightUpdate() {
+      clearTimeout(liveTimer);
+      var now = new Date();
+      var midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      liveTimer = setTimeout(function () {
+        update();
+        scheduleMidnightUpdate();
+      }, midnight.getTime() - now.getTime());
+    }
+    update();
+    scheduleMidnightUpdate();
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) {
+        update();
+        scheduleMidnightUpdate();
+      }
     });
   })();
 
