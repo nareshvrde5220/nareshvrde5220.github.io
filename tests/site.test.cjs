@@ -29,7 +29,10 @@ before(async () => {
   base = `http://127.0.0.1:${server.address().port}`;
   if (chromium) {
     try {
-      browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'msedge', headless: true });
+      browser = await chromium.launch({
+        ...(process.env.BROWSER_CHANNEL ? { channel: process.env.BROWSER_CHANNEL } : { channel: 'msedge' }),
+        headless: true
+      });
     } catch {
       try {
         browser = await chromium.launch({ headless: true });
@@ -37,6 +40,9 @@ before(async () => {
         browser = null;
       }
     }
+  }
+  if (process.env.CI === 'true') {
+    assert.ok(browser, 'Expected Playwright browser to launch in CI environment');
   }
 });
 
