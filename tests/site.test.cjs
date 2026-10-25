@@ -109,6 +109,13 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
     const res = await fetch(`${base}/${relPath.replace(/^\//, '')}`);
     assert.equal(res.status, 200, `Asset failed to resolve (HTTP ${res.status}): ${relPath}`);
   }
+
+  // Verify updated Resume PDF and Cover Letter PDF are valid PDFs
+  for (const pdfRel of ['assets/docs/Naresh_Resume_HighRes.pdf', 'assets/docs/Jampala_Naresh_Cover_Letter.pdf']) {
+    const buf = await fs.readFile(path.join(root, pdfRel));
+    assert.equal(buf.subarray(0, 5).toString('ascii'), '%PDF-', `${pdfRel} must have valid %PDF- header`);
+    assert.ok(buf.length > 50000, `${pdfRel} appears truncated (${buf.length} bytes)`);
+  }
 });
 
 for (const mode of ['disabled', 'blocked']) {
