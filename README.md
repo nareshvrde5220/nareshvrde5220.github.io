@@ -1,95 +1,20 @@
-# nareshvrde5220.github.io
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
 
-Personal portfolio website for **Jampala Naresh** — Agentic AI & GenAI Lead | Multi-Agent Systems on AWS & 3x AWS Certified (Generative AI Developer – Professional).
+# Run and deploy your AI Studio app
 
-🔗 **Live:** https://nareshvrde5220.github.io/
+This contains everything you need to run your app locally.
 
-## Stack
+View your app in AI Studio: https://ai.studio/apps/da9bbf15-351d-49bb-a572-a761b08936f7
 
-Static site — vanilla **HTML / CSS / JavaScript**, no build step. Hosted on **GitHub Pages** (user site).
+## Run Locally
 
-| File | Purpose |
-|---|---|
-| `index.html` | Page structure + all section landmarks |
-| `styles.css` | 2026 design system (dark-first, glassmorphism, brand gradient) + responsive layout |
-| `script.js` | Theme toggle, mobile menu, scrollspy, scroll progress, back-to-top, reveal-on-scroll |
-| `assets/img/` | Images (profile photo, logos, certificate/award thumbnails) |
-| `assets/docs/` | Downloadable PDFs (certificates, publications) |
-| `.nojekyll` | Disables Jekyll so all assets are served as-is |
+**Prerequisites:**  Node.js
 
-## Sections
 
-Hero · About · Experience · Skills · Certifications · Awards & Honors · Education · Publications & Research · Contact
-
-## Local preview
-
-No build required — open `index.html` directly, or serve the folder:
-
-```bash
-python -m http.server 8080
-# then visit http://localhost:8080
-```
-
-## Committing & deploying changes (from local)
-
-Whenever you edit any file (`index.html`, `styles.css`, `script.js`, assets, …), commit and push — GitHub Pages auto-deploys the `main` branch within ~1 minute.
-
-```bash
-# 1. go to the project folder
-cd "C:/Users/pc/Documents/nareshvrde5220.github.io"
-
-# 2. see what changed (optional)
-git status
-
-# 3. stage all changes
-git add .
-
-# 4. commit with a short message
-git commit -m "Describe what you changed"
-
-# 5. push to GitHub (auto-deploys the live site)
-git push origin main
-```
-
-After the push, wait ~1 minute, then hard-refresh the live site (**Ctrl+F5**) to see the update.
-
-> **Tip — cache busting:** `styles.css` and `script.js` are loaded with a version query (e.g. `styles.css?v=28`) so browsers don't serve a stale copy. After editing CSS or JS, bump that number in `index.html` (e.g. `?v=28` → `?v=29` for both the CSS link and the JS script tag) in the **same commit**.
-
-First time on a new machine? Clone it first:
-
-```bash
-git clone https://github.com/nareshvrde5220/nareshvrde5220.github.io.git
-```
-
-## Development
-
-Built and tracked in milestone commits:
-
-- **M1** — scaffold (structure, design tokens, navigation behaviors)
-- **M2** — content population
-- **M3** — full visual design
-- **M4** — interactivity polish
-- **M5** — QA (accessibility, responsiveness, privacy review)
-- **M6** — deploy & verify
-
----
-
-© Jampala Naresh
-
-## Regression checks
-
-The site still has no build step or runtime dependencies. Browser tests require
-Node.js, Playwright and an installed Microsoft Edge browser:
-
-```powershell
-npm install --no-save --package-lock=false playwright
-node --check script.js
-node --test tests/site.test.cjs
-```
-
-Tests start and stop their own loopback HTTP server on an available port. They
-block external requests for repeatable offline checks. To use installed Chrome,
-set `$env:BROWSER_CHANNEL = "chrome"` before running the tests.
-
-See `TEST_VERIFICATION_REPORT.md` for the latest actual results and limitations,
-and `documentation/MAINTENANCE_PLAN.md` for review status.
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`

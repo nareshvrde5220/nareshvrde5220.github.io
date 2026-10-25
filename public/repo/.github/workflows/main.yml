@@ -1,0 +1,43 @@
+name: Portfolio CI & Resume Alignment Verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "portfolio-ci-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  verify-portfolio:
+    name: Static Check, JPMC Resume Alignment & Playwright Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify script.js syntax
+        run: node --check script.js
+
+      - name: Install Playwright & Chromium for headless browser verification
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+
+      - name: Run static JPMC resume alignment & offline Playwright regression suite
+        env:
+          CI: "true"
+        run: node --test tests/site.test.cjs
