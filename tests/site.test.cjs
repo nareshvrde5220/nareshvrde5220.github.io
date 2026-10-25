@@ -68,9 +68,9 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const css = await fs.readFile(path.join(root, 'styles.css'), 'utf8');
 
-  // Verify cache-busting v=62
-  assert.match(html, /href="styles\.css\?v=62"/);
-  assert.match(html, /src="script\.js\?v=62"/);
+  // Verify cache-busting v=63
+  assert.match(html, /href="styles\.css\?v=63"/);
+  assert.match(html, /src="script\.js\?v=63"/);
 
   // Verify 2026 JPMC AI Lead Resume alignment
   assert.match(html, /<title>Jampala Naresh — Agentic AI &amp; GenAI Lead \| Multi-Agent Systems on AWS<\/title>/);
@@ -79,7 +79,8 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   assert.match(html, /45 days to 7 days/);
   assert.match(html, /96% accuracy/);
   assert.match(html, /AWS Nova Challenge 2025/);
-  assert.match(css, /\.about__highlight\s*\{[^}]*color:\s*var\(--c-cyan\)/, 'About highlights must use the theme cyan');
+  assert.match(css, /\.about__highlight\s*\{[^}]*color:\s*#7dd3fc/i, 'About highlights must use readable sky blue in dark mode');
+  assert.match(css, /\[data-theme="light"\]\s+\.about__highlight\s*\{[^}]*color:\s*#1d4ed8/i, 'About highlights must use readable blue in light mode');
   assert.match(html, /2022 – May 2027 \(expected\)/);
 
   const skillGroups = [...html.matchAll(/<article class="skill-group reveal">/g)];
@@ -224,10 +225,31 @@ test('all portfolio sections and core content are present on desktop and mobile 
     assert.equal(await page.locator('[data-total-experience]').count(), 1, `${layout.name}: missing total experience`);
     assert.equal(await page.locator('#about .about__highlight').count() >= 20, true, `${layout.name}: About keywords and certificate names should be highlighted`);
     const aboutHighlightColors = await page.locator('#about .about__highlight').evaluateAll(els => [...new Set(els.map(el => getComputedStyle(el).color))]);
-    assert.deepEqual(aboutHighlightColors, ['rgb(34, 211, 238)'], `${layout.name}: About highlights should render in theme cyan`);
+    assert.deepEqual(aboutHighlightColors, ['rgb(125, 211, 252)'], `${layout.name}: About highlights should render in sky blue in dark theme`);
+    const darkContrast = await page.locator('#about .about__highlight').first().evaluate(el => {
+      const rgb = color => color.match(/[.\d]+/g).slice(0, 3).map(Number).map(value => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, channel, i) => sum + channel * [0.2126, 0.7152, 0.0722][i], 0);
+      const foreground = rgb(getComputedStyle(el).color);
+      const background = rgb(getComputedStyle(el.parentElement).backgroundColor === 'rgba(0, 0, 0, 0)' ? getComputedStyle(document.body).backgroundColor : getComputedStyle(el.parentElement).backgroundColor);
+      return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+    });
+    assert.ok(darkContrast >= 4.5, `${layout.name}: dark theme highlight contrast ${darkContrast.toFixed(2)}:1 should meet WCAG AA`);
     await page.locator('#theme-toggle').click();
+    await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(247, 248, 252)');
     const lightHighlightColors = await page.locator('#about .about__highlight').evaluateAll(els => [...new Set(els.map(el => getComputedStyle(el).color))]);
-    assert.deepEqual(lightHighlightColors, ['rgb(37, 99, 235)'], `${layout.name}: About highlights should render in readable blue in light theme`);
+    assert.deepEqual(lightHighlightColors, ['rgb(29, 78, 216)'], `${layout.name}: About highlights should render in readable blue in light theme`);
+    const lightContrast = await page.locator('#about .about__highlight').first().evaluate(el => {
+      const rgb = color => color.match(/[.\d]+/g).slice(0, 3).map(Number).map(value => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, channel, i) => sum + channel * [0.2126, 0.7152, 0.0722][i], 0);
+      const foreground = rgb(getComputedStyle(el).color);
+      const background = rgb(getComputedStyle(document.body).backgroundColor);
+      return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+    });
+    assert.ok(lightContrast >= 4.5, `${layout.name}: light theme highlight contrast ${lightContrast.toFixed(2)}:1 should meet WCAG AA`);
     if (layout.name === 'mobile') {
       assert.equal(await page.locator('#nav-links').isVisible(), true, 'mobile: nav strip should be available');
       assert.equal(await page.locator('.nav__link').count(), 9, 'mobile: all section links should be present');

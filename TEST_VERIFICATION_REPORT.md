@@ -3,7 +3,7 @@
 ## Scope
 
 The deployed portfolio is a buildless static site. This verification covered
-`index.html`, `styles.css?v=62`, `script.js?v=62`, local assets, and the expanded
+`index.html`, `styles.css?v=63`, `script.js?v=63`, local assets, and the expanded
 Playwright suite in `tests/site.test.cjs`. Browser checks used a temporary local
 HTTP server and desktop/mobile Playwright contexts.
 
@@ -29,8 +29,9 @@ Additional checks:
   display are present.
 - On both desktop and mobile, the About section has at least 20 highlighted
   certificate names, keywords, technologies, solutions, and metrics; browser
-  computed styles confirm cyan in dark theme (`#22D3EE`) and readable blue in
-  light theme (`#2563EB`).
+  computed styles confirm sky blue in dark theme (`#7DD3FC`) and blue in light
+  theme (`#1D4ED8`). Automated contrast checks require WCAG AA's 4.5:1 minimum
+  against each theme's page background.
 - Mobile navigation strip is present, contains all 9 section links, and can
   scroll horizontally.
 - Responsive widths: 320, 375, 768, 1024, 1440, and 1920 pixels; page and

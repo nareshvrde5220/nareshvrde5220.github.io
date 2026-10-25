@@ -359,8 +359,8 @@ body { padding-top: var(--nav-h); }
 /* ---------- About ---------- */
 .about__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
 .about__lead p { font-size: 1.1em; margin: 0 0 1rem; }
-.about__highlight { color: var(--c-cyan); font-weight: 600; }
-[data-theme="light"] .about__highlight { color: #2563eb; }
+.about__highlight { color: #7dd3fc; font-weight: 600; }
+[data-theme="light"] .about__highlight { color: #1d4ed8; }
 .about__points { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; }
 .about__points li { position: relative; padding-left: 1.6rem; color: var(--text-dim); }
 .about__points li::before { content: "❖"; position: absolute; left: 0; top: 0; color: var(--c-cyan); }

@@ -88,7 +88,7 @@ All content is **already in this folder** — the site is a presentation layer o
 Single-page (`index.html`) with anchored sections; the sticky nav links to each. Order top → bottom:
 
 1. **Hero / Header** — banner, profile photo, name, headline, location, primary CTAs (Download Resume, Email, LinkedIn, GitHub, Credly), key stats (dynamically summed 10+ years, 15 certifications, 8 roles, award).
-2. **About** — the "About" narrative + profile summary + core competencies bullets. Certificate names, AI/ML keywords, solution and platform names, and impact metrics are highlighted in the theme cyan (`.about__highlight`) across the entire section.
+2. **About** — the "About" narrative + profile summary + core competencies bullets. Certificate names, AI/ML keywords, solution and platform names, and impact metrics are highlighted with accessible blue colors (`.about__highlight`) across the entire section.
 3. **Career Timeline** — horizontal career journey rail linking to the corresponding Experience cards.
 4. **Experience** — vertical timeline, 8 roles (JPMorgan Chase → Trianz ×2 → People Tech → Teamware → CSIR-NGRI → IMD-IITM → DRDO-VRDE), each with exact dates and a calendar duration in years/months/days. The current role ends at the visitor's current local date. A total-work-experience line sums the separate role intervals and excludes employment gaps.
 5. **Skills** — 6 grouped clusters with featured chips emphasised (see the full canonical list in §4.2): Agentic AI & Orchestration, GenAI & LLM, ML / DL, AWS Cloud, Azure & Google Cloud, and Engineering, Data & Governance.
@@ -443,9 +443,9 @@ with the same live calculation as the current role.
   and the supplied metrics in theme cyan.
 - The complete About section highlights certification names, key professional
   keywords, AI/ML technologies, solutions, organizations, and impact metrics
-  in the theme cyan. The shared `.about__highlight` style uses the cyan design
-  token in dark mode and accessible blue in light mode, so the highlights stay
-  legible across both themes.
+  with sky blue (`#7DD3FC`) in dark mode and blue (`#1D4ED8`) in light mode.
+  Both colors are selected to meet WCAG AA 4.5:1 text contrast against the
+  corresponding page background.
 - Local PDFs open in the in-page viewer on desktop and directly in a new tab on
   touch devices; local images open in the in-page viewer. Ordinary external web
   links open in a new tab; modifier clicks, downloads, in-page links, other
@@ -454,7 +454,7 @@ with the same live calculation as the current role.
   each PDF's SHA-256 digest as a query token. Update the token when replacing a
   PDF so mobile browsers request the new file instead of reusing a cached URL.
 - The site remains a buildless static application: `index.html`, `styles.css`,
-  `script.js`, and local assets. CSS and JS cache-busting query values are `62`.
+  `script.js`, and local assets. CSS and JS cache-busting query values are `63`.
 - The verification suite is `node --test tests/site.test.cjs`. The current
   result and the limits of that suite are recorded in
   [TEST_VERIFICATION_REPORT.md](TEST_VERIFICATION_REPORT.md).
