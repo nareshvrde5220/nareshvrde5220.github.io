@@ -3,7 +3,7 @@
 ## Scope
 
 The deployed portfolio is a buildless static site. This verification covered
-`index.html`, `styles.css?v=61`, `script.js?v=61`, local assets, and the expanded
+`index.html`, `styles.css?v=62`, `script.js?v=62`, local assets, and the expanded
 Playwright suite in `tests/site.test.cjs`. Browser checks used a temporary local
 HTTP server and desktop/mobile Playwright contexts.
 
@@ -27,6 +27,10 @@ Additional checks:
   sections exist and are visible; all 8 experience roles, 15 certifications,
   6 skill groups, both contact document links, and the total-work-experience
   display are present.
+- On both desktop and mobile, the About section has at least 20 highlighted
+  certificate names, keywords, technologies, solutions, and metrics; browser
+  computed styles confirm cyan in dark theme (`#22D3EE`) and readable blue in
+  light theme (`#2563EB`).
 - Mobile navigation strip is present, contains all 9 section links, and can
   scroll horizontally.
 - Responsive widths: 320, 375, 768, 1024, 1440, and 1920 pixels; page and

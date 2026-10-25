@@ -68,9 +68,9 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const css = await fs.readFile(path.join(root, 'styles.css'), 'utf8');
 
-  // Verify cache-busting v=61
-  assert.match(html, /href="styles\.css\?v=61"/);
-  assert.match(html, /src="script\.js\?v=61"/);
+  // Verify cache-busting v=62
+  assert.match(html, /href="styles\.css\?v=62"/);
+  assert.match(html, /src="script\.js\?v=62"/);
 
   // Verify 2026 JPMC AI Lead Resume alignment
   assert.match(html, /<title>Jampala Naresh — Agentic AI &amp; GenAI Lead \| Multi-Agent Systems on AWS<\/title>/);
@@ -79,6 +79,7 @@ test('static HTML, CSS, local assets, fragment targets, and 2026 resume alignmen
   assert.match(html, /45 days to 7 days/);
   assert.match(html, /96% accuracy/);
   assert.match(html, /AWS Nova Challenge 2025/);
+  assert.match(css, /\.about__highlight\s*\{[^}]*color:\s*var\(--c-cyan\)/, 'About highlights must use the theme cyan');
   assert.match(html, /2022 – May 2027 \(expected\)/);
 
   const skillGroups = [...html.matchAll(/<article class="skill-group reveal">/g)];
@@ -221,6 +222,12 @@ test('all portfolio sections and core content are present on desktop and mobile 
     assert.equal(await page.locator('.skill-group').count(), 6, `${layout.name}: expected all skill groups`);
     assert.equal(await page.locator('.contact__docs a').count(), 2, `${layout.name}: missing document links`);
     assert.equal(await page.locator('[data-total-experience]').count(), 1, `${layout.name}: missing total experience`);
+    assert.equal(await page.locator('#about .about__highlight').count() >= 20, true, `${layout.name}: About keywords and certificate names should be highlighted`);
+    const aboutHighlightColors = await page.locator('#about .about__highlight').evaluateAll(els => [...new Set(els.map(el => getComputedStyle(el).color))]);
+    assert.deepEqual(aboutHighlightColors, ['rgb(34, 211, 238)'], `${layout.name}: About highlights should render in theme cyan`);
+    await page.locator('#theme-toggle').click();
+    const lightHighlightColors = await page.locator('#about .about__highlight').evaluateAll(els => [...new Set(els.map(el => getComputedStyle(el).color))]);
+    assert.deepEqual(lightHighlightColors, ['rgb(37, 99, 235)'], `${layout.name}: About highlights should render in readable blue in light theme`);
     if (layout.name === 'mobile') {
       assert.equal(await page.locator('#nav-links').isVisible(), true, 'mobile: nav strip should be available');
       assert.equal(await page.locator('.nav__link').count(), 9, 'mobile: all section links should be present');
