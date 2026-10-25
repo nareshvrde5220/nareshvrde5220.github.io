@@ -229,9 +229,28 @@
   }
 
   /* ---------- Stat count-up ---------- */
+  function completedYearsSince(value) {
+    var parts = value.split("-");
+    var start = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    var today = new Date();
+    var years = today.getFullYear() - start.getFullYear();
+    if (today.getMonth() < start.getMonth() ||
+        (today.getMonth() === start.getMonth() && today.getDate() < start.getDate())) years -= 1;
+    return Math.max(0, years);
+  }
+  function updateCareerYears() {
+    var startDate = "2015-05-25";
+    var value = completedYearsSince(startDate) + "+";
+    document.querySelectorAll("[data-career-years]").forEach(function (el) { el.textContent = value; });
+    document.querySelectorAll("[data-career-start]").forEach(function (el) { el.textContent = value; });
+  }
+  updateCareerYears();
+
   var stats = Array.prototype.slice.call(document.querySelectorAll(".stat__num[data-count]"));
   function runCount(el) {
     var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+    var careerStart = el.getAttribute("data-career-start");
+    if (careerStart) target = completedYearsSince(careerStart);
     var suffix = el.getAttribute("data-suffix") || "";
     if (prefersReduced) { el.textContent = target + suffix; return; }
     var start = null, dur = 1100;
@@ -284,6 +303,7 @@
 
     var liveTimer;
     function update() {
+      updateCareerYears();
       document.querySelectorAll("[data-role-start]").forEach(function (el) {
         var start = parseDate(el.getAttribute("data-role-start"));
         var endValue = el.getAttribute("data-role-end");
